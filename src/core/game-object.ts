@@ -16,7 +16,6 @@ export class GameObject<T extends string> {
     this.animationTime += timeElapsed;
     const animation = this.tileset.animations[this.animation];
     const animationFrame = Math.floor(this.animationTime / this.animationDuration) % animation.length;
-    console.log(animation[animationFrame]);
     
     if (animation[animationFrame]) {
       drawEngine.drawImage(

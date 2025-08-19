@@ -14,10 +14,10 @@ class GameState implements State {
   }
 
   onEnter() {
-    this.cat.draw(0);
   }
 
   onUpdate(timeElapsed: number) {
+    this.cat.draw(timeElapsed);
   }
 }
 
