@@ -26,9 +26,15 @@ class DrawEngine {
     image: HTMLImageElement,
     x: number,
     y: number,
+    mirrored?: boolean,
     width?: number,
     height?: number,
-  ) {    
+  ) {
+    if (mirrored) {
+      this.context.save();
+      this.context.scale(-1, 1);
+      x = -x - (width ?? image.width);
+    }
     this.context.drawImage(
       image,
       x,
@@ -36,6 +42,9 @@ class DrawEngine {
       width ?? image.width,
       height ?? image.height,
     );
+    if (mirrored) {
+      this.context.restore();
+    }
   }
 
   /**

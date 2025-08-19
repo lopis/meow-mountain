@@ -3,13 +3,14 @@ import { Tileset } from "./tileset";
 
 export class GameObject<T extends string> {
   private animationTime = 0;
-  private animationDuration = 250; // Duration for each animation frame in milliseconds
+  private animationDuration = 150; // Duration for each animation frame in milliseconds
 
   constructor(
     private readonly tileset: Tileset<T>,
-    private readonly animation: T,
     public x: number,
     public y: number,
+    protected animation: T,
+    protected mirrored: boolean = false,
   ){}
 
   draw(timeElapsed: number) {
@@ -21,7 +22,8 @@ export class GameObject<T extends string> {
       drawEngine.drawImage(
         animation[animationFrame],
         this.x,
-        this.y
+        this.y,
+        this.mirrored,
       );
     }
   }

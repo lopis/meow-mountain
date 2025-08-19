@@ -24,6 +24,7 @@ class Controls {
   isRight = false;
   isConfirm = false;
   isEscape = false;
+  isMoving = false;
   inputDirection: DOMPoint;
 
   keyMap: Map<string, boolean> = new Map();
@@ -60,6 +61,7 @@ class Controls {
     this.isDown = this.inputDirection.y > 0;
     this.isLeft = this.inputDirection.x < 0;
     this.isRight = this.inputDirection.x > 0;
+    this.isMoving = this.inputDirection.x !== 0 || this.inputDirection.y !== 0;
     this.isConfirm = Boolean(this.keyMap.get('Enter') || isButtonPressed(XboxControllerButton.A) || isButtonPressed(XboxControllerButton.Start));
     this.isEscape = Boolean(this.keyMap.get('Escape') || isButtonPressed(XboxControllerButton.Select));
   }

@@ -1,13 +1,12 @@
 import { State } from '@/core/state';
 import { drawEngine } from '@/core/draw-engine';
-import { Cat, GameAssets } from '@/game/game-assets';
-import { GameObject } from '@/core/game-object';
+import { Player } from '@/core/player';
 
 class GameState implements State {
-  cat: GameObject<Cat>;
+  cat: Player;
 
   constructor() {
-    this.cat = new GameObject(GameAssets.cat, 'idle', 100, 100);
+    this.cat = new Player(100, 100);
   }
 
   onEnter() {
@@ -17,6 +16,7 @@ class GameState implements State {
 
   onUpdate(timeElapsed: number) {
     drawEngine.setCamera(this.cat.x, this.cat.y, 4);
+    this.cat.update(timeElapsed);
     this.cat.draw(timeElapsed);
     drawEngine.resetCamera();
   }
