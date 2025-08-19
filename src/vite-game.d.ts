@@ -1,8 +1,12 @@
 declare module '*.jpg';
 declare module '*.png';
-declare const c2d;
+declare const c1;
+declare const c2;
+declare const c3;
 
-let c2d;
+let c1: HTMLCanvasElement;
+let c2: HTMLCanvasElement;
+let c3: HTMLCanvasElement;
 let fps;
 let localStorage;
 let c;

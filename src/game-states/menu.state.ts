@@ -9,7 +9,7 @@ class MenuState implements State {
   private isStartSelected = true;
 
   onUpdate() {
-    const xCenter = drawEngine.context.canvas.width / 2;
+    const xCenter = drawEngine.ctx2.canvas.width / 2;
     drawEngine.drawText({
       text: 'The Witch\'s Valley',
       x: xCenter,

@@ -1,4 +1,4 @@
-#c2d {
+#c1, #c2, #c3 {
     width: min(100vw, calc(100vh * 16/9));
     position: absolute;
     image-rendering: pixelated; /* You definitely want this if you are doing pixel art */

@@ -1,8 +1,10 @@
 import { CatStates, GameAssets } from "@/game/game-assets";
-import { GameObject } from "./game-object";
-import { controls } from "./controls";
+import { GameObject } from "../core/game-object";
+import { controls } from "../core/controls";
 
 export class Player extends GameObject<CatStates> {
+  private speed = 30;
+
   constructor(
     public x: number,
     public y: number,
@@ -11,29 +13,34 @@ export class Player extends GameObject<CatStates> {
   }
 
   update(timeElapsed: number) {
+    this.animationTime += timeElapsed;
+
     // Update position based on inputs
     controls.queryController();
 
     if (controls.isUp) {
-      this.y -= 2 * timeElapsed / 1000;
+      this.y -= this.speed * timeElapsed / 1000;
       this.animation = 'walk';
     } else if (controls.isDown) {
-      this.y += 2 * timeElapsed / 1000;
+      this.y += this.speed * timeElapsed / 1000;
       this.animation = 'walk';
     }
     
     if (controls.isLeft) {
-      this.x -= 2 * timeElapsed / 1000;
+      this.x -= this.speed * timeElapsed / 1000;
       this.animation = 'walk';
       this.mirrored = true;
     } else if (controls.isRight) {
-      this.x += 2 * timeElapsed / 1000;
+      this.x += this.speed * timeElapsed / 1000;
       this.animation = 'walk';
       this.mirrored = false;
     }
 
     if (!controls.isMoving) {
       this.animation = 'idle';
+      this.x = Math.round(this.x);
+      this.y = Math.round(this.y);
     }
+
   }
 }

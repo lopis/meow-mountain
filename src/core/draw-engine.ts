@@ -2,27 +2,34 @@ import { GameAssets } from "@/game/game-assets";
 import { drawText, DrawTextProps } from "./font";
 
 class DrawEngine {
-  context: CanvasRenderingContext2D;
+  ctx1: CanvasRenderingContext2D;
+  ctx2: CanvasRenderingContext2D;
+  ctx3: CanvasRenderingContext2D;
 
   constructor() {
-    this.context = c2d.getContext('2d');
-    this.context.imageSmoothingEnabled = false;
+    this.ctx1 = c1.getContext('2d');
+    this.ctx1.imageSmoothingEnabled = false;
+    this.ctx2 = c2.getContext('2d');
+    this.ctx2.imageSmoothingEnabled = false;
+    this.ctx3 = c3.getContext('2d');
+    this.ctx3.imageSmoothingEnabled = false;
     GameAssets.initialize();
   }
 
   get canvasWidth() {
-    return this.context.canvas.width;
+    return this.ctx2.canvas.width;
   }
 
   get canvasHeight() {
-    return this.context.canvas.height;
+    return this.ctx2.canvas.height;
   }
 
   drawText(textProps: DrawTextProps) {
-    drawText(this.context, textProps);
+    drawText(this.ctx2, textProps);
   }
 
-  drawImage(
+  private drawImage(
+    ctx: CanvasRenderingContext2D,
     image: HTMLImageElement,
     x: number,
     y: number,
@@ -31,11 +38,11 @@ class DrawEngine {
     height?: number,
   ) {
     if (mirrored) {
-      this.context.save();
-      this.context.scale(-1, 1);
+      ctx.save();
+      ctx.scale(-1, 1);
       x = -x - (width ?? image.width);
     }
-    this.context.drawImage(
+    ctx.drawImage(
       image,
       x,
       y,
@@ -43,8 +50,41 @@ class DrawEngine {
       height ?? image.height,
     );
     if (mirrored) {
-      this.context.restore();
+      ctx.restore();
     }
+  }
+
+  drawBackgroundImage(
+    image: HTMLImageElement,
+    x: number,
+    y: number,
+    mirrored?: boolean,
+    width?: number,
+    height?: number,
+  ) {
+    this.drawImage(this.ctx1, image, x, y, mirrored, width, height);
+  }
+
+  drawForegroundImage(
+    image: HTMLImageElement,
+    x: number,
+    y: number,
+    mirrored?: boolean,
+    width?: number,
+    height?: number,
+  ) {
+    this.drawImage(this.ctx2, image, x, y, mirrored, width, height);
+  }
+
+  drawUIImage(
+    image: HTMLImageElement,
+    x: number,
+    y: number,
+    mirrored?: boolean,
+    width?: number,
+    height?: number,
+  ) {
+    this.drawImage(this.ctx3, image, x, y, mirrored, width, height);
   }
 
   /**
@@ -54,17 +94,24 @@ class DrawEngine {
    * @param zoom The zoom level of the camera
    */
   setCamera(x: number, y: number, zoom: number = 1) {
-    const cx = this.canvasWidth / 2 - 32;
-    const cy = this.canvasHeight / 2 - 64;
-    this.context.setTransform(
-      zoom, 0, 0, zoom,
-      cx - x * zoom,
-      cy - y * zoom,
-    );
+    [this.ctx1, this.ctx2].forEach(ctx => {
+      const cx = this.canvasWidth / 2 - 32;
+      const cy = this.canvasHeight / 2 - 64;
+      ctx.setTransform(
+        zoom, 0, 0, zoom,
+        cx - x * zoom,
+        cy - y * zoom,
+      );
+    });
   }
 
   resetCamera() {
-    this.context.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx2.setTransform(1, 0, 0, 1, 0, 0);
+  }
+
+  clear() {
+    this.ctx1.clearRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
+    this.ctx2.clearRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
   }
 }
 
