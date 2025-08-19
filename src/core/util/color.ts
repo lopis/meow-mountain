@@ -10,8 +10,9 @@ export const hexToRgb = (hex: string) : number[] => {
 };
 
 export const colors = {
-  black: '#1F0A00',
-  white: '#FFFCEA',
-  gray: '#A29782',
-  light: '#CEC6AD',
+  black: '#0D1164',
+  white: '#ffede5',
+  light: '#F78D60',
+  medium: '#EA2264',
+  dark: '#640D5F',
 };

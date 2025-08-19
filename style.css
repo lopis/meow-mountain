@@ -7,7 +7,7 @@
 /* Get rid of any margins, set background black, use flexbox to center */
 html, body {
     margin: 0;
-    background-color: black;
+    background-color: #0D1164;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -67,9 +67,10 @@ const createImageData = async (text: string, size: number, color: string, space:
 };
 
 export const drawText = (
+  c: CanvasRenderingContext2D,
   {
     text,
-    color = colors.black,
+    color = colors.white,
     textAlign = 'left',
     textBaseline = 'top',
     size = 2,
