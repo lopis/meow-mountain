@@ -8,8 +8,8 @@ export class GameObject<T extends string> {
   constructor(
     private readonly tileset: Tileset<T>,
     private readonly animation: T,
-    private readonly x: number,
-    private readonly y: number,
+    public x: number,
+    public y: number,
   ){}
 
   draw(timeElapsed: number) {

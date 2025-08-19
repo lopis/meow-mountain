@@ -1,8 +1,5 @@
 import { State } from '@/core/state';
 import { drawEngine } from '@/core/draw-engine';
-import { controls } from '@/core/controls';
-import { gameStateMachine } from '@/game-state-machine';
-import { menuState } from '@/game-states/menu.state';
 import { Cat, GameAssets } from '@/game/game-assets';
 import { GameObject } from '@/core/game-object';
 
@@ -14,10 +11,14 @@ class GameState implements State {
   }
 
   onEnter() {
+    console.log(drawEngine);
+    
   }
 
   onUpdate(timeElapsed: number) {
+    drawEngine.setCamera(this.cat.x, this.cat.y, 4);
     this.cat.draw(timeElapsed);
+    drawEngine.resetCamera();
   }
 }
 
