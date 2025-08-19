@@ -52,8 +52,9 @@ export class Tileset<T extends string> {
     for (let row = 0; row < this.animationNames.length; row++) {
       const animationName = this.animationNames[row];
       const frames: HTMLImageElement[] = [];
+      const colCount = ctx.canvas.width / this.tileWidth;
 
-      for (let col = 0; col < this.tileWidth; col++) {
+      for (let col = 0; col < colCount; col++) {
         const tile = ctx.getImageData(col * this.tileWidth, row * this.tileWidth, this.tileWidth, this.tileWidth);
         const tileCanvas = document.createElement("canvas");
         tileCanvas.width = this.tileWidth;

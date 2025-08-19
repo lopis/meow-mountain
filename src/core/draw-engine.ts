@@ -20,6 +20,22 @@ class DrawEngine {
   drawText(textProps: DrawTextProps) {
     drawText(this.context, textProps);
   }
+
+  drawImage(
+    image: HTMLImageElement,
+    x: number,
+    y: number,
+    width?: number,
+    height?: number,
+  ) {    
+    this.context.drawImage(
+      image,
+      x,
+      y,
+      width ?? image.width,
+      height ?? image.height,
+    );
+  }
 }
 
 export const drawEngine = new DrawEngine();
