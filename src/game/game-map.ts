@@ -13,6 +13,7 @@ export const CELL_WIDTH = 10;
 export const CELL_HEIGHT = 10;
 
 type Path = [{x: number, y: number}, {x: number, y: number}, number];
+type Circle = {x: number, y: number, r: number};
 
 const paths: Path[] = [
   [
@@ -20,11 +21,10 @@ const paths: Path[] = [
     {x: 2, y: 90}, // to
     3, // width
   ],
-  [
-    {x: 80, y: 79}, // from
-    {x: 80, y: 81}, // to
-    8, // width
-  ]
+]
+
+const clearings: Circle[] = [
+  {x: 80, y: 80, r: 8}
 ]
 
 export class GameMap {
@@ -79,6 +79,21 @@ export class GameMap {
         if (e2 < dx) {
           err += dx;
           y += sy;
+        }
+      }
+    }
+
+    // For each clearing, empty out a circle in the map
+    for (const clearing of clearings) {
+      for (let y = 0; y < this.height; y++) {
+        for (let x = 0; x < this.width; x++) {
+          const dx = x - clearing.x;
+          const dy = y - clearing.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance <= clearing.r) {
+            this.map[y][x].content = null;
+          }
         }
       }
     }
