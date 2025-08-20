@@ -8,12 +8,27 @@ class DrawEngine {
 
   constructor() {
     this.ctx1 = c1.getContext('2d');
-    this.ctx1.imageSmoothingEnabled = false;
     this.ctx2 = c2.getContext('2d');
-    this.ctx2.imageSmoothingEnabled = false;
     this.ctx3 = c3.getContext('2d');
-    this.ctx3.imageSmoothingEnabled = false;
     GameAssets.initialize();
+    this.resizeCanvas();
+    window.addEventListener('resize', () => this.resizeCanvas());
+    window.addEventListener('orientationchange', () => this.resizeCanvas());
+  }
+
+  resizeCanvas() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    this.ctx1.canvas.width = width;
+    this.ctx1.canvas.height = height;
+    this.ctx2.canvas.width = width;
+    this.ctx2.canvas.height = height;
+    this.ctx3.canvas.width = width;
+    this.ctx3.canvas.height = height;
+    this.ctx1.imageSmoothingEnabled = false;
+    this.ctx2.imageSmoothingEnabled = false;
+    this.ctx3.imageSmoothingEnabled = false;
+
   }
 
   get canvasWidth() {
