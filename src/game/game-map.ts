@@ -19,6 +19,11 @@ const paths: Path[] = [
     {x: 80, y: 80}, // from
     {x: 2, y: 90}, // to
     3, // width
+  ],
+  [
+    {x: 80, y: 79}, // from
+    {x: 80, y: 81}, // to
+    8, // width
   ]
 ]
 
@@ -38,17 +43,20 @@ export class GameMap {
       const to = path[1];
       const width = path[2];
       
-      // Create straight line path between from and to
-      const dx = Math.sign(to.x - from.x);
-      const dy = Math.sign(to.y - from.y);
+      // Bresenham's line algorithm for any angle
+      const dx = Math.abs(to.x - from.x);
+      const dy = Math.abs(to.y - from.y);
+      const sx = from.x < to.x ? 1 : -1;
+      const sy = from.y < to.y ? 1 : -1;
+      let err = dx - dy;
       
       let x = from.x;
       let y = from.y;
       
-      // Clear cells along the path with width
-      while (x !== to.x || y !== to.y) {
+      const halfWidth = Math.floor(width / 2);
+      
+      while (true) {
         // Clear area around the current position
-        const halfWidth = Math.floor(width / 2);
         for (let ox = -halfWidth; ox <= halfWidth; ox++) {
           for (let oy = -halfWidth; oy <= halfWidth; oy++) {
             const clearX = x + ox;
@@ -60,20 +68,17 @@ export class GameMap {
           }
         }
         
-        if (x !== to.x) x += dx;
-        if (y !== to.y) y += dy;
-      }
-      
-      // Clear the destination cell with width
-      const halfWidth = Math.floor(width / 2);
-      for (let ox = -halfWidth; ox <= halfWidth; ox++) {
-        for (let oy = -halfWidth; oy <= halfWidth; oy++) {
-          const clearX = to.x + ox;
-          const clearY = to.y + oy;
-          if (clearY >= 0 && clearY < this.map.length && 
-              clearX >= 0 && clearX < this.map[0].length) {
-            this.map[clearY][clearX].content = null;
-          }
+        // Check if we've reached the destination
+        if (x === to.x && y === to.y) break;
+        
+        const e2 = 2 * err;
+        if (e2 > -dy) {
+          err -= dy;
+          x += sx;
+        }
+        if (e2 < dx) {
+          err += dx;
+          y += sy;
         }
       }
     }
@@ -92,8 +97,8 @@ export class GameMap {
           // Draw the content only if it's close to the
           // camera position (cx, cy);
           if (
-            Math.abs(cell.content.x - cx) < 130 &&
-            Math.abs(cell.content.y - cy) < 90
+            Math.abs(cell.content.x - cx) < 200 &&
+            Math.abs(cell.content.y - cy) < 120
           ) {
             cell.content.draw(0);
           }
