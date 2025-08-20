@@ -4,7 +4,7 @@ import { controls } from "../core/controls";
 import { CELL_HEIGHT, CELL_WIDTH } from "./game-map";
 
 export class Player extends GameObject<CatStates> {
-  private speed = 50;
+  private speed = 80;
   private moving = { x: 0, y: 0}; // direction of movement
   private target; 
 
@@ -29,7 +29,9 @@ export class Player extends GameObject<CatStates> {
       this.animation = 'run';
       this.moving.x = controls.inputDirection.x;
       this.target.x += controls.inputDirection.x * CELL_WIDTH
-      this.mirrored = controls.isLeft;
+      if (controls.inputDirection.x !== 0) {
+        this.mirrored = controls.isLeft;
+      }
     }
 
     if (!this.moving.x && !this.moving.y) {
