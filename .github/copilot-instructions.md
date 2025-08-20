@@ -18,3 +18,7 @@
 - Use tools to make file changes rather than displaying code blocks
 - Prioritize showing the minimal necessary changes
 - Reference existing code patterns and project structure
+
+## JS13k specific Instructions
+- Code size matters, so it's ok to forgo certain code practices
+- Public properties are preferred to getters and setters whenever possible
