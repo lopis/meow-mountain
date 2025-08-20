@@ -2,7 +2,7 @@ import { State } from '@/core/state';
 import { drawEngine } from '@/core/draw-engine';
 import { Player } from '@/game/player';
 import { Tree } from '@/game/tree';
-import { GameMap } from '@/game/game-map';
+import { CELL_HEIGHT, CELL_WIDTH, GameMap } from '@/game/game-map';
 
 class GameState implements State {
   map!: GameMap;
@@ -13,15 +13,18 @@ class GameState implements State {
   }
 
   onEnter() {
-    this.cat = new Player(0, 0);
     this.map = new GameMap(160, 160);
-    this.map.set(0, 0, this.cat);
+    const centerX = Math.floor(160 / 2) * CELL_WIDTH;
+    const centerY = Math.floor(160 / 2) * CELL_HEIGHT;
+    this.cat = new Player(centerX, centerY, this.map);
+    this.map.set(80, 80, null);
   }
 
   onUpdate(timeElapsed: number) {
     drawEngine.setCamera(this.cat.x, this.cat.y, 5);
     this.cat.update(timeElapsed);
     this.map.draw(this.cat.x, this.cat.y);
+    this.cat.draw(timeElapsed);
     drawEngine.resetCamera();
   }
 }

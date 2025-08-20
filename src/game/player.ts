@@ -1,35 +1,44 @@
 import { CatStates, GameAssets } from "@/game/game-assets";
 import { GameObject } from "../core/game-object";
 import { controls } from "../core/controls";
-import { CELL_HEIGHT, CELL_WIDTH } from "./game-map";
+import { CELL_HEIGHT, CELL_WIDTH, GameMap } from "./game-map";
 
 export class Player extends GameObject<CatStates> {
-  private speed = 80;
-  private moving = { x: 0, y: 0}; // direction of movement
-  private target; 
+  speed = 80;
+  moving = { x: 0, y: 0};
+  target;
+  gx: number; // grid x
+  gy: number; // grid y
+  map: GameMap;
 
-  constructor(
-    public x: number,
-    public y: number,
-  ) {
+  constructor(x: number, y: number, map: GameMap) {
     super(GameAssets.cat, x, y, 'idle');
     this.target = { x, y };
+    this.map = map;
+    this.gx = Math.floor(x / CELL_WIDTH);
+    this.gy = Math.floor(y / CELL_HEIGHT);
   }
 
   update(timeElapsed: number) {
     this.animationTime += timeElapsed;
 
-    if (!this.moving.y) {
-      this.animation = 'run';
-      this.moving.y = controls.inputDirection.y;
-      this.target.y += controls.inputDirection.y * CELL_HEIGHT
+    if (!this.moving.y && controls.inputDirection.y) {
+      const newGy = this.gy + controls.inputDirection.y;
+      if (newGy >= 0 && newGy < this.map.height && !this.map.map[newGy][this.gx].content) {
+        this.animation = 'run';
+        this.moving.y = controls.inputDirection.y;
+        this.target.y += controls.inputDirection.y * CELL_HEIGHT;
+        this.gy = newGy;
+      }
     }
 
-    if (!this.moving.x) {
-      this.animation = 'run';
-      this.moving.x = controls.inputDirection.x;
-      this.target.x += controls.inputDirection.x * CELL_WIDTH
-      if (controls.inputDirection.x !== 0) {
+    if (!this.moving.x && controls.inputDirection.x) {
+      const newGx = this.gx + controls.inputDirection.x;
+      if (newGx >= 0 && newGx < this.map.width && !this.map.map[this.gy][newGx].content) {
+        this.animation = 'run';
+        this.moving.x = controls.inputDirection.x;
+        this.target.x += controls.inputDirection.x * CELL_WIDTH;
+        this.gx = newGx;
         this.mirrored = controls.isLeft;
       }
     }
