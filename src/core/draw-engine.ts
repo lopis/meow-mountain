@@ -16,6 +16,10 @@ class DrawEngine {
     window.addEventListener('orientationchange', () => this.resizeCanvas());
   }
 
+  init () {
+
+  }
+
   resizeCanvas() {
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -28,7 +32,6 @@ class DrawEngine {
     this.ctx1.imageSmoothingEnabled = false;
     this.ctx2.imageSmoothingEnabled = false;
     this.ctx3.imageSmoothingEnabled = false;
-
   }
 
   get canvasWidth() {

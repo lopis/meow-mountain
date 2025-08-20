@@ -9,8 +9,8 @@ interface Cell {
   content: GameObject<any> | Tree | null;
 }
 
-const CELL_WIDTH = 10;
-const CELL_HEIGHT = 10;
+export const CELL_WIDTH = 10;
+export const CELL_HEIGHT = 10;
 
 export class GameMap {
   private map: Cell[][];

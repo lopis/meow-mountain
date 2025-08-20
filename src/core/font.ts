@@ -100,14 +100,14 @@ export const drawText = (
   }
 };
 
-export const preLoadStrings = (strings: string[], textColors: string[], size: number) => {
-  strings.forEach(str => {
-    textColors.forEach(color => createImageData(str, size, color));
-  });
-};
+// export const preLoadStrings = (strings: string[], textColors: string[], size: number) => {
+//   strings.forEach(str => {
+//     textColors.forEach(color => createImageData(str, size, color));
+//   });
+// };
 
-export const preLoadLevels = () => {
-  for (let i = 1; i <= 13; i++) {
-    preLoadStrings([`Level ${(' ' + i).slice(-2)}`], [colors.black], 4);
-  }
-};
+// export const preLoadLevels = () => {
+//   for (let i = 1; i <= 13; i++) {
+//     preLoadStrings([`Level ${(' ' + i).slice(-2)}`], [colors.black], 4);
+//   }
+// };
