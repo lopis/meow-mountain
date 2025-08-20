@@ -22,6 +22,7 @@ class GameState implements State {
 
   onUpdate(timeElapsed: number) {
     drawEngine.setCamera(this.cat.x, this.cat.y, 5);
+    drawEngine.updateCamera();
     this.cat.update(timeElapsed);
     this.map.draw(this.cat.x, this.cat.y);
     this.cat.draw(timeElapsed);

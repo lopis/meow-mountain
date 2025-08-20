@@ -1,10 +1,18 @@
 import { GameAssets } from "@/game/game-assets";
 import { drawText, DrawTextProps } from "./font";
+import { easeInOutSine } from "./util/util";
 
 class DrawEngine {
   ctx1: CanvasRenderingContext2D;
   ctx2: CanvasRenderingContext2D;
   ctx3: CanvasRenderingContext2D;
+  
+  // Camera properties
+  private cameraX = 0;
+  private cameraY = 0;
+  private targetCameraX = 0;
+  private targetCameraY = 0;
+  private cameraLerpSpeed = 0.1; // Adjust for faster/slower camera
 
   constructor() {
     this.ctx1 = c1.getContext('2d');
@@ -112,15 +120,22 @@ class DrawEngine {
    * @param zoom The zoom level of the camera
    */
   setCamera(x: number, y: number, zoom: number = 1) {
+    this.targetCameraX = x;
+    this.targetCameraY = y;
     [this.ctx1, this.ctx2].forEach(ctx => {
       const cx = this.canvasWidth / 2 - 32;
       const cy = this.canvasHeight / 2 - 64;
       ctx.setTransform(
         zoom, 0, 0, zoom,
-        cx - x * zoom,
-        cy - y * zoom,
+        cx - this.cameraX * zoom,
+        cy - this.cameraY * zoom,
       );
     });
+  }
+
+  updateCamera() {
+    this.cameraX += (this.targetCameraX - this.cameraX) * this.cameraLerpSpeed;
+    this.cameraY += (this.targetCameraY - this.cameraY) * this.cameraLerpSpeed;
   }
 
   resetCamera() {
