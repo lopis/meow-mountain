@@ -3,10 +3,12 @@ import { drawEngine } from '@/core/draw-engine';
 import { Player } from '@/game/player';
 import { Tree } from '@/game/tree';
 import { CELL_HEIGHT, CELL_WIDTH, GameMap } from '@/game/game-map';
+import { MiniMap } from '@/game/mini-map';
 
 class GameState implements State {
   map!: GameMap;
   cat!: Player;
+  miniMap!: MiniMap;
 
   constructor() {
     
@@ -18,6 +20,7 @@ class GameState implements State {
     const centerY = Math.floor(160 / 2) * CELL_HEIGHT;
     this.cat = new Player(centerX, centerY, this.map);
     this.map.set(80, 80, null);
+    this.miniMap = new MiniMap(this.map);
   }
 
   onUpdate(timeElapsed: number) {
@@ -27,6 +30,8 @@ class GameState implements State {
     this.map.draw(this.cat.x, this.cat.y);
     this.cat.draw(timeElapsed);
     drawEngine.resetCamera();
+    
+    this.miniMap.update(timeElapsed, this.cat);
   }
 }
 

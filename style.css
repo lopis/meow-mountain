@@ -13,3 +13,8 @@ html, body {
     align-items: center;
     height: 100%;
 }
+
+:root {
+    --dark-green: #232f25;
+    --light-brown: #926839;
+}
