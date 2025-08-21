@@ -7,6 +7,7 @@ interface Cell {
   x: number;
   y: number;
   content: GameObject<any> | Tree | null;
+  seen?: boolean;
 }
 
 export const CELL_WIDTH = 10;
@@ -173,17 +174,18 @@ export class GameMap {
   }
 
   draw(cx: number, cy: number) {
+    const radius = 120; // Define the radius for the circular area
+    const radiusSquared = radius * radius;
+
     for (const row of this.map) {
       for (const cell of row) {
-        if (cell.content) {
-          // Draw the content only if it's close to the
-          // camera position (cx, cy);
-          if (
-            Math.abs(cell.content.x - cx) < 200 &&
-            Math.abs(cell.content.y - cy) < 120
-          ) {
-            cell.content.draw(0);
-          }
+        const dx = cell.x * CELL_WIDTH - cx;
+        const dy = cell.y * CELL_HEIGHT - cy;
+        const distanceSquared = dx * dx + dy * dy;
+
+        if (distanceSquared <= radiusSquared) {
+          cell?.content?.draw(0);
+          cell.seen = true;
         }
       }
     }

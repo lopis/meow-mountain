@@ -31,7 +31,12 @@ export class MiniMap {
       for (let mx = 0; mx < mapSize; mx++) {
         const cell = this.map.map[my][mx];
         
-        ctx.fillStyle = cell.content ? '#232f25' : '#926839'; // Green for trees, brown for empty
+        if (!cell.seen) {
+          ctx.fillStyle = '#232f25'; // Dark green for unseen cells
+        } else {
+          ctx.fillStyle = cell.content ? '#6e8e41' : '#926839'; // Light green for trees, brown for empty
+        }
+        
         ctx.fillRect(x + mx, y + my, 1, 1);
       }
     }
