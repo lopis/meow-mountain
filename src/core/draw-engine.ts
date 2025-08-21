@@ -139,10 +139,12 @@ class DrawEngine {
   }
 
   resetCamera() {
+    this.ctx1.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx2.setTransform(1, 0, 0, 1, 0, 0);
   }
 
   clear() {
+    this.resetCamera();
     this.ctx1.clearRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
     this.ctx2.clearRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
   }

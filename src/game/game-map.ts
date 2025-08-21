@@ -34,15 +34,39 @@ class SeededRandom {
 }
 
 const paths: Path[] = [
-  [
-    {x: 80, y: 80}, // from
-    {x: 2, y: 90}, // to
-    3, // width
-  ],
+  [{x: 69, y: 100}, {x: 76, y: 113}, 3],
+  [{x: 76, y: 113}, {x: 89, y: 114}, 4],
+  [{x: 76, y: 113}, {x: 89, y: 114}, 4],
+  [{x: 89, y: 114}, {x: 104, y: 86}, 5],
+  [{x: 89, y: 114}, {x: 104, y: 86}, 5],
+  [{x: 104, y: 86}, {x: 99, y: 59}, 3],
+  [{x: 99, y: 59}, {x: 85, y: 46}, 3],
+  [{x: 85, y: 46}, {x: 86, y: 28}, 2],
+  [{x: 86, y: 28}, {x: 74, y: 38}, 2],
+  [{x: 74, y: 38}, {x: 60, y: 39}, 2],
+  [{x: 60, y: 39}, {x: 48, y: 30}, 2],
+  [{x: 48, y: 30}, {x: 46, y: 43}, 2],
+  [{x: 46, y: 43}, {x: 38, y: 61}, 2],
+  [{x: 38, y: 61}, {x: 50, y: 73}, 3],
+  [{x: 50, y: 73}, {x: 38, y: 84}, 4],
+  [{x: 38, y: 84}, {x: 46, y: 123}, 3],
+  [{x: 46, y: 123}, {x: 36, y: 133}, 3],
+  [{x: 36, y: 133}, {x: 48, y: 141}, 2],
+  [{x: 48, y: 141}, {x: 94, y: 133}, 3],
+  [{x: 94, y: 133}, {x: 113, y: 109}, 4],
+  [{x: 113, y: 109}, {x: 122, y: 74}, 5],
+  [{x: 122, y: 74}, {x: 113, y: 56}, 6],
+
+  [{x: 91, y: 52}, {x: 129, y: 29}, 2],
+
 ]
 
 const clearings: Circle[] = [
-  {x: 80, y: 80, r: 8}
+  {x: 64, y: 88, r: 6},
+  {x: 75, y: 88, r: 6},
+  {x: 69, y: 95, r: 6},
+
+  {x: 129, y: 29, r: 15},
 ]
 
 export class GameMap {
@@ -84,7 +108,7 @@ export class GameMap {
     
     while (true) {
       // Add jitter to the clearing area
-      const jitterAmount = 0.8; // Adjust for more/less randomness
+      const jitterAmount = 1.0; // Adjust for more/less randomness
       const jitterX = Math.round(this.rng.range(-jitterAmount, jitterAmount));
       const jitterY = Math.round(this.rng.range(-jitterAmount, jitterAmount));
       
@@ -126,7 +150,7 @@ export class GameMap {
         const distance = Math.sqrt(dx * dx + dy * dy);
         
         // Add jitter to radius for natural edge
-        const jitterRadius = this.rng.range(-3, 3);
+        const jitterRadius = this.rng.range(-radius, radius) / 6;
         const adjustedRadius = radius + jitterRadius;
         
         if (distance <= adjustedRadius) {

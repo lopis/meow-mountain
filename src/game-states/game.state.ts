@@ -16,8 +16,8 @@ class GameState implements State {
 
   onEnter() {
     this.map = new GameMap(160, 160, 42);
-    const centerX = Math.floor(160 / 2) * CELL_WIDTH;
-    const centerY = Math.floor(160 / 2) * CELL_HEIGHT;
+    const centerX = 690;
+    const centerY = 940;
     this.cat = new Player(centerX, centerY, this.map);
     this.map.set(80, 80, null);
     this.miniMap = new MiniMap(this.map);
