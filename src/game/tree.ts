@@ -28,9 +28,9 @@ export class Tree {
     // if (this.neighbors.bottom) {
     //   drawEngine.drawBackgroundImage(this.image, this.x, this.y + CELL_HEIGHT/2);
     // }
-    if (this.neighbors.right) {
-      drawEngine.drawBackgroundImage(this.image, Math.round(this.x + CELL_WIDTH/2), this.y - CELL_HEIGHT/2);
-    }
+    // if (this.neighbors.right) {
+    //   drawEngine.drawBackgroundImage(this.image, Math.round(this.x + CELL_WIDTH/2), this.y - CELL_HEIGHT/2);
+    // }
 
     drawEngine.drawBackgroundImage(this.image, this.x, this.y);
   }

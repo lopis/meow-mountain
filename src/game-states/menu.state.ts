@@ -14,7 +14,7 @@ class MenuState implements State {
       text: 'The Witch\'s Valley',
       x: xCenter,
       y: 100,
-      color: colors.white,
+      color: colors.blue4,
       size: 4,
       textAlign: 'center',
     });
@@ -22,7 +22,7 @@ class MenuState implements State {
       text: 'Start Game',
       x: xCenter,
       y: 200,
-      color: this.isStartSelected ? colors.white : colors.medium,
+      color: this.isStartSelected ? colors.white : colors.blue4,
       size: 3,
       textAlign: 'center',
     });
@@ -30,7 +30,7 @@ class MenuState implements State {
       text: 'Toggle Fullscreen',
       x: xCenter,
       y: 250,
-      color: this.isStartSelected ? colors.medium : colors.white,
+      color: this.isStartSelected ? colors.blue4 : colors.white,
       size: 3,
       textAlign: 'center',
     });

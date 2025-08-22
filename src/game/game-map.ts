@@ -79,7 +79,11 @@ export class GameMap {
     
     this.map = Array.from({ length: height }, (_, y) =>
       Array.from({ length: width }, (_, x) => {
-        const tree = new Tree(x * CELL_WIDTH, y * CELL_HEIGHT, 'oak');
+        const tree = new Tree(
+          x * CELL_WIDTH - (16 - CELL_WIDTH) / 2, // Adjust x to center the image
+          y * CELL_HEIGHT - (16 - CELL_HEIGHT) / 2, // Adjust y to center the image
+          'oak'
+        );
         return { x, y, content: tree };
       })
     );
@@ -99,9 +103,6 @@ export class GameMap {
         }
       }
     }
-
-    console.log(this.map);
-    
 
     // Clear paths with jitter
     for (const path of paths) {
@@ -206,6 +207,8 @@ export class GameMap {
         if (distanceSquared <= radiusSquared) {
           cell?.content?.draw(0);
           cell.seen = true;
+          drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
+          drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH+1, cell.y * CELL_HEIGHT+1, CELL_WIDTH-2, CELL_HEIGHT-2);
         }
       }
     }
