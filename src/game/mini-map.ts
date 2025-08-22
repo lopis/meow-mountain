@@ -42,14 +42,10 @@ export class MiniMap {
       }
     }
     
-    // Draw player as small circle
-    const playerGridX = Math.floor(player.x / 10);
-    const playerGridY = Math.floor(player.y / 10);
-    
-    if (playerGridX >= 0 && playerGridX < mapSize && playerGridY >= 0 && playerGridY < mapSize) {
-      ctx.fillStyle = '#ea2264'; // Red
+    if (player.gx >= 0 && player.gx < mapSize && player.gy >= 0 && player.gy < mapSize) {
+      ctx.fillStyle = colors.purple4;
       ctx.beginPath();
-      ctx.arc(x + playerGridX, y + playerGridY, 2, 0, Math.PI * 2);
+      ctx.arc(x + player.gx, y + player.gy, 2, 0, Math.PI * 2);
       ctx.fill();
     }
   }
