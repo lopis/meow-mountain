@@ -21,6 +21,7 @@ class GameState implements State {
     this.cat = new Player(centerX, centerY, this.map);
     this.map.set(80, 80, null);
     this.miniMap = new MiniMap(this.map);
+    drawEngine.setCamera(this.cat.x, this.cat.y - 20, 7, true);
   }
 
   onUpdate(timeElapsed: number) {

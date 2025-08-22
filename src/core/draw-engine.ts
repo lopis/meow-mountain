@@ -12,7 +12,7 @@ class DrawEngine {
   private cameraY = 0;
   private targetCameraX = 0;
   private targetCameraY = 0;
-  private cameraLerpSpeed = 0.1; // Adjust for faster/slower camera
+  private cameraLerpSpeed = 0.08; // Adjust for faster/slower camera
 
   constructor() {
     this.ctx1 = c1.getContext('2d');
@@ -119,7 +119,7 @@ class DrawEngine {
    * @param y The y-coordinate of the object where the camera should focus
    * @param zoom The zoom level of the camera
    */
-  setCamera(x: number, y: number, zoom: number = 1) {
+  setCamera(x: number, y: number, zoom: number = 1, immediate = false) {
     this.targetCameraX = x;
     this.targetCameraY = y;
     [this.ctx1, this.ctx2].forEach(ctx => {
@@ -131,6 +131,10 @@ class DrawEngine {
         cy - this.cameraY * zoom,
       );
     });
+    if (immediate) {
+      this.cameraX = x;
+      this.cameraY = y;
+    }
   }
 
   updateCamera() {
