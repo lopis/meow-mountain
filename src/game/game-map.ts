@@ -10,8 +10,8 @@ interface Cell {
   seen?: boolean;
 }
 
-export const CELL_WIDTH = 16;
-export const CELL_HEIGHT = 16;
+export const CELL_WIDTH = 11;
+export const CELL_HEIGHT = 11;
 
 type Path = [{x: number, y: number}, {x: number, y: number}, number];
 type Circle = {x: number, y: number, r: number};
@@ -78,10 +78,30 @@ export class GameMap {
     this.rng = new SeededRandom(seed);
     
     this.map = Array.from({ length: height }, (_, y) =>
-      Array.from({ length: width }, (_, x) => (
-        { x, y, content: new Tree(x * CELL_WIDTH, y * CELL_HEIGHT, 'oak') }
-      ))
+      Array.from({ length: width }, (_, x) => {
+        const tree = new Tree(x * CELL_WIDTH, y * CELL_HEIGHT, 'oak');
+        return { x, y, content: tree };
+      })
     );
+
+    // Calculate neighbor information for each tree
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const cell = this.map[y][x];
+        if (cell.content instanceof Tree) {
+          const neighbors = {
+            top: this.map[y - 1]?.[x]?.content instanceof Tree,
+            bottom: this.map[y + 1]?.[x]?.content instanceof Tree,
+            left: this.map[y]?.[x - 1]?.content instanceof Tree,
+            right: this.map[y]?.[x + 1]?.content instanceof Tree,
+          };
+          cell.content.setNeighbors(neighbors);
+        }
+      }
+    }
+
+    console.log(this.map);
+    
 
     // Clear paths with jitter
     for (const path of paths) {
