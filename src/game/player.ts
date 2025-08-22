@@ -15,8 +15,8 @@ export class Player extends GameObject<CatStates> {
     super(GameAssets.cat, x, y, 'idle');
     this.target = { x, y };
     this.map = map;
-    this.gx = Math.floor(x / CELL_WIDTH);
-    this.gy = Math.floor(y / CELL_HEIGHT);
+    this.gx = Math.ceil(x / CELL_WIDTH);
+    this.gy = Math.ceil(y / CELL_HEIGHT);
   }
 
   update(timeElapsed: number) {
