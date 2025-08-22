@@ -88,6 +88,16 @@ export class GameMap {
       })
     );
 
+    // Clear paths with jitter
+    for (const path of paths) {
+      this.clearPathWithJitter(path[0], path[1], path[2]);
+    }
+
+    // Clear circular areas with jitter
+    for (const clearing of clearings) {
+      this.clearCircleWithJitter(clearing.x, clearing.y, clearing.r);
+    }
+
     // Calculate neighbor information for each tree
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
@@ -102,16 +112,6 @@ export class GameMap {
           cell.content.setNeighbors(neighbors);
         }
       }
-    }
-
-    // Clear paths with jitter
-    for (const path of paths) {
-      this.clearPathWithJitter(path[0], path[1], path[2]);
-    }
-
-    // Clear circular areas with jitter
-    for (const clearing of clearings) {
-      this.clearCircleWithJitter(clearing.x, clearing.y, clearing.r);
     }
   }
 
@@ -207,8 +207,8 @@ export class GameMap {
         if (distanceSquared <= radiusSquared) {
           cell?.content?.draw(0);
           cell.seen = true;
-          drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
-          drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH+1, cell.y * CELL_HEIGHT+1, CELL_WIDTH-2, CELL_HEIGHT-2);
+          // drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
+          // drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH+1, cell.y * CELL_HEIGHT+1, CELL_WIDTH-2, CELL_HEIGHT-2);
         }
       }
     }
