@@ -3,8 +3,8 @@ import { Tileset } from "@/core/tileset";
 const catStates = ['sit', 'idle', 'walk', 'run'];
 export type CatStates = typeof catStates[number];
 
-const assets = ['spruce', 'oak', 'house'];
-export type AssetType = typeof assets[number];
+export type AssetType = 'spruce' | 'oak' | 'house' | 'field';
+const assets: AssetType[] = ['spruce', 'oak', 'house', 'field'];
 
 export class GameAssets {
   public static cat: Tileset<CatStates>;

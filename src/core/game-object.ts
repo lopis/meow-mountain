@@ -9,6 +9,7 @@ export class GameObject<T extends string> {
     private readonly tileset: Tileset<T>,
     public x: number,
     public y: number,
+    public type: string,
     protected animation: T,
     protected mirrored: boolean = false,
   ){}

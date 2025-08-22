@@ -1,8 +1,9 @@
 import { AssetType, GameAssets } from "@/game/game-assets";
 import { drawEngine } from "@/core/draw-engine";
 import { CELL_HEIGHT, CELL_WIDTH } from "./game-map";
+import { GameObject } from "@/core/game-object";
 
-export class Tree {
+export class Tree extends GameObject<AssetType> {
   private image: HTMLImageElement;
   private neighbors: { top: boolean; bottom: boolean; left: boolean; right: boolean } = {
     top: false,
@@ -14,9 +15,10 @@ export class Tree {
   constructor(
     public x: number,
     public y: number,
-    type: AssetType,
+    assetType: AssetType,
   ) {
-    this.image = GameAssets.assets.animations[type][0];
+    super(GameAssets.assets, x, y, assetType, assetType);
+    this.image = GameAssets.assets.animations[assetType][0];
   }
 
   setNeighbors(neighbors: { top: boolean; bottom: boolean; left: boolean; right: boolean }) {

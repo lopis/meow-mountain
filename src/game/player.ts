@@ -12,7 +12,7 @@ export class Player extends GameObject<CatStates> {
   map: GameMap;
 
   constructor(x: number, y: number, map: GameMap) {
-    super(GameAssets.cat, x, y, 'idle');
+    super(GameAssets.cat, x, y, 'cat', 'idle');
     this.target = { x, y };
     this.map = map;
     this.gx = Math.ceil(x / CELL_WIDTH);

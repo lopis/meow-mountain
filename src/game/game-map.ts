@@ -24,6 +24,7 @@ type Path = [{x: number, y: number}, {x: number, y: number}, number];
 type Circle = {x: number, y: number, r: number};
 
 const paths: Path[] = [
+  // Main path
   [{x: 69, y: 100}, {x: 76, y: 113}, 3],
   [{x: 76, y: 113}, {x: 89, y: 114}, 4],
   [{x: 76, y: 113}, {x: 89, y: 114}, 4],
@@ -47,8 +48,8 @@ const paths: Path[] = [
   [{x: 113, y: 109}, {x: 122, y: 74}, 5],
   [{x: 122, y: 74}, {x: 113, y: 56}, 6],
 
+  // Northwest village path
   [{x: 91, y: 52}, {x: 129, y: 29}, 2],
-
 ]
 
 const clearings: Circle[] = [
@@ -64,7 +65,7 @@ const clearings: Circle[] = [
 const villages: Village[] = [
   {
     name: "Heart Peak",
-    center: { x: 64, y: 88 },
+    center: { x: 70, y: 90 },
     radius: 6,
     houses: [],
   },
@@ -121,6 +122,7 @@ export class GameMap {
     }
 
     this.generateHouses();
+    this.generateFarms();
   }
 
   private generateHouses() {
@@ -150,8 +152,42 @@ export class GameMap {
           GameAssets.assets,
           houseCol * CELL_WIDTH - (16 - CELL_WIDTH) / 2,
           houseRow * CELL_HEIGHT,
-          "house"
+          "house",
+          "house",
         );
+      }
+    }
+  }
+
+  private generateFarms() {
+    for (const village of villages) {
+      const farmCount = Math.floor(this.rng.range(1, 4)); // Random number of farms per village
+      for (let i = 0; i < farmCount; i++) {
+        let farmCol, farmRow;
+        do {
+          const angle = this.rng.range(0, Math.PI * 2);
+          const distance = this.rng.range(1, village.radius - 1);
+          farmCol = Math.round(village.center.x + Math.cos(angle) * distance);
+          farmRow = Math.round(village.center.y + Math.sin(angle) * distance);
+        } while (
+          farmCol < 0 ||
+          farmRow < 0 ||
+          farmCol + 1 >= this.width ||
+          farmRow + 1 >= this.height
+        );
+
+        // Add the 2x2 farm plot to the map
+        for (let dx = 0; dx < 2; dx++) {
+          for (let dy = 0; dy < 2; dy++) {
+            this.map[farmRow + dy][farmCol + dx].content = new GameObject(
+              GameAssets.assets,
+              (farmCol + dx) * CELL_WIDTH - (16 - CELL_WIDTH) / 2,
+              (farmRow + dy) * CELL_HEIGHT,
+              "field",
+              "field",
+            );
+          }
+        }
       }
     }
   }

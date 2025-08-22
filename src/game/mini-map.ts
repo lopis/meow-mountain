@@ -2,6 +2,7 @@ import { colors } from "@/core/util/color";
 import { GameMap } from "./game-map";
 import { Player } from "./player";
 import { drawEngine } from "@/core/draw-engine";
+import { Tree } from "./tree";
 
 export class MiniMap {
   private lastUpdate = 0;
@@ -35,7 +36,11 @@ export class MiniMap {
         if (!cell.seen) {
           ctx.fillStyle = colors.green3; // Dark green for unseen cells
         } else {
-          ctx.fillStyle = cell.content ? colors.green1 : colors.yellow2; // Light green for trees, brown for empty
+          ctx.fillStyle = cell.content?.type == 'oak' ? colors.green1
+          : cell.content?.type == 'spruce' ? colors.green2
+          : cell.content?.type == 'house' ? colors.blue4
+          : cell.content?.type == 'field' ? colors.yellow1
+          : colors.yellow2;
         }
         
         ctx.fillRect(x + mx, y + my, 1, 1);
