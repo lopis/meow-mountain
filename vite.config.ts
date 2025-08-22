@@ -161,9 +161,27 @@ function ectPlugin(): Plugin {
         }).map(file => 'dist/' + file);
         const args = ['-strip', '-zip', '-10009', 'dist/index.html', ...assetFiles];
         const result = execFileSync(ect, args);
-        console.log('ECT result', result.toString().trim());
         const stats = statSync('dist/index.zip');
-        console.log('ZIP size', stats.size);
+        const sizeInKB = stats.size;
+        const progress = stats.size / 13312;
+        const percentage = (100 * progress).toFixed(1);
+
+        let colorCode = '';
+        if (stats.size < 10000) {
+          colorCode = '\x1b[32m'; // green
+        } else if (stats.size > 13312) {
+          colorCode = '\x1b[31m'; // red
+        } else if (stats.size > 12900) {
+            colorCode = '\x1b[38;5;214m'; // orange
+        } else {
+          colorCode = '\x1b[33m'; // yellow
+        }
+
+        const colorBar = '█'.repeat(Math.round(progress * 20));
+        const grayBar = progress >= 0.95 ? '' : '█'.repeat(Math.round((1 - progress) * 20));
+        const progressBar = `${colorCode}${colorBar}\x1b\x1b[37m${grayBar}\x1b`;
+        console.log(`\n\nSize: ${colorCode}${sizeInKB}B / 13312B (${percentage}%)\x1b[0m  ${progressBar}\n`);
+
       } catch (err) {
         console.log('ECT error', err);
       }
