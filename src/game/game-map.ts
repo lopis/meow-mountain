@@ -10,8 +10,8 @@ interface Cell {
   seen?: boolean;
 }
 
-export const CELL_WIDTH = 10;
-export const CELL_HEIGHT = 10;
+export const CELL_WIDTH = 16;
+export const CELL_HEIGHT = 16;
 
 type Path = [{x: number, y: number}, {x: number, y: number}, number];
 type Circle = {x: number, y: number, r: number};
@@ -79,7 +79,7 @@ export class GameMap {
     
     this.map = Array.from({ length: height }, (_, y) =>
       Array.from({ length: width }, (_, x) => (
-        { x, y, content: new Tree(x * CELL_WIDTH, y * CELL_HEIGHT + CELL_HEIGHT/2 * (x % 2), 'oak') }
+        { x, y, content: new Tree(x * CELL_WIDTH, y * CELL_HEIGHT, 'oak') }
       ))
     );
 
