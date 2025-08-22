@@ -1,12 +1,20 @@
 import { GameObject } from "@/core/game-object";
 import { Tree } from "./tree";
 import { SeededRandom } from "@/core/util/rng";
+import { GameAssets } from "./game-assets";
 
 interface Cell {
   x: number;
   y: number;
   content: GameObject<any> | Tree | null;
   seen?: boolean;
+}
+
+interface Village {
+  name: string;
+  center: { x: number; y: number };
+  radius: number;
+  houses: { x: number; y: number }[];
 }
 
 export const CELL_WIDTH = 11;
@@ -53,6 +61,21 @@ const clearings: Circle[] = [
   {x: 129, y: 29, r: 15},
 ]
 
+const villages: Village[] = [
+  {
+    name: "Heart Peak",
+    center: { x: 64, y: 88 },
+    radius: 6,
+    houses: [],
+  },
+  {
+    name: "Moon Plains",
+    center: { x: 129, y: 29 },
+    radius: 8,
+    houses: [],
+  },
+];
+
 export class GameMap {
   map: Cell[][];
   private rng: SeededRandom;
@@ -94,6 +117,41 @@ export class GameMap {
           };
           cell.content.setNeighbors(neighbors);
         }
+      }
+    }
+
+    this.generateHouses();
+  }
+
+  private generateHouses() {
+    for (const village of villages) {
+      const houseCount = Math.floor(this.rng.range(3, 7)); // Random number of houses per village
+      for (let i = 0; i < houseCount; i++) {
+        let houseCol, houseRow;
+        do {
+          const angle = this.rng.range(0, Math.PI * 2);
+          const distance = this.rng.range(1, village.radius - 1);
+          houseCol = Math.round(village.center.x + Math.cos(angle) * distance);
+          houseRow = Math.round(village.center.y + Math.sin(angle) * distance);
+
+          // Ensure houses are placed on even grid positions to avoid clustering
+          houseCol += (houseCol % 2);
+          houseRow += (houseRow % 2);
+        } while (
+          houseCol < 0 ||
+          houseRow < 0 ||
+          houseCol >= this.width ||
+          houseRow >= this.height ||
+          this.map[houseRow][houseCol].content
+        );
+
+        village.houses.push({ x: houseCol, y: houseRow });
+        this.map[houseRow][houseCol].content = new GameObject(
+          GameAssets.assets,
+          houseCol * CELL_WIDTH - (16 - CELL_WIDTH) / 2,
+          houseRow * CELL_HEIGHT,
+          "house"
+        );
       }
     }
   }
