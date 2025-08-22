@@ -44,10 +44,12 @@ const paths: Path[] = [
 ]
 
 const clearings: Circle[] = [
+  // Center clearing where player lives
   {x: 64, y: 88, r: 6},
   {x: 75, y: 88, r: 6},
   {x: 69, y: 95, r: 6},
 
+  // Northeast village
   {x: 129, y: 29, r: 15},
 ]
 
