@@ -79,7 +79,7 @@ export class GameMap {
     
     this.map = Array.from({ length: height }, (_, y) =>
       Array.from({ length: width }, (_, x) => (
-        { x, y, content: new Tree(x * CELL_WIDTH, y * CELL_HEIGHT + CELL_HEIGHT/2 * (x % 2), 'spruce') }
+        { x, y, content: new Tree(x * CELL_WIDTH, y * CELL_HEIGHT + CELL_HEIGHT/2 * (x % 2), 'oak') }
       ))
     );
 
@@ -174,7 +174,7 @@ export class GameMap {
   }
 
   draw(cx: number, cy: number) {
-    const radius = 120; // Define the radius for the circular area
+    const radius = 150; // Define the radius for the circular area
     const radiusSquared = radius * radius;
 
     for (const row of this.map) {

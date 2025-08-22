@@ -7,7 +7,8 @@
 /* Get rid of any margins, set background black, use flexbox to center */
 html, body {
     margin: 0;
-    background-color: #0D1164;
+    background-image: repeating-linear-gradient(45deg, var(--blue2) 0 1px, var(--green2) 1px 2px, var(--green2) 2px 3px, var(--blue2) 3px 4px);
+    background-size: 2px 2px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,6 +16,26 @@ html, body {
 }
 
 :root {
-    --dark-green: #232f25;
-    --light-brown: #926839;
+    --green0: #e3ecd7;
+    --green1: #6b9a71;
+    --green2: #457a5f;
+    --green3: #244f55;
+    --blue0: #a5d5df;
+    --blue1: #79b4d5;
+    --blue2: #4d80ab;
+    --blue3: #414776;
+    --blue4: #33315d;
+    --blue5: #2b2441;
+    --blue6: #211729;
+    --purple0: #e3c5cf;
+    --purple1: #b79fbb;
+    --purple2: #8e8bb6;
+    --purple3: #5f6791;
+    --purple4: #8d5180;
+    --purple5: #b67388;
+    --yellow0: #fffef9;
+    --yellow1: #efdbb3;
+    --yellow2: #e1ae98;
+    --black: var(--blue6);
+    --white: var(--yellow0);
 }

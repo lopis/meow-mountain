@@ -1,10 +1,11 @@
+import { colors } from "@/core/util/color";
 import { GameMap } from "./game-map";
 import { Player } from "./player";
 import { drawEngine } from "@/core/draw-engine";
 
 export class MiniMap {
   private lastUpdate = 0;
-  private updateInterval = 1000; // Update once per second
+  private updateInterval = 100; // Update once per second
 
   constructor(private map: GameMap) {}
 
@@ -32,9 +33,9 @@ export class MiniMap {
         const cell = this.map.map[my][mx];
         
         if (!cell.seen) {
-          ctx.fillStyle = '#232f25'; // Dark green for unseen cells
+          ctx.fillStyle = colors.green3; // Dark green for unseen cells
         } else {
-          ctx.fillStyle = cell.content ? '#6e8e41' : '#926839'; // Light green for trees, brown for empty
+          ctx.fillStyle = cell.content ? colors.green1 : colors.yellow2; // Light green for trees, brown for empty
         }
         
         ctx.fillRect(x + mx, y + my, 1, 1);
