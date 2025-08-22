@@ -15,7 +15,7 @@ class GameState implements State {
   }
 
   onEnter() {
-    this.map = new GameMap(160, 160, 42);
+    this.map = new GameMap(160, 160);
     const centerX = 690;
     const centerY = 940;
     this.cat = new Player(centerX, centerY, this.map);

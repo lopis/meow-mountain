@@ -1,7 +1,6 @@
 import { GameObject } from "@/core/game-object";
 import { Tree } from "./tree";
-import { drawEngine } from "@/core/draw-engine";
-import { colors } from "@/core/util/color";
+import { SeededRandom } from "@/core/util/rng";
 
 interface Cell {
   x: number;
@@ -15,24 +14,6 @@ export const CELL_HEIGHT = 11;
 
 type Path = [{x: number, y: number}, {x: number, y: number}, number];
 type Circle = {x: number, y: number, r: number};
-
-// Seeded random number generator for deterministic randomness
-class SeededRandom {
-  private seed: number;
-  
-  constructor(seed: number) {
-    this.seed = seed;
-  }
-  
-  next(): number {
-    this.seed = (this.seed * 9301 + 49297) % 233280;
-    return this.seed / 233280;
-  }
-  
-  range(min: number, max: number): number {
-    return min + this.next() * (max - min);
-  }
-}
 
 const paths: Path[] = [
   [{x: 69, y: 100}, {x: 76, y: 113}, 3],
@@ -74,8 +55,8 @@ export class GameMap {
   map: Cell[][];
   private rng: SeededRandom;
 
-  constructor(public readonly width: number, public readonly height: number, seed: number = 12345) {
-    this.rng = new SeededRandom(seed);
+  constructor(public readonly width: number, public readonly height: number) {
+    this.rng = new SeededRandom();
     
     this.map = Array.from({ length: height }, (_, y) =>
       Array.from({ length: width }, (_, x) => {
