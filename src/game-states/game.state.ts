@@ -18,9 +18,7 @@ class GameState implements State {
   onEnter() {
     this.hud = new HUD();
     this.map = new GameMap(160, 160);
-    const centerX = 690;
-    const centerY = 940;
-    this.cat = new Player(centerX, centerY, this.map);
+    this.cat = new Player(65, 85, this.map);
     this.miniMap = new MiniMap(this.map);
     drawEngine.setCamera(this.cat.x, this.cat.y - 20, 7, true);
   }

@@ -12,9 +12,15 @@ export class Player extends GameObject<CatStates> implements Drawable {
   map: GameMap;
   type = 'cat';
 
-  constructor(x: number, y: number, map: GameMap) {
-    super(GameAssets.cat, x, y, 'cat', 'idle');
-    this.target = { x, y };
+  constructor(col: number, row: number, map: GameMap) {
+    super(
+      GameAssets.cat,
+      col * CELL_WIDTH,
+      row * CELL_HEIGHT,
+      'cat',
+      'idle'
+    );
+    this.target = { x: this.x, y: this.y };
     this.map = map;
   }
 
