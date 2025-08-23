@@ -4,19 +4,13 @@ import { SeededRandom } from "@/core/util/rng";
 import { GameAssets } from "./game-assets";
 import { Drawable } from "./game-grid";
 import { House } from "./house";
+import { Village } from "./village";
 
 interface Cell {
   x: number;
   y: number;
   content: Drawable | null;
   seen?: boolean;
-}
-
-interface Village {
-  name: string;
-  center: { x: number; y: number };
-  radius: number;
-  houses: { x: number; y: number }[];
 }
 
 export const CELL_WIDTH = 11;
@@ -65,18 +59,8 @@ const clearings: Circle[] = [
 ]
 
 const villages: Village[] = [
-  {
-    name: "Heart Peak",
-    center: { x: 70, y: 90 },
-    radius: 6,
-    houses: [],
-  },
-  {
-    name: "Moon Plains",
-    center: { x: 129, y: 29 },
-    radius: 8,
-    houses: [],
-  },
+  new Village("Heart Peak", { x: 70, y: 90 }, 6),
+  new Village("Moon Plains", { x: 129, y: 29 }, 8),
 ];
 
 export class GameMap {
