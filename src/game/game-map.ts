@@ -59,8 +59,8 @@ const clearings: Circle[] = [
 ]
 
 const villages: Village[] = [
-  new Village("Heart Peak", { x: 70, y: 90 }, 6),
-  new Village("Moon Plains", { x: 129, y: 29 }, 8),
+  new Village("Heart Peak", { x: 70, y: 90 }, 6, 1),
+  new Village("Moon Plains", { x: 129, y: 29 }, 8, 10),
 ];
 
 export class GameMap {
@@ -113,31 +113,10 @@ export class GameMap {
 
   private generateHouses() {
     for (const village of villages) {
-      const houseCount = Math.floor(this.rng.range(3, 7)); // Random number of houses per village
-      for (let i = 0; i < houseCount; i++) {
-        let houseCol, houseRow;
-        do {
-          const angle = this.rng.range(0, Math.PI * 2);
-          const distance = this.rng.range(1, village.radius - 1);
-          houseCol = Math.round(village.center.x + Math.cos(angle) * distance);
-          houseRow = Math.round(village.center.y + Math.sin(angle) * distance);
-
-          // Ensure houses are placed on even grid positions to avoid clustering
-          houseCol += (houseCol % 2);
-          houseRow += (houseRow % 2);
-        } while (
-          houseCol < 0 ||
-          houseRow < 0 ||
-          houseCol >= this.width ||
-          houseRow >= this.height ||
-          this.map[houseRow][houseCol].content
-        );
-
-        village.houses.push({ x: houseCol, y: houseRow });
-        this.map[houseRow][houseCol].content = new House(
-          houseCol,
-          houseRow,
-        );
+      const houses = village.generateHouses(this.rng, this.width, this.height);
+      for (const house of houses) {
+        this.map[house.y][house.x].content = new House(house.x, house.y);
+        village.houses.push(house);
       }
     }
   }
