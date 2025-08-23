@@ -50,8 +50,8 @@ class DrawEngine {
     return this.ctx2.canvas.height;
   }
 
-  drawText(textProps: DrawTextProps) {
-    drawText(this.ctx2, textProps);
+  drawText(textProps: DrawTextProps, context?: CanvasRenderingContext2D) {
+    drawText(context || this.ctx2, textProps);
   }
 
   private drawImage(

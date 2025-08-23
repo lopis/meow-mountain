@@ -6,17 +6,20 @@ import { CELL_HEIGHT, CELL_WIDTH, GameMap } from '@/game/game-map';
 import { MiniMap } from '@/game/mini-map';
 import { Icon } from '@/game/icon';
 import { icons } from '@/game/game-assets';
+import { HUD } from '@/game/hud';
 
 class GameState implements State {
   map!: GameMap;
   cat!: Player;
   miniMap!: MiniMap;
+  hud!: HUD;
 
   constructor() {
     
   }
 
   onEnter() {
+    this.hud = new HUD();
     this.map = new GameMap(160, 160);
     const centerX = 690;
     const centerY = 940;
@@ -35,6 +38,8 @@ class GameState implements State {
     drawEngine.resetCamera();
     
     this.miniMap.update(timeElapsed, this.cat);
+    this.hud.draw();
+    
   }
 }
 

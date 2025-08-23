@@ -26,7 +26,11 @@ The map is a grid. The game map is a thick forest with a few paths and clearings
 
 Each villager has a little routine. They live in a house, from where they exit in the morning, then walk around a fixed route, before coming back home in the evening.
 
-The villagers are very supersticious. They will grow weary of the black cat wandering around the forest. If they become very afraid, they will try to capture and kill the cat.
+The villagers are very supersticious. They will grow weary of the black cat wandering around the forest. If they become very afraid, surpersticion levels will grow, leading to evil spirits appearing in the forest.
+
+## The evil spirits
+
+Evil spirits start spawing once supersticion levels grow too much. Direct contact with evil spirits causes damage to the cat and villagers.
 
 ## The main quest
 
@@ -50,3 +54,4 @@ Level 2 quests are more involved and provide a small amount of favour every day
 
 - Brew a protection potion using ingredients and place it on a house
 - Reveal a hidden shortcut between villages
+- Defeat a wave of evil spirits
