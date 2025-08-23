@@ -1,12 +1,10 @@
 import { Tree } from "./tree";
 import { SeededRandom } from "@/core/util/rng";
-import { GameAssets } from "./game-assets";
 import { Drawable } from "./game-grid";
-import { House } from "./house";
 import { Village } from "./village";
-import { CELL_WIDTH, CELL_HEIGHT } from "./constants";
 import { drawEngine } from "@/core/draw-engine";
 import { colors } from "@/core/util/color";
+import { CELL_HEIGHT, CELL_WIDTH } from "./constants";
 
 interface Cell {
   x: number;
@@ -204,7 +202,13 @@ export class GameMap {
   update(timeElapsed: number) {
     for (const row of this.map) {
       for (const cell of row) {
-        cell.content?.update?.(timeElapsed);
+        if (cell.content) {
+          cell.content.update?.(timeElapsed);
+          if (cell.x != cell.content.col || cell.y != cell.content.row) {
+            this.map[cell.content.row][cell.content.col].content = cell.content;
+            cell.content = null;
+          }
+        }
       }
     }
   }

@@ -20,6 +20,7 @@ class GameState implements State {
     this.map = new GameMap(160, 160);
     // this.cat = new Player(65, 85, this.map);
     this.cat = new Player(130, 29, this.map);
+    this.map.set(this.cat.col, this.cat.row, this.cat);
     this.miniMap = new MiniMap(this.map);
     drawEngine.setCamera(this.cat.x, this.cat.y - 20, 7, true);
   }
@@ -27,8 +28,6 @@ class GameState implements State {
   onUpdate(timeElapsed: number) {
     drawEngine.setCamera(this.cat.x, this.cat.y, 7);
     drawEngine.updateCamera();
-    this.map.set(this.cat.col, this.cat.row, null);
-    this.map.set(this.cat.col, this.cat.row, this.cat);
     this.map.update(timeElapsed);
     this.map.draw(this.cat.x, this.cat.y);
     drawEngine.resetCamera();

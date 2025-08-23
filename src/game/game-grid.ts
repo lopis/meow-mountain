@@ -1,4 +1,6 @@
 export interface Drawable {
+  col: number;
+  row: number;
   draw: () => void;
   type: string;
   update?: (timeElapsed: number) => void;
