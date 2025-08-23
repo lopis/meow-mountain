@@ -1,10 +1,12 @@
-import { GameObject } from "@/core/game-object";
 import { Tree } from "./tree";
 import { SeededRandom } from "@/core/util/rng";
 import { GameAssets } from "./game-assets";
 import { Drawable } from "./game-grid";
 import { House } from "./house";
 import { Village } from "./village";
+import { CELL_WIDTH, CELL_HEIGHT } from "./constants";
+import { drawEngine } from "@/core/draw-engine";
+import { colors } from "@/core/util/color";
 
 interface Cell {
   x: number;
@@ -12,9 +14,6 @@ interface Cell {
   content: Drawable | null;
   seen?: boolean;
 }
-
-export const CELL_WIDTH = 11;
-export const CELL_HEIGHT = 11;
 
 type Path = [{x: number, y: number}, {x: number, y: number}, number];
 type Circle = {x: number, y: number, r: number};
@@ -115,17 +114,16 @@ export class GameMap {
     for (const village of villages) {
       const houses = village.generateHouses(this.rng, this.width, this.height);
       for (const house of houses) {
-        this.map[house.y][house.x].content = new House(house.x, house.y);
-        village.houses.push(house);
+        this.map[house.row][house.col].content = house;
       }
     }
   }
 
   private generateFarms() {
     for (const village of villages) {
-      const farms = village.generateFarms(this.rng, this.width, this.height, GameAssets.assets);
+      const farms = village.generateFarms(this.rng, this.width, this.height);
       for (const farm of farms) {
-        this.map[farm.y][farm.x].content = farm;
+        this.map[farm.row][farm.col].content = farm;
       }
     }
   }
@@ -222,8 +220,9 @@ export class GameMap {
         if (distanceSquared <= radiusSquared) {
           cell?.content?.draw();
           cell.seen = true;
-          // drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
-          // drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH+1, cell.y * CELL_HEIGHT+1, CELL_WIDTH-2, CELL_HEIGHT-2);
+          drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
+          drawEngine.ctx1.lineWidth = 0.1;
+          drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
         }
       }
     }

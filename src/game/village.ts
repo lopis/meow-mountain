@@ -5,7 +5,8 @@ import { Tileset } from "@/core/tileset";
 import { AssetType } from "./game-assets";
 
 export class Village {
-  houses: { x: number; y: number }[];
+  houses: House[] = [];
+  farms: Farm[] = [];
 
   constructor(
     public name: string,
@@ -15,11 +16,9 @@ export class Village {
   ) {
     this.center = center;
     this.radius = radius;
-    this.houses = [];
   }
 
   generateHouses(rng: SeededRandom, width: number, height: number): House[] {
-    const houses: House[] = [];
     for (let i = 0; i < this.houseCount; i++) {
       let houseCol: number;
       let houseRow: number;
@@ -37,17 +36,15 @@ export class Village {
         houseRow < 0 ||
         houseCol >= width ||
         houseRow >= height ||
-        houses.some(h => h.x === houseCol && h.y === houseRow) // Avoid duplicate positions
+        this.houses.some(h => h.x === houseCol && h.y === houseRow) // Avoid duplicate positions
       );
 
-      houses.push(new House(houseCol, houseRow));
+      this.houses.push(new House(houseCol, houseRow));
     }
-    debugger;
-    return houses;
+    return this.houses;
   }
 
-  generateFarms(rng: SeededRandom, width: number, height: number, tileset: Tileset<AssetType>): Farm[] {
-    const farms: Farm[] = [];
+  generateFarms(rng: SeededRandom, width: number, height: number): Farm[] {
     const farmCount = Math.floor(rng.range(1, 4)); // Random number of farms per village
     for (let i = 0; i < farmCount; i++) {
       let farmCol: number;
@@ -62,16 +59,16 @@ export class Village {
         farmRow < 0 ||
         farmCol + 1 >= width ||
         farmRow + 1 >= height ||
-        farms.some(f => f.x === farmCol && f.y === farmRow) // Avoid duplicate positions
+        this.farms.some(f => f.x === farmCol && f.y === farmRow) // Avoid duplicate positions
       );
 
       // Create a 2x2 farm block
       for (let dx = 0; dx < 2; dx++) {
         for (let dy = 0; dy < 2; dy++) {
-          farms.push(new Farm(farmCol + dx, farmRow + dy, tileset));
+          this.farms.push(new Farm(farmCol + dx, farmRow + dy));
         }
       }
     }
-    return farms;
+    return this.farms;
   }
 }

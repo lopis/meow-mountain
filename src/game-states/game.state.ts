@@ -1,11 +1,8 @@
 import { State } from '@/core/state';
 import { drawEngine } from '@/core/draw-engine';
 import { Player } from '@/game/player';
-import { Tree } from '@/game/tree';
-import { CELL_HEIGHT, CELL_WIDTH, GameMap } from '@/game/game-map';
+import { GameMap } from '@/game/game-map';
 import { MiniMap } from '@/game/mini-map';
-import { Icon } from '@/game/icon';
-import { icons } from '@/game/game-assets';
 import { HUD } from '@/game/hud';
 
 class GameState implements State {
@@ -31,15 +28,14 @@ class GameState implements State {
   onUpdate(timeElapsed: number) {
     drawEngine.setCamera(this.cat.x, this.cat.y, 7);
     drawEngine.updateCamera();
-    this.map.set(this.cat.gx, this.cat.gy, null);
+    this.map.set(this.cat.col, this.cat.row, null);
     this.cat.update(timeElapsed);
-    this.map.set(this.cat.gx, this.cat.gy, this.cat);
+    this.map.set(this.cat.col, this.cat.row, this.cat);
     this.map.draw(this.cat.x, this.cat.y);
     drawEngine.resetCamera();
     
     this.miniMap.update(timeElapsed, this.cat);
     this.hud.draw();
-    
   }
 }
 

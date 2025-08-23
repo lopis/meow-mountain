@@ -7,7 +7,7 @@ export class Tileset<T extends string> {
 
   constructor(
     private spriteSheetPath: string,
-    private tileWidth: number = 16,
+    public tileSize: number = 16,
     private animationNames: T[] = [], // Each row in the spritesheet is an animation
   ) {
     this.loadSpriteSheet();
@@ -52,13 +52,13 @@ export class Tileset<T extends string> {
     for (let row = 0; row < this.animationNames.length; row++) {
       const animationName = this.animationNames[row];
       const frames: HTMLImageElement[] = [];
-      const colCount = ctx.canvas.width / this.tileWidth;
+      const colCount = ctx.canvas.width / this.tileSize;
 
       for (let col = 0; col < colCount; col++) {
-        const tile = ctx.getImageData(col * this.tileWidth, row * this.tileWidth, this.tileWidth, this.tileWidth);
+        const tile = ctx.getImageData(col * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
         const tileCanvas = document.createElement("canvas");
-        tileCanvas.width = this.tileWidth;
-        tileCanvas.height = this.tileWidth;
+        tileCanvas.width = this.tileSize;
+        tileCanvas.height = this.tileSize;
         const tileCtx = tileCanvas.getContext("2d");
         if (tileCtx) {
           tileCtx.putImageData(tile, 0, 0);

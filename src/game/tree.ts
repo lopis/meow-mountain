@@ -1,6 +1,6 @@
 import { AssetType, GameAssets } from "@/game/game-assets";
 import { drawEngine } from "@/core/draw-engine";
-import { CELL_HEIGHT, CELL_WIDTH } from "./game-map";
+import { CELL_WIDTH, CELL_HEIGHT } from "@/game/constants";
 import { GameObject } from "@/core/game-object";
 
 export class Tree extends GameObject<AssetType> {

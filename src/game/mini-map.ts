@@ -47,10 +47,10 @@ export class MiniMap {
       }
     }
     
-    if (player.gx >= 0 && player.gx < mapSize && player.gy >= 0 && player.gy < mapSize) {
+    if (player.col >= 0 && player.col < mapSize && player.row >= 0 && player.row < mapSize) {
       ctx.fillStyle = colors.purple4;
       ctx.beginPath();
-      ctx.arc(x + player.gx, y + player.gy, 2, 0, Math.PI * 2);
+      ctx.arc(x + player.col, y + player.row, 2, 0, Math.PI * 2);
       ctx.fill();
     }
   }
