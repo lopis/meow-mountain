@@ -1,15 +1,15 @@
 import { GameObject } from "@/core/game-object";
-import { Asset, GameAssets } from "./game-assets";
+import { GameAssets, VillagerStates } from "./game-assets";
 import { CELL_HEIGHT, CELL_WIDTH } from "./constants";
 
-export class House extends GameObject<Asset> {
+export class Villager extends GameObject<VillagerStates> {
   constructor(col: number, row: number) {
     super(
-      GameAssets.assets,
+      GameAssets.villager,
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
-      'house',
-      'house',
+      'villager',
+      'idle',
     );
   }
 }

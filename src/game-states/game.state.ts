@@ -12,13 +12,14 @@ class GameState implements State {
   hud!: HUD;
 
   constructor() {
-    
+
   }
 
   onEnter() {
     this.hud = new HUD();
     this.map = new GameMap(160, 160);
-    this.cat = new Player(65, 85, this.map);
+    // this.cat = new Player(65, 85, this.map);
+    this.cat = new Player(130, 29, this.map);
     this.miniMap = new MiniMap(this.map);
     drawEngine.setCamera(this.cat.x, this.cat.y - 20, 7, true);
   }
@@ -27,11 +28,11 @@ class GameState implements State {
     drawEngine.setCamera(this.cat.x, this.cat.y, 7);
     drawEngine.updateCamera();
     this.map.set(this.cat.col, this.cat.row, null);
-    this.cat.update(timeElapsed);
     this.map.set(this.cat.col, this.cat.row, this.cat);
+    this.map.update(timeElapsed);
     this.map.draw(this.cat.x, this.cat.y);
     drawEngine.resetCamera();
-    
+
     this.miniMap.update(timeElapsed, this.cat);
     this.hud.draw();
   }

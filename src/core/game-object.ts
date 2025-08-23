@@ -15,15 +15,19 @@ export class GameObject<T extends string> {
     public type: string,
     protected animation: T,
     protected mirrored: boolean = false,
-  ){
+  ) {
     this.col = Math.ceil(x / CELL_WIDTH);
     this.row = Math.ceil(y / CELL_HEIGHT);
+  }
+
+  update(timeElapsed: number) {
+    this.animationTime += timeElapsed;
   }
 
   draw() {
     const animation = this.tileset.animations[this.animation];
     const animationFrame = Math.floor(this.animationTime / this.animationDuration) % animation.length;
-    
+
     if (animation[animationFrame]) {
       drawEngine.drawForegroundImage(
         animation[animationFrame],

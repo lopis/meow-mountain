@@ -7,7 +7,7 @@ import { CELL_HEIGHT, CELL_WIDTH } from "./constants";
 
 export class Player extends GameObject<CatStates> implements Drawable {
   speed = 80;
-  moving = { x: 0, y: 0};
+  moving = { x: 0, y: 0 };
   target;
   map: GameMap;
   type = 'cat';
@@ -25,7 +25,7 @@ export class Player extends GameObject<CatStates> implements Drawable {
   }
 
   update(timeElapsed: number) {
-    this.animationTime += timeElapsed;
+    super.update(timeElapsed);
 
     if (!this.moving.y && controls.inputDirection.y) {
       const newGy = this.row + controls.inputDirection.y;

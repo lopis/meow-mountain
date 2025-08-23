@@ -2,11 +2,13 @@ import { SeededRandom } from "@/core/util/rng";
 import { Farm } from "./farm";
 import { House } from "./house";
 import { Tileset } from "@/core/tileset";
-import { AssetType } from "./game-assets";
+import { Asset } from "./game-assets";
+import { Villager } from "./villager";
 
 export class Village {
   houses: House[] = [];
   farms: Farm[] = [];
+  villagers: Villager[] = [];
 
   constructor(
     public name: string,
@@ -18,7 +20,7 @@ export class Village {
     this.radius = radius;
   }
 
-  generateHouses(rng: SeededRandom, width: number, height: number): House[] {
+  generateHouses(rng: SeededRandom): House[] {
     for (let i = 0; i < this.houseCount; i++) {
       let houseCol: number;
       let houseRow: number;
@@ -28,14 +30,11 @@ export class Village {
         houseCol = Math.round(this.center.x + Math.cos(angle) * distance);
         houseRow = Math.round(this.center.y + Math.sin(angle) * distance);
 
-        // Ensure houses are placed on even grid positions to avoid clustering
         houseCol += houseCol % 2;
         houseRow += houseRow % 2;
       } while (
         houseCol < 0 ||
         houseRow < 0 ||
-        houseCol >= width ||
-        houseRow >= height ||
         this.houses.some(h => h.x === houseCol && h.y === houseRow) // Avoid duplicate positions
       );
 
@@ -44,7 +43,7 @@ export class Village {
     return this.houses;
   }
 
-  generateFarms(rng: SeededRandom, width: number, height: number): Farm[] {
+  generateFarms(rng: SeededRandom): Farm[] {
     const farmCount = Math.floor(rng.range(1, 4)); // Random number of farms per village
     for (let i = 0; i < farmCount; i++) {
       let farmCol: number;
@@ -57,8 +56,6 @@ export class Village {
       } while (
         farmCol < 0 ||
         farmRow < 0 ||
-        farmCol + 1 >= width ||
-        farmRow + 1 >= height ||
         this.farms.some(f => f.x === farmCol && f.y === farmRow) // Avoid duplicate positions
       );
 
@@ -70,5 +67,26 @@ export class Village {
       }
     }
     return this.farms;
+  }
+
+  generateVillagers(rng: SeededRandom): Villager[] {
+    const villagerCount = Math.floor(rng.range(2, 6)); // Random number of villagers per village
+    for (let i = 0; i < villagerCount; i++) {
+      let villagerCol: number;
+      let villagerRow: number;
+      do {
+        const angle = rng.range(0, Math.PI * 2);
+        const distance = rng.range(1, this.radius - 1);
+        villagerCol = Math.round(this.center.x + Math.cos(angle) * distance);
+        villagerRow = Math.round(this.center.y + Math.sin(angle) * distance);
+      } while (
+        villagerCol < 0 ||
+        villagerRow < 0 ||
+        this.villagers.some(v => v.x === villagerCol && v.y === villagerRow) // Avoid duplicate positions
+      );
+
+      this.villagers.push(new Villager(villagerCol, villagerRow));
+    }
+    return this.villagers;
   }
 }
