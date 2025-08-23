@@ -123,33 +123,9 @@ export class GameMap {
 
   private generateFarms() {
     for (const village of villages) {
-      const farmCount = Math.floor(this.rng.range(1, 4)); // Random number of farms per village
-      for (let i = 0; i < farmCount; i++) {
-        let farmCol, farmRow;
-        do {
-          const angle = this.rng.range(0, Math.PI * 2);
-          const distance = this.rng.range(1, village.radius - 1);
-          farmCol = Math.round(village.center.x + Math.cos(angle) * distance);
-          farmRow = Math.round(village.center.y + Math.sin(angle) * distance);
-        } while (
-          farmCol < 0 ||
-          farmRow < 0 ||
-          farmCol + 1 >= this.width ||
-          farmRow + 1 >= this.height
-        );
-
-        // Add the 2x2 farm plot to the map
-        for (let dx = 0; dx < 2; dx++) {
-          for (let dy = 0; dy < 2; dy++) {
-            this.map[farmRow + dy][farmCol + dx].content = new GameObject(
-              GameAssets.assets,
-              (farmCol + dx) * CELL_WIDTH - (16 - CELL_WIDTH) / 2,
-              (farmRow + dy) * CELL_HEIGHT,
-              "field",
-              "field",
-            );
-          }
-        }
+      const farms = village.generateFarms(this.rng, this.width, this.height, GameAssets.assets);
+      for (const farm of farms) {
+        this.map[farm.y][farm.x].content = farm;
       }
     }
   }

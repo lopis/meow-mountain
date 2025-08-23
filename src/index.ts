@@ -6,7 +6,7 @@ import { gameData } from './game/game-data';
 import { menuState } from './game-states/menu.state';
 
 // @ts-ignore -- is not undefined for sure
-document.querySelector('link[type="image/x-icon"]').href = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ctext y=\'.9em\' font-size=\'90\'%3E💟%3C/text%3E%3C/svg%3E';
+document.querySelector('link[type="image/x-icon"]').href = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ctext y=\'.9em\' font-size=\'85\'%3E💜%3C/text%3E%3C/svg%3E';
 
 
 async function init() {

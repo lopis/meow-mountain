@@ -6,8 +6,8 @@ export class House extends GameObject<AssetType> {
   constructor (x: number, y: number) {
     super(
       GameAssets.assets,
-      x * CELL_WIDTH - (16 - CELL_WIDTH) / 2,
-      y * CELL_HEIGHT,
+      x,
+      y,
       'house',
       'house',
     );
