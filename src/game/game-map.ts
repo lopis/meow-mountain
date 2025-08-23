@@ -3,6 +3,7 @@ import { Tree } from "./tree";
 import { SeededRandom } from "@/core/util/rng";
 import { GameAssets } from "./game-assets";
 import { Drawable } from "./game-grid";
+import { House } from "./house";
 
 interface Cell {
   x: number;
@@ -149,12 +150,9 @@ export class GameMap {
         );
 
         village.houses.push({ x: houseCol, y: houseRow });
-        this.map[houseRow][houseCol].content = new GameObject(
-          GameAssets.assets,
-          houseCol * CELL_WIDTH - (16 - CELL_WIDTH) / 2,
-          houseRow * CELL_HEIGHT,
-          "house",
-          "house",
+        this.map[houseRow][houseCol].content = new House(
+          houseCol,
+          houseRow,
         );
       }
     }
