@@ -2,11 +2,12 @@ import { GameObject } from "@/core/game-object";
 import { Tree } from "./tree";
 import { SeededRandom } from "@/core/util/rng";
 import { GameAssets } from "./game-assets";
+import { Drawable } from "./game-grid";
 
 interface Cell {
   x: number;
   y: number;
-  content: GameObject<any> | Tree | null;
+  content: Drawable | null;
   seen?: boolean;
 }
 
@@ -265,7 +266,7 @@ export class GameMap {
     }
   }
 
-  set(x: number, y: number, content: GameObject<any> | Tree | null) {
+  set(x: number, y: number, content: Drawable | null) {
     if (this.map[y] && this.map[y][x]) {
       this.map[y][x].content = content;
     }
@@ -282,7 +283,7 @@ export class GameMap {
         const distanceSquared = dx * dx + dy * dy;
 
         if (distanceSquared <= radiusSquared) {
-          cell?.content?.draw(0);
+          cell?.content?.draw();
           cell.seen = true;
           // drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
           // drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH+1, cell.y * CELL_HEIGHT+1, CELL_WIDTH-2, CELL_HEIGHT-2);

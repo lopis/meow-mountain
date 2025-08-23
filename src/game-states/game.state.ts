@@ -4,6 +4,8 @@ import { Player } from '@/game/player';
 import { Tree } from '@/game/tree';
 import { CELL_HEIGHT, CELL_WIDTH, GameMap } from '@/game/game-map';
 import { MiniMap } from '@/game/mini-map';
+import { Icon } from '@/game/icon';
+import { icons } from '@/game/game-assets';
 
 class GameState implements State {
   map!: GameMap;
@@ -19,7 +21,6 @@ class GameState implements State {
     const centerX = 690;
     const centerY = 940;
     this.cat = new Player(centerX, centerY, this.map);
-    this.map.set(80, 80, null);
     this.miniMap = new MiniMap(this.map);
     drawEngine.setCamera(this.cat.x, this.cat.y - 20, 7, true);
   }

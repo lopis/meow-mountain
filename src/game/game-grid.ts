@@ -1,7 +1,12 @@
+export interface Drawable {
+  draw: () => void,
+  type: string,
+}
+
 interface Cell {
   x: number; // X coordinate of the cell
   y: number; // Y coordinate of the cell
-  content: any | undefined; // Content of the cell, can be anything (e.g., item, character, etc.)
+  content: Drawable | undefined; // Content of the cell, can be anything (e.g., item, character, etc.)
 }
 
 export class GameGrid {

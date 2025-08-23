@@ -14,7 +14,7 @@ export class GameObject<T extends string> {
     protected mirrored: boolean = false,
   ){}
 
-  draw(timeElapsed: number) {
+  draw() {
     const animation = this.tileset.animations[this.animation];
     const animationFrame = Math.floor(this.animationTime / this.animationDuration) % animation.length;
     

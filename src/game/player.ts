@@ -2,14 +2,16 @@ import { CatStates, GameAssets } from "@/game/game-assets";
 import { GameObject } from "../core/game-object";
 import { controls } from "../core/controls";
 import { CELL_HEIGHT, CELL_WIDTH, GameMap } from "./game-map";
+import { Drawable } from "./game-grid";
 
-export class Player extends GameObject<CatStates> {
+export class Player extends GameObject<CatStates> implements Drawable {
   speed = 80;
   moving = { x: 0, y: 0};
   target;
   gx: number; // grid x
   gy: number; // grid y
   map: GameMap;
+  type = 'cat';
 
   constructor(x: number, y: number, map: GameMap) {
     super(GameAssets.cat, x, y, 'cat', 'idle');
