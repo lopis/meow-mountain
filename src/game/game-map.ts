@@ -219,7 +219,11 @@ export class GameMap {
 
         if (distanceSquared <= radiusSquared) {
           cell?.content?.draw();
-          cell.seen = true;
+
+          if (distanceSquared <= radiusSquared / 2) {
+            cell.seen = true;
+          }
+
           drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
           drawEngine.ctx1.lineWidth = 0.1;
           drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
