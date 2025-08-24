@@ -6,7 +6,7 @@ class DrawEngine {
   ctx1: CanvasRenderingContext2D;
   ctx2: CanvasRenderingContext2D;
   ctx3: CanvasRenderingContext2D;
-  
+
   // Camera properties
   private cameraX = 0;
   private cameraY = 0;
@@ -24,7 +24,7 @@ class DrawEngine {
     window.addEventListener('orientationchange', () => this.resizeCanvas());
   }
 
-  init () {
+  init() {
 
   }
 

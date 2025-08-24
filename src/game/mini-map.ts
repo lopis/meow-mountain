@@ -1,8 +1,8 @@
 import { colors } from "@/core/util/color";
 import { GameMap } from "./game-map";
-import { Player } from "./player";
+import { Player } from "./entities/player";
 import { drawEngine } from "@/core/draw-engine";
-import { Tree } from "./tree";
+import { Tree } from "./entities/tree";
 
 export class MiniMap {
   private lastUpdate = 0;

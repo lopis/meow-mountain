@@ -1,12 +1,10 @@
-import { Tree } from "./tree";
+import { Tree } from "./entities/tree";
 import { SeededRandom } from "@/core/util/rng";
 import { Drawable } from "./game-grid";
-import { Village } from "./village";
-import { drawEngine } from "@/core/draw-engine";
-import { colors } from "@/core/util/color";
+import { Village } from "./entities/village";
 import { CELL_HEIGHT, CELL_WIDTH } from "./constants";
 import { Position } from "@/core/util/path-findind";
-import { Statue } from "./statue";
+import { Statue } from "./entities/statue";
 
 interface Cell {
   x: number;
@@ -100,10 +98,7 @@ export class GameMap {
     }
 
     for (const statue of statues) {
-      this.map[statue.y][statue.x].content = new Statue(
-        statue.x * CELL_WIDTH,
-        statue.y * CELL_HEIGHT,
-      );
+      this.map[statue.y][statue.x].content = new Statue(statue.x, statue.y);
     }
 
     // Calculate neighbor information for each tree

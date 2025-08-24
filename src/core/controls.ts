@@ -24,11 +24,18 @@ class Controls {
   isRight = false;
   isConfirm = false;
   isEscape = false;
+  isAction = false;
   isMoving = false;
   inputDirection: DOMPoint;
 
   keyMap: Map<string, boolean> = new Map();
-  previousState = { isUp: this.isUp, isDown: this.isDown, isConfirm: this.isConfirm, isEscape: this.isEscape };
+  previousState = {
+    isUp: this.isUp,
+    isDown: this.isDown,
+    isConfirm: this.isConfirm,
+    isEscape: this.isEscape,
+    isAction: this.isAction
+  };
 
   constructor() {
     document.addEventListener('keydown', event => this.toggleKey(event, true));
@@ -41,6 +48,7 @@ class Controls {
     this.previousState.isDown = this.isDown;
     this.previousState.isConfirm = this.isConfirm;
     this.previousState.isEscape = this.isEscape;
+    this.previousState.isAction = this.isAction;
     const gamepad = navigator.getGamepads()[0];
     const isButtonPressed = (button: XboxControllerButton) => gamepad?.buttons[button].pressed;
 
@@ -64,6 +72,12 @@ class Controls {
     this.isMoving = this.inputDirection.x !== 0 || this.inputDirection.y !== 0;
     this.isConfirm = Boolean(this.keyMap.get('Enter') || isButtonPressed(XboxControllerButton.A) || isButtonPressed(XboxControllerButton.Start));
     this.isEscape = Boolean(this.keyMap.get('Escape') || isButtonPressed(XboxControllerButton.Select));
+    this.isAction = Boolean(this.keyMap.get('X') || isButtonPressed(XboxControllerButton.X));
+  }
+
+  // Helper method to check if action key was just pressed
+  get actionJustPressed(): boolean {
+    return this.isAction && !this.previousState.isAction;
   }
 
   private toggleKey(event: KeyboardEvent, isPressed: boolean) {

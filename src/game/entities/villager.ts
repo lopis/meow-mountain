@@ -1,7 +1,7 @@
 import { GameObject } from "@/core/game-object";
-import { GameAssets, VillagerStates } from "./game-assets";
-import { CELL_HEIGHT, CELL_WIDTH } from "./constants";
-import { GameMap } from "./game-map";
+import { GameAssets, VillagerStates } from "../game-assets";
+import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { GameMap } from "../game-map";
 import { findNearestMatch, Position } from "@/core/util/path-findind";
 import { House } from "./house";
 

@@ -18,6 +18,8 @@
 - Use tools to make file changes rather than displaying code blocks
 - Prioritize showing the minimal necessary changes
 - Reference existing code patterns and project structure
+- When writing typescript, "any" is not acceptable
+- Use proper TS types and interfaces
 
 ## JS13k specific Instructions
 - Code size matters, so it's ok to forgo certain code best practices

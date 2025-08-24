@@ -1,9 +1,9 @@
 import { CatStates, GameAssets } from "@/game/game-assets";
-import { GameObject } from "../core/game-object";
-import { controls } from "../core/controls";
-import { GameMap } from "./game-map";
-import { Drawable } from "./game-grid";
-import { CELL_HEIGHT, CELL_WIDTH } from "./constants";
+import { GameObject } from "../../core/game-object";
+import { controls } from "../../core/controls";
+import { GameMap } from "../game-map";
+import { Drawable } from "../game-grid";
+import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 
 export class Player extends GameObject<CatStates> implements Drawable {
   map: GameMap;
