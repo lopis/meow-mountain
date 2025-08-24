@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'witchs_valley';
+const STORAGE_KEY = 'whiskers_valley';
 
 export function loadLevel(): number {
   const storage = localStorage.getItem(`${STORAGE_KEY}_save`) || "";

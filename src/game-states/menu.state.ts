@@ -11,7 +11,7 @@ class MenuState implements State {
   onUpdate() {
     const xCenter = drawEngine.ctx2.canvas.width / 2;
     drawEngine.drawText({
-      text: 'The Witch\'s Valley',
+      text: 'Whiskers Valley',
       x: xCenter,
       y: 100,
       color: colors.blue4,
