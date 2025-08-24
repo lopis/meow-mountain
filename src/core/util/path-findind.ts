@@ -237,3 +237,27 @@ export function findNearestCellOfType<T extends { content: { type?: string } | n
  *   15
  * );
  */
+
+/**
+ * Simple test function to verify pathfinding works
+ */
+export function testPathfinding() {
+  // Create a simple test grid
+  const testGrid = [
+    [{ content: null }, { content: null }, { content: { type: 'tree' } }],
+    [{ content: null }, { content: { type: 'house' } }, { content: null }],
+    [{ content: null }, { content: null }, { content: null }]
+  ];
+
+  // Test finding a house from position (0,0)
+  const result = findNearestMatch(
+    testGrid,
+    { x: 0, y: 0 },
+    (cell) => cell?.content?.type === 'house',
+    10
+  );
+
+  console.log('Pathfinding test result:', result);
+  // Should find house at position (1, 1)
+  return result && result.x === 1 && result.y === 1;
+}
