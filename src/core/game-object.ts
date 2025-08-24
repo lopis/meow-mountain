@@ -39,6 +39,9 @@ export class GameObject<T extends string> {
         } else {
           this[axis] += step;
         }
+        if (this.moving.x !== 0) {
+          this.mirrored = this.moving.x < 0;
+        }
       } else {
         this.moving[axis] = 0;
         this[axis] = Math.round(this[axis]);

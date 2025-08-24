@@ -5,6 +5,8 @@ import { Village } from "./village";
 import { drawEngine } from "@/core/draw-engine";
 import { colors } from "@/core/util/color";
 import { CELL_HEIGHT, CELL_WIDTH } from "./constants";
+import { Position } from "@/core/util/path-findind";
+import { Statue } from "./statue";
 
 interface Cell {
   x: number;
@@ -46,13 +48,21 @@ const paths: Path[] = [
 ]
 
 const clearings: Circle[] = [
-  // Center clearing where player lives
+  // Peak
   { x: 64, y: 88, r: 6 },
   { x: 75, y: 88, r: 6 },
   { x: 69, y: 95, r: 6 },
 
   // Northeast village
-  { x: 129, y: 29, r: 15 },
+  { x: 129, y: 28, r: 10 },
+]
+
+const statues: Position[] = [
+  // Northeast village
+  { x: 129, y: 19 },
+
+  // Peak
+  { x: 69, y: 88 },
 ]
 
 export class GameMap {
@@ -87,6 +97,13 @@ export class GameMap {
     // Clear circular areas with jitter
     for (const clearing of clearings) {
       this.clearCircleWithJitter(clearing.x, clearing.y, clearing.r);
+    }
+
+    for (const statue of statues) {
+      this.map[statue.y][statue.x].content = new Statue(
+        statue.x * CELL_WIDTH,
+        statue.y * CELL_HEIGHT,
+      );
     }
 
     // Calculate neighbor information for each tree
@@ -231,9 +248,9 @@ export class GameMap {
             cell.seen = true;
           }
 
-          drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
-          drawEngine.ctx1.lineWidth = 0.1;
-          drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+          // drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
+          // drawEngine.ctx1.lineWidth = 0.1;
+          // drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
         }
       }
     }

@@ -36,13 +36,13 @@ export class Player extends GameObject<CatStates> implements Drawable {
     }
 
     if (!this.moving.x && controls.inputDirection.x) {
+      this.mirrored = controls.isLeft;
       const newCol = this.col + controls.inputDirection.x;
       if (newCol >= 0 && newCol < this.map.width && !this.map.map[this.row][newCol].content) {
         this.animation = 'run';
         this.moving.x = controls.inputDirection.x;
         this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;
         this.col = newCol;
-        this.mirrored = controls.isLeft;
       }
     }
 

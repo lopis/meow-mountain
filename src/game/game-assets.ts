@@ -7,8 +7,8 @@ export type CatStates = typeof catStates[number];
 const villagerStates = ['walk', 'idle', 'scared'];
 export type VillagerStates = typeof villagerStates[number];
 
-export type Asset = 'spruce' | 'oak' | 'house' | 'field';
-const assets: Asset[] = ['spruce', 'oak', 'house', 'field'];
+export type Asset = 'spruce' | 'oak' | 'house' | 'field' | 'statue';
+const assets: Asset[] = ['spruce', 'oak', 'house', 'field', 'statue'];
 const emoji = '🔥,🍀,🌼,🐓,🌷,🌹,👻,🥚,🍎'.split(',');
 
 export const icons = emoji.map(e => emojiToPixelArt(e));
