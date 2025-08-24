@@ -4,7 +4,7 @@ import { Tileset } from "@/core/tileset";
 const catStates = ['sit', 'idle', 'walk', 'run', 'die', 'scratch', 'hop'];
 export type CatStates = typeof catStates[number];
 
-const villagerStates = ['idle', 'walk', 'scared'];
+const villagerStates = ['walk', 'idle', 'scared'];
 export type VillagerStates = typeof villagerStates[number];
 
 export type Asset = 'spruce' | 'oak' | 'house' | 'field';
@@ -21,6 +21,6 @@ export class GameAssets {
   public static initialize() {
     this.cat = new Tileset<CatStates>('/cat.png', 16, catStates);
     this.assets = new Tileset<Asset>('/assets.png', 16, assets);
-    this.villager = new Tileset<VillagerStates>('/villager.png', 16, villagerStates);
+    this.villager = new Tileset<VillagerStates>('/villager.png', 8, villagerStates);
   }
 }

@@ -4,7 +4,7 @@ import { Tileset } from "./tileset";
 
 export class GameObject<T extends string> {
   protected animationTime = 0;
-  private animationDuration = 150; // Duration for each animation frame in milliseconds
+  protected animationDuration = 150; // Duration for each animation frame in milliseconds
   public col: number;
   public row: number;
   moving = { x: 0, y: 0 };

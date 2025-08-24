@@ -118,11 +118,6 @@ export class Villager extends GameObject<VillagerStates> {
   }
 
   private isValidMove(col: number, row: number): boolean {
-    // Check bounds
-    if (col < 0 || col >= this.map.width || row < 0 || row >= this.map.height) {
-      return false;
-    }
-
     // Check if cell is empty
     const cell = this.map.map[row][col];
     return cell.content === null;
