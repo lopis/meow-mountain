@@ -18,6 +18,7 @@ export class GameObject<T extends string> {
   ) {
     this.col = Math.ceil(x / CELL_WIDTH);
     this.row = Math.ceil(y / CELL_HEIGHT);
+    this.animationTime = Math.random() * this.animationDuration;
   }
 
   update(timeElapsed: number) {

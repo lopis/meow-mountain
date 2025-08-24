@@ -55,13 +55,9 @@ const clearings: Circle[] = [
   { x: 129, y: 29, r: 15 },
 ]
 
-const villages: Village[] = [
-  new Village("Heart Peak", { x: 70, y: 90 }, 6, 1),
-  new Village("Moon Plains", { x: 129, y: 29 }, 8, 10),
-];
-
 export class GameMap {
   map: Cell[][];
+  villages: Village[] = [];
   private rng: SeededRandom;
 
   constructor(public readonly width: number, public readonly height: number) {
@@ -77,6 +73,11 @@ export class GameMap {
         return { x, y, content: tree };
       })
     );
+
+    this.villages = [
+      new Village("Heart Peak", { x: 70, y: 90 }, 4, 1, 0),
+      new Village("Moon Plains", { x: 129, y: 29 }, 8, 10, 20),
+    ];
 
     // Clear paths with jitter
     for (const path of paths) {
@@ -104,16 +105,16 @@ export class GameMap {
       }
     }
 
-    for (const village of villages) {
-      village.generateHouses(this.rng)
-        .forEach(house => {
-          this.map[house.row][house.col].content = house;
-        });
+    for (const village of this.villages) {
       village.generateFarms(this.rng)
         .forEach(farm => {
           this.map[farm.row][farm.col].content = farm;
         });
-      village.generateVillagers(this.rng)
+      village.generateHouses(this.rng)
+        .forEach(house => {
+          this.map[house.row][house.col].content = house;
+        });
+      village.generateVillagers(this.rng, this)
         .forEach(villager => {
           this.map[villager.row][villager.col].content = villager;
         });

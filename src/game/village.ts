@@ -4,6 +4,7 @@ import { House } from "./house";
 import { Tileset } from "@/core/tileset";
 import { Asset } from "./game-assets";
 import { Villager } from "./villager";
+import { GameMap } from "./game-map";
 
 export class Village {
   houses: House[] = [];
@@ -15,6 +16,7 @@ export class Village {
     public center: { x: number; y: number },
     public radius: number,
     public houseCount: number,
+    public population: number,
   ) {
     this.center = center;
     this.radius = radius;
@@ -44,7 +46,7 @@ export class Village {
   }
 
   generateFarms(rng: SeededRandom): Farm[] {
-    const farmCount = Math.floor(rng.range(1, 4)); // Random number of farms per village
+    const farmCount = this.houseCount * 2;
     for (let i = 0; i < farmCount; i++) {
       let farmCol: number;
       let farmRow: number;
@@ -69,23 +71,47 @@ export class Village {
     return this.farms;
   }
 
-  generateVillagers(rng: SeededRandom): Villager[] {
-    const villagerCount = Math.floor(rng.range(2, 6)); // Random number of villagers per village
+  generateVillagers(rng: SeededRandom, map: GameMap): Villager[] {
+    const villagerCount = this.population;
     for (let i = 0; i < villagerCount; i++) {
       let villagerCol: number;
       let villagerRow: number;
+      let attempts = 0;
+      const maxAttempts = 50; // Prevent infinite loop
+
       do {
         const angle = rng.range(0, Math.PI * 2);
         const distance = rng.range(1, this.radius - 1);
         villagerCol = Math.round(this.center.x + Math.cos(angle) * distance);
         villagerRow = Math.round(this.center.y + Math.sin(angle) * distance);
+        attempts++;
       } while (
-        villagerCol < 0 ||
-        villagerRow < 0 ||
-        this.villagers.some(v => v.x === villagerCol && v.y === villagerRow) // Avoid duplicate positions
+        (villagerCol < 0 ||
+          villagerRow < 0 ||
+          villagerCol >= map.width ||
+          villagerRow >= map.height ||
+          map.map[villagerRow][villagerCol].content !== null || // Check if cell is empty
+          this.villagers.some(v => v.col === villagerCol && v.row === villagerRow)) && // Avoid duplicate positions
+        attempts < maxAttempts
       );
 
-      this.villagers.push(new Villager(villagerCol, villagerRow));
+      // Skip this villager if we couldn't find an empty spot
+      if (attempts >= maxAttempts) {
+        console.log(`Could not find empty spot for villager ${i + 1} in village ${this.name}`);
+        continue;
+      }
+
+      const villager = new Villager(villagerCol, villagerRow, map);
+
+      // Try to find a home for this villager
+      const homePosition = villager.findNearestHouse();
+      if (homePosition) {
+        console.log(`Villager found home at (${homePosition.x}, ${homePosition.y})`);
+      } else {
+        console.log(`Villager at (${villagerCol}, ${villagerRow}) could not find a home`);
+      }
+
+      this.villagers.push(villager);
     }
     return this.villagers;
   }
