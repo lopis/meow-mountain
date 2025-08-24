@@ -25,6 +25,14 @@ export class GameObject<T extends string> {
     this.targetPos = { x: this.x, y: this.y };
   }
 
+  setPos(col: number, row: number) {
+    this.col = col;
+    this.row = row;
+    this.x = col * CELL_WIDTH;
+    this.y = row * CELL_HEIGHT;
+    this.targetPos = { x: this.x, y: this.y };
+  }
+
   update(timeElapsed: number) {
     this.animationTime += timeElapsed;
   }

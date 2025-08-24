@@ -2,7 +2,16 @@ import { colors } from "@/core/util/color";
 import { GameMap } from "./game-map";
 import { Player } from "./entities/player";
 import { drawEngine } from "@/core/draw-engine";
-import { Tree } from "./entities/tree";
+
+const pixelColors: Record<string, string> = {
+  'oak': colors.green1,
+  'spruce': colors.green2,
+  'house': colors.blue4,
+  'field': colors.yellow1,
+  'statue': colors.purple3,
+  'unseen': colors.green3,
+  'default': colors.yellow2,
+};
 
 export class MiniMap {
   private lastUpdate = 0;
@@ -34,13 +43,9 @@ export class MiniMap {
         const cell = this.map.map[my][mx];
 
         if (!cell.seen) {
-          ctx.fillStyle = colors.green3; // Dark green for unseen cells
+          ctx.fillStyle = pixelColors.unseen;
         } else {
-          ctx.fillStyle = cell.content?.type == 'oak' ? colors.green1
-            : cell.content?.type == 'spruce' ? colors.green2
-              : cell.content?.type == 'house' ? colors.blue4
-                : cell.content?.type == 'field' ? colors.yellow1
-                  : colors.yellow2;
+          ctx.fillStyle = pixelColors[cell.content?.type || 'default'] ?? pixelColors.default;
         }
 
         ctx.fillRect(x + mx, y + my, 1, 1);

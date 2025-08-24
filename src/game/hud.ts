@@ -33,28 +33,24 @@ export class HUD {
     const x = drawEngine.ctx3.canvas.width / 2;
     const y = drawEngine.ctx3.canvas.height - 40;
     const fontSize = 3;
-    const width = 200;
-    const height = fontSize * 7;
-    const padding = 10;
+    const width = 300;
+    const height = fontSize * 10;
     drawEngine.ctx3.clearRect(
-      x - width / 2 - padding,
-      y - height - padding,
-      width + padding * 2,
-      height + padding * 2
+      x - width / 2,
+      y - height / 2,
+      width,
+      height,
     );
 
     const actionLabel = this.actions.currentAction;
     if (actionLabel) {
-      debugger;
-
       // Draw background box
-      const boxPadding = 10;
       drawEngine.ctx3.fillStyle = colors.purple2;
       drawEngine.ctx3.fillRect(
-        x - width / 2 - boxPadding,
-        y - fontSize * 8 - boxPadding,
-        width + boxPadding * 2,
-        fontSize * 8 + boxPadding * 2
+        x - width / 2,
+        y - height / 2,
+        width,
+        height,
       );
 
       // Draw text
@@ -64,7 +60,7 @@ export class HUD {
         y,
         color: colors.blue4,
         textAlign: "center",
-        textBaseline: "bottom",
+        textBaseline: "middle",
         size: fontSize
       }, drawEngine.ctx3);
     }

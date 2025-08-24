@@ -55,13 +55,10 @@ const clearings: Circle[] = [
   { x: 129, y: 28, r: 10 },
 ]
 
-const statues: Position[] = [
-  // Northeast village
-  { x: 129, y: 19 },
-
-  // Peak
-  { x: 69, y: 88 },
-]
+export const statues: Record<string, Position> = {
+  northeast: { x: 129, y: 19 },
+  peak: { x: 69, y: 88 },
+};
 
 export class GameMap {
   map: Cell[][];
@@ -97,7 +94,7 @@ export class GameMap {
       this.clearCircleWithJitter(clearing.x, clearing.y, clearing.r);
     }
 
-    for (const statue of statues) {
+    for (const statue of Object.values(statues)) {
       this.map[statue.y][statue.x].content = new Statue(statue.x, statue.y);
     }
 

@@ -1,9 +1,10 @@
 import { CatStates, GameAssets } from "@/game/game-assets";
 import { GameObject } from "../../core/game-object";
 import { controls } from "../../core/controls";
-import { GameMap } from "../game-map";
+import { GameMap, statues } from "../game-map";
 import { Drawable } from "../game-grid";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { on } from "@/core/event";
 
 export class Player extends GameObject<CatStates> implements Drawable {
   map: GameMap;
@@ -19,11 +20,18 @@ export class Player extends GameObject<CatStates> implements Drawable {
       80,
     );
     this.map = map;
+
+    on('teleport', () => {
+      console.log('teleporting to peak');
+
+      this.setPos(statues.peak.x, statues.peak.y + 1);
+    })
   }
 
   update(timeElapsed: number) {
     super.update(timeElapsed);
-    this.updatePositionSmoothly(timeElapsed);
+    debugger
+    super.updatePositionSmoothly(timeElapsed);
 
     if (!this.moving.y && controls.inputDirection.y) {
       const newRow = this.row + controls.inputDirection.y;

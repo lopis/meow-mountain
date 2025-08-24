@@ -95,7 +95,8 @@ export const drawText = (
   } else {
     createImageData(text, size, color, space)
       .then(() => {
-        c.drawImage(bitmaps[id], x - offsetX, y);
+        const maxWidth = maxLetters * spaced;
+        c.drawImage(bitmaps[id], 0, 0, maxWidth, spaced, x - offsetX, y - offsetY, maxWidth, spaced);
       });
   }
 };

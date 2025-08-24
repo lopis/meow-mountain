@@ -72,7 +72,7 @@ class Controls {
     this.isMoving = this.inputDirection.x !== 0 || this.inputDirection.y !== 0;
     this.isConfirm = Boolean(this.keyMap.get('Enter') || isButtonPressed(XboxControllerButton.A) || isButtonPressed(XboxControllerButton.Start));
     this.isEscape = Boolean(this.keyMap.get('Escape') || isButtonPressed(XboxControllerButton.Select));
-    this.isAction = Boolean(this.keyMap.get('X') || isButtonPressed(XboxControllerButton.X));
+    this.isAction = Boolean(this.keyMap.get('KeyX') || isButtonPressed(XboxControllerButton.X));
   }
 
   // Helper method to check if action key was just pressed
@@ -81,6 +81,7 @@ class Controls {
   }
 
   private toggleKey(event: KeyboardEvent, isPressed: boolean) {
+    console.log(`Key ${event.code} is ${isPressed ? 'pressed' : 'released'}`);
     this.keyMap.set(event.code, isPressed);
   }
 }

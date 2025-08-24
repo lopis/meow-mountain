@@ -1,4 +1,4 @@
-import { GameMap } from "./game-map";
+import { GameMap, statues } from "./game-map";
 import { Player } from "./entities/player";
 import { Statue } from "./entities/statue";
 import { controls } from "@/core/controls";
@@ -36,6 +36,6 @@ export class Actions {
 
   private ifFacingStatue(): boolean {
     const cellInFront = this.map.map[this.player.row - 1][this.player.col];
-    return cellInFront.content instanceof Statue;
+    return cellInFront.content?.type === 'statue' && this.player.col != statues.peak.x;
   }
 }
