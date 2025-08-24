@@ -19,6 +19,7 @@ export class Villager extends GameObject<VillagerStates> {
       row * CELL_HEIGHT,
       'villager',
       'idle',
+      10,
     );
     this.map = map;
   }
@@ -31,6 +32,7 @@ export class Villager extends GameObject<VillagerStates> {
       this.takeNextStep();
       this.moveTimer = 0;
     }
+    this.updatePositionSmoothly(timeElapsed);
   }
 
   findNearestHouse(): Position | null {
@@ -102,8 +104,7 @@ export class Villager extends GameObject<VillagerStates> {
       // Update position
       this.col = newCol;
       this.row = newRow;
-      this.x = newCol * CELL_WIDTH;
-      this.y = newRow * CELL_HEIGHT;
+      this.targetPos = { x: newCol * CELL_WIDTH, y: newRow * CELL_HEIGHT };
 
       // Update last direction
       this.lastDirection = targetDirection;

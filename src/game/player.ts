@@ -6,9 +6,6 @@ import { Drawable } from "./game-grid";
 import { CELL_HEIGHT, CELL_WIDTH } from "./constants";
 
 export class Player extends GameObject<CatStates> implements Drawable {
-  speed = 80;
-  moving = { x: 0, y: 0 };
-  target;
   map: GameMap;
   type = 'cat';
 
@@ -18,53 +15,39 @@ export class Player extends GameObject<CatStates> implements Drawable {
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
       'cat',
-      'idle'
+      'idle',
+      80,
     );
-    this.target = { x: this.x, y: this.y };
     this.map = map;
   }
 
   update(timeElapsed: number) {
     super.update(timeElapsed);
+    this.updatePositionSmoothly(timeElapsed);
 
     if (!this.moving.y && controls.inputDirection.y) {
-      const newGy = this.row + controls.inputDirection.y;
-      if (newGy >= 0 && newGy < this.map.height && !this.map.map[newGy][this.col].content) {
+      const newRow = this.row + controls.inputDirection.y;
+      if (newRow >= 0 && newRow < this.map.height && !this.map.map[newRow][this.col].content) {
         this.animation = 'run';
         this.moving.y = controls.inputDirection.y;
-        this.target.y += controls.inputDirection.y * CELL_HEIGHT;
-        this.row = newGy;
+        this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;
+        this.row = newRow;
       }
     }
 
     if (!this.moving.x && controls.inputDirection.x) {
-      const newGx = this.col + controls.inputDirection.x;
-      if (newGx >= 0 && newGx < this.map.width && !this.map.map[this.row][newGx].content) {
+      const newCol = this.col + controls.inputDirection.x;
+      if (newCol >= 0 && newCol < this.map.width && !this.map.map[this.row][newCol].content) {
         this.animation = 'run';
         this.moving.x = controls.inputDirection.x;
-        this.target.x += controls.inputDirection.x * CELL_WIDTH;
-        this.col = newGx;
+        this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;
+        this.col = newCol;
         this.mirrored = controls.isLeft;
       }
     }
 
     if (!this.moving.x && !this.moving.y) {
       this.animation = 'idle';
-    }
-
-    for (const axis of ['x', 'y'] as const) {
-      if (this[axis] !== this.target[axis]) {
-        const d = this.target[axis] - this[axis];
-        const step = Math.sign(d) * this.speed * timeElapsed / 1000;
-        if (Math.abs(step) >= Math.abs(d)) {
-          this[axis] = this.target[axis];
-        } else {
-          this[axis] += step;
-        }
-      } else {
-        this.moving[axis] = 0;
-        this[axis] = Math.round(this[axis]);
-      }
     }
   }
 }
