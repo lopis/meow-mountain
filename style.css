@@ -1,20 +1,3 @@
-#c1, #c2, #c3 {
-    width: min(100vw, calc(100vh * 16/9));
-    position: absolute;
-    image-rendering: pixelated; /* You definitely want this if you are doing pixel art */
-}
-
-/* Get rid of any margins, set background black, use flexbox to center */
-html, body {
-    margin: 0;
-    background-image: repeating-linear-gradient(45deg, var(--blue2) 0 1px, var(--green2) 1px 2px, var(--green2) 2px 3px, var(--blue2) 3px 4px);
-    background-size: 2px 2px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
 :root {
     --green0: #e3ecd7;
     --green1: #6b9a71;
@@ -38,4 +21,29 @@ html, body {
     --yellow2: #e1ae98;
     --black: var(--blue6);
     --white: var(--yellow0);
+}
+
+#c1, #c2, #c3 {
+    width: min(100vw, calc(100vh * 16/9));
+    position: absolute;
+    image-rendering: pixelated; /* You definitely want this if you are doing pixel art */
+}
+
+/* Get rid of any margins, set background black, use flexbox to center */
+html, body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+#c1 {
+    background-image: repeating-linear-gradient(45deg, var(--blue2) 0 1px, var(--green2) 1px 2px, var(--green2) 2px 3px, var(--blue2) 3px 4px);
+    background-size: 2px 2px;
+}
+
+.nighttime {
+    filter: brightness(0.7) contrast(1.6) hue-rotate(40deg);
+    transition: filter 10000ms;
 }

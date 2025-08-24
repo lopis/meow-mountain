@@ -46,7 +46,7 @@ export class Village {
   }
 
   generateFarms(rng: SeededRandom): Farm[] {
-    const farmCount = this.houseCount * 2;
+    const farmCount = Math.ceil(this.houseCount / 3);
     for (let i = 0; i < farmCount; i++) {
       let farmCol: number;
       let farmRow: number;

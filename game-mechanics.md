@@ -2,9 +2,9 @@
 
 ## The player
 
-The player is a witch that lives alone in a house atop a hill. The witch also takes care of the people in the valley around the mountain.
+The player is a cat spirit that lives alone in a house atop a hill. The cat also takes care of the people in the valley around the mountain.
 
-The player is able to transform into a cat. This is so that the villagers are not immediately afraid of the witch.
+The player can take a human form but this would alert the residents of the valley who would attack the player. So moving around in cat form is much more discreet.
 
 The player is able to use spells to move around the map, perform tasks, help villagers and defend the valley.
 
@@ -16,17 +16,19 @@ The player is able to use spells to move around the map, perform tasks, help vil
 - Scratch: cast a magical physical attack
 - Collect: collect at item
 - Conjure: call a collected item back
-- Transform: transform between cat and witch via the portal
+- Transform: transform between cat and human forms via the portal
 
 ## The map
 
 The map is a grid. The game map is a thick forest with a few paths and clearings in it. In the center of the map is a clearing with a single house, where the main character lives. In other clearings there are small villages with a few houses and residents.
 
+The cat fell asleep and the valley fell into disarray. Evil spirits roam the forest and torment the villagers.
+
 ## The villagers
 
 Each villager has a little routine. They live in a house, from where they exit in the morning, then walk around a fixed route, before coming back home in the evening.
 
-The villagers are very supersticious. They will grow weary of the black cat wandering around the forest. If they become very afraid, surpersticion levels will grow, leading to evil spirits appearing in the forest.
+The villagers are very supersticious. They will grow weary of the black cat wandering around the forest when they see it repeatidly. If they become very afraid, surpersticion levels will grow, leading to evil spirits appearing in the forest.
 
 ## The evil spirits
 
