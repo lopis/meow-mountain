@@ -1,14 +1,29 @@
 import { drawEngine } from "@/core/draw-engine";
 import { HEART } from "@/core/font";
 import { colors } from "@/core/util/color";
+import { MiniMap } from "./mini-map";
+import { GameMap } from "./game-map";
+import { Player } from "./player";
 
 const MAX_LIVES = 7;
 
 export class HUD {
-  constructor() { }
+  miniMap: MiniMap;
+  player: Player;
+
+  constructor(map: GameMap, player: Player
+  ) {
+    this.miniMap = new MiniMap(map);
+    this.player = player;
+  }
+
+  update(timeElapsed: number) {
+    this.miniMap.update(timeElapsed);
+  }
 
   draw() {
     this.drawLives();
+    this.miniMap.draw(this.player);
   }
 
   drawLives() {

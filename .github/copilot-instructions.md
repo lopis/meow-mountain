@@ -8,7 +8,7 @@
 - No sycophant responses, no "That's great" or "That makes sense!" or "Perfect!" or "You're absolutely right."
 
 ## Response Guidelines
-- Challenge assumptions when alternative approaches may be superior
+- Challenge my assumptions when alternative approaches may be superior
 - Question implementation details that could lead to issues
 - Suggest improvements or optimizations when relevant
 - Focus on actionable solutions rather than theoretical discussions
@@ -20,5 +20,5 @@
 - Reference existing code patterns and project structure
 
 ## JS13k specific Instructions
-- Code size matters, so it's ok to forgo certain code practices
+- Code size matters, so it's ok to forgo certain code best practices
 - Public properties are preferred to getters and setters whenever possible
