@@ -36,16 +36,27 @@ export class Villager extends GameObject<VillagerStates> {
     if (this.seesCat()) {
       if (!this.isScared && this.moveTimer >= this.moveInterval) {
         this.moveTimer = 0;
+        this.isScared = true;
         emit('scared');
+
+        // Convert world coordinates to screen coordinates for the particle
+        const screenPos = drawEngine.worldToScreen(
+          this.x + CELL_WIDTH / 2,
+          this.y
+        );
+
+        // Target the center of the superstition bar in the HUD
+        const superstitionBarX = drawEngine.canvasWidth / 2;
+        const superstitionBarY = 16 + 5 + (35 - 10) / 2; // y + padding + half of bar height
 
         const particle = {
           from: {
-            x: this.x + CELL_WIDTH / 2,
-            y: this.y - drawEngine.cameraY,
+            x: screenPos.x,
+            y: screenPos.y,
           },
           to: {
-            x: this.x,
-            y: this.y - 10,
+            x: superstitionBarX,
+            y: superstitionBarY,
           },
           size: 1,
           color: colors.blue4,
@@ -56,6 +67,7 @@ export class Villager extends GameObject<VillagerStates> {
       this.animation = 'scared';
       this.animationDuration = 50;
     } else {
+      this.isScared = false;
       this.animationDuration = 150;
       if (this.moveTimer >= this.moveInterval) {
         this.takeNextStep();

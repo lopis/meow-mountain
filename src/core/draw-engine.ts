@@ -10,8 +10,10 @@ class DrawEngine {
   // Camera properties
   cameraX = 0;
   cameraY = 0;
+  zoom = 1;
   targetCameraX = 0;
   targetCameraY = 0;
+  targetZoom = 1;
   cameraLerpSpeed = 0.08; // Adjust for faster/slower camera
 
   constructor() {
@@ -122,24 +124,27 @@ class DrawEngine {
   setCamera(x: number, y: number, zoom: number = 1, immediate = false) {
     this.targetCameraX = x;
     this.targetCameraY = y;
+    this.targetZoom = zoom;
     [this.ctx1, this.ctx2].forEach(ctx => {
       const cx = this.canvasWidth / 2 - 32;
       const cy = this.canvasHeight / 2 - 64;
       ctx.setTransform(
-        zoom, 0, 0, zoom,
-        cx - this.cameraX * zoom,
-        cy - this.cameraY * zoom,
+        this.zoom, 0, 0, this.zoom,
+        cx - this.cameraX * this.zoom,
+        cy - this.cameraY * this.zoom,
       );
     });
     if (immediate) {
       this.cameraX = x;
       this.cameraY = y;
+      this.zoom = zoom;
     }
   }
 
   updateCamera() {
     this.cameraX += (this.targetCameraX - this.cameraX) * this.cameraLerpSpeed;
     this.cameraY += (this.targetCameraY - this.cameraY) * this.cameraLerpSpeed;
+    this.zoom += (this.targetZoom - this.zoom) * this.cameraLerpSpeed;
   }
 
   resetCamera() {
@@ -151,6 +156,23 @@ class DrawEngine {
     this.resetCamera();
     this.ctx1.clearRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
     this.ctx2.clearRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
+  }
+
+  /**
+   * Converts world coordinates to screen coordinates, accounting for camera transforms
+   * @param worldX World X coordinate
+   * @param worldY World Y coordinate
+   * @param zoom Current zoom level (defaults to 7, matching game state)
+   * @returns Screen coordinates { x, y }
+   */
+  worldToScreen(worldX: number, worldY: number, zoom: number = 7): { x: number; y: number } {
+    const cx = this.canvasWidth / 2 - 32;
+    const cy = this.canvasHeight / 2 - 64;
+
+    return {
+      x: cx + (worldX - this.cameraX) * zoom,
+      y: cy + (worldY - this.cameraY) * zoom
+    };
   }
 }
 
