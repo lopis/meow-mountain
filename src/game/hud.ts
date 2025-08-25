@@ -5,18 +5,19 @@ import { MiniMap } from "./mini-map";
 import { GameMap } from "./game-map";
 import { Player } from "./entities/player";
 import { Actions } from "./actions";
-
-const MAX_LIVES = 7;
+import { GameData } from "./game-data";
+import { MAX_LIVES } from "./constants";
 
 export class HUD {
   miniMap: MiniMap;
-  player: Player;
-  actions: Actions;
 
-  constructor(map: GameMap, player: Player, actions: Actions) {
+  constructor(
+    map: GameMap,
+    public player: Player,
+    public actions: Actions,
+    public gameData: GameData,
+  ) {
     this.miniMap = new MiniMap(map);
-    this.player = player;
-    this.actions = actions;
   }
 
   update(timeElapsed: number) {
@@ -25,6 +26,7 @@ export class HUD {
 
   draw() {
     this.drawLives();
+    this.drawSuperstition();
     this.drawActions();
     this.miniMap.draw(this.player);
   }
@@ -67,15 +69,36 @@ export class HUD {
   }
 
   drawLives() {
-    const x = c3.width / 2;
+    const x = 16;
     const y = 16;
     const text = HEART.repeat(MAX_LIVES);
     const size = 5;
 
     const boxW = (text.length * 6 + 1) * size;
-    const boxH = MAX_LIVES * size;
+    const boxH = 7 * size;
     drawEngine.ctx3.fillStyle = colors.purple0;
-    drawEngine.ctx3.fillRect(x - boxW / 2, y - size, boxW, boxH);
-    drawEngine.drawText({ text, x, y, color: colors.purple4, textAlign: "center", size }, drawEngine.ctx3);
+    drawEngine.ctx3.fillRect(x, y, boxW, boxH);
+    drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.purple4, size }, drawEngine.ctx3);
+  }
+
+  drawSuperstition() {
+    const padding = 5;
+    const boxW = 215;
+    const boxH = 35;
+    const x = Math.round(c3.width / 2 - boxW / 2);
+    const y = 16;
+
+    drawEngine.ctx3.fillStyle = colors.purple0;
+    drawEngine.ctx3.fillRect(x, y, boxW, boxH);
+
+    drawEngine.ctx3.fillStyle = colors.blue5;
+    drawEngine.ctx3.fillRect(x + padding, y + padding, boxW - 2 * padding, boxH - 2 * padding);
+
+    // drawEngine.ctx3.fillStyle = colors.blue2;
+    // drawEngine.ctx3.fillRect(x + padding, y + padding, boxW - 2 * padding, boxH - 2 * padding);
+
+    const text = 'superstition';
+    const size = 3;
+    drawEngine.drawText({ text, x, y: y + boxH + size, color: colors.blue5, size }, drawEngine.ctx3);
   }
 }

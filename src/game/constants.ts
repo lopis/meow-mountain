@@ -3,6 +3,8 @@ import { Circle, Path } from "./types";
 export const CELL_WIDTH = 11;
 export const CELL_HEIGHT = 11;
 
+export const MAX_LIVES = 7;
+
 export const paths: Path[] = [
   // Main path
   [{ x: 69, y: 100 }, { x: 76, y: 113 }, 3],
