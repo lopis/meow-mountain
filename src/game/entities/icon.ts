@@ -1,8 +1,7 @@
 import { drawEngine } from "@/core/draw-engine";
-import { Drawable } from "../game-grid";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 
-export class Icon implements Drawable {
+export class Icon {
   constructor(
     public readonly icon: HTMLImageElement,
     public col: number,

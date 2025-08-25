@@ -20,6 +20,17 @@ export class Village {
     this.radius = radius;
   }
 
+  update(timeElapsed: number) {
+    // Update villagers that are not on the grid, but inside houses
+    this.houses.forEach((house) => {
+      house.residents.forEach((villager) => {
+        if (villager.atHome) {
+          villager.update(timeElapsed);
+        }
+      })
+    })
+  }
+
   generateHouses(rng: SeededRandom): House[] {
     for (let i = 0; i < this.houseCount; i++) {
       let houseCol: number;
@@ -69,48 +80,15 @@ export class Village {
     return this.farms;
   }
 
-  generateVillagers(rng: SeededRandom, map: GameMap): Villager[] {
-    const villagerCount = this.population;
-    for (let i = 0; i < villagerCount; i++) {
-      let villagerCol: number;
-      let villagerRow: number;
-      let attempts = 0;
-      const maxAttempts = 50; // Prevent infinite loop
-
-      do {
-        const angle = rng.range(0, Math.PI * 2);
-        const distance = rng.range(1, this.radius - 1);
-        villagerCol = Math.round(this.center.x + Math.cos(angle) * distance);
-        villagerRow = Math.round(this.center.y + Math.sin(angle) * distance);
-        attempts++;
-      } while (
-        (villagerCol < 0 ||
-          villagerRow < 0 ||
-          villagerCol >= map.width ||
-          villagerRow >= map.height ||
-          map.map[villagerRow][villagerCol].content !== null || // Check if cell is empty
-          this.villagers.some(v => v.col === villagerCol && v.row === villagerRow)) && // Avoid duplicate positions
-        attempts < maxAttempts
-      );
-
-      // Skip this villager if we couldn't find an empty spot
-      if (attempts >= maxAttempts) {
-        console.log(`Could not find empty spot for villager ${i + 1} in village ${this.name}`);
-        continue;
+  generateVillagers(map: GameMap): Villager[] {
+    const residents = this.population / this.houseCount
+    this.houses.forEach(house => {
+      while (house.residents.length < residents) {
+        const villager = new Villager(house.x, house.y, map, house);
+        house.residents.push(villager);
+        this.villagers.push(villager);
       }
-
-      const villager = new Villager(villagerCol, villagerRow, map);
-
-      // Try to find a home for this villager
-      const homePosition = villager.findNearestHouse();
-      if (homePosition) {
-        console.log(`Villager found home at (${homePosition.x}, ${homePosition.y})`);
-      } else {
-        console.log(`Villager at (${villagerCol}, ${villagerRow}) could not find a home`);
-      }
-
-      this.villagers.push(villager);
-    }
+    });
     return this.villagers;
   }
 }

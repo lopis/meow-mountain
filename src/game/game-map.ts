@@ -1,59 +1,10 @@
 import { Tree } from "./entities/tree";
 import { SeededRandom } from "@/core/util/rng";
-import { Drawable } from "./game-grid";
 import { Village } from "./entities/village";
-import { CELL_HEIGHT, CELL_WIDTH } from "./constants";
+import { CELL_HEIGHT, CELL_WIDTH, clearings, paths } from "./constants";
 import { Position } from "@/core/util/path-findind";
 import { Statue } from "./entities/statue";
-
-interface Cell {
-  x: number;
-  y: number;
-  content: Drawable | null;
-  seen?: boolean;
-}
-
-type Path = [{ x: number, y: number }, { x: number, y: number }, number];
-type Circle = { x: number, y: number, r: number };
-
-const paths: Path[] = [
-  // Main path
-  [{ x: 69, y: 100 }, { x: 76, y: 113 }, 3],
-  [{ x: 76, y: 113 }, { x: 89, y: 114 }, 4],
-  [{ x: 76, y: 113 }, { x: 89, y: 114 }, 4],
-  [{ x: 89, y: 114 }, { x: 104, y: 86 }, 5],
-  [{ x: 89, y: 114 }, { x: 104, y: 86 }, 5],
-  [{ x: 104, y: 86 }, { x: 99, y: 59 }, 3],
-  [{ x: 99, y: 59 }, { x: 85, y: 46 }, 3],
-  [{ x: 85, y: 46 }, { x: 86, y: 28 }, 2],
-  [{ x: 86, y: 28 }, { x: 74, y: 38 }, 2],
-  [{ x: 74, y: 38 }, { x: 60, y: 39 }, 2],
-  [{ x: 60, y: 39 }, { x: 48, y: 30 }, 2],
-  [{ x: 48, y: 30 }, { x: 46, y: 43 }, 2],
-  [{ x: 46, y: 43 }, { x: 38, y: 61 }, 2],
-  [{ x: 38, y: 61 }, { x: 50, y: 73 }, 3],
-  [{ x: 50, y: 73 }, { x: 38, y: 84 }, 4],
-  [{ x: 38, y: 84 }, { x: 46, y: 123 }, 3],
-  [{ x: 46, y: 123 }, { x: 36, y: 133 }, 3],
-  [{ x: 36, y: 133 }, { x: 48, y: 141 }, 2],
-  [{ x: 48, y: 141 }, { x: 94, y: 133 }, 3],
-  [{ x: 94, y: 133 }, { x: 113, y: 109 }, 4],
-  [{ x: 113, y: 109 }, { x: 122, y: 74 }, 5],
-  [{ x: 122, y: 74 }, { x: 113, y: 56 }, 6],
-
-  // Northwest village path
-  [{ x: 91, y: 52 }, { x: 129, y: 29 }, 2],
-]
-
-const clearings: Circle[] = [
-  // Peak
-  { x: 64, y: 88, r: 6 },
-  { x: 75, y: 88, r: 6 },
-  { x: 69, y: 95, r: 6 },
-
-  // Northeast village
-  { x: 129, y: 28, r: 10 },
-]
+import { Cell, Drawable } from "./types";
 
 export const statues: Record<string, Position> = {
   northeast: { x: 129, y: 19 },
@@ -61,14 +12,14 @@ export const statues: Record<string, Position> = {
 };
 
 export class GameMap {
-  map: Cell[][];
+  grid: Cell[][];
   villages: Village[] = [];
   private rng: SeededRandom;
 
   constructor(public readonly width: number, public readonly height: number) {
     this.rng = new SeededRandom();
 
-    this.map = Array.from({ length: height }, (_, y) =>
+    this.grid = Array.from({ length: height }, (_, y) =>
       Array.from({ length: width }, (_, x) => {
         const tree = new Tree(
           x * CELL_WIDTH - (16 - CELL_WIDTH) / 2, // Adjust x to center the image
@@ -95,19 +46,19 @@ export class GameMap {
     }
 
     for (const statue of Object.values(statues)) {
-      this.map[statue.y][statue.x].content = new Statue(statue.x, statue.y);
+      this.grid[statue.y][statue.x].content = new Statue(statue.x, statue.y);
     }
 
     // Calculate neighbor information for each tree
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
-        const cell = this.map[y][x];
+        const cell = this.grid[y][x];
         if (cell.content instanceof Tree) {
           const neighbors = {
-            top: this.map[y - 1]?.[x]?.content instanceof Tree,
-            bottom: this.map[y + 1]?.[x]?.content instanceof Tree,
-            left: this.map[y]?.[x - 1]?.content instanceof Tree,
-            right: this.map[y]?.[x + 1]?.content instanceof Tree,
+            top: this.grid[y - 1]?.[x]?.content instanceof Tree,
+            bottom: this.grid[y + 1]?.[x]?.content instanceof Tree,
+            left: this.grid[y]?.[x - 1]?.content instanceof Tree,
+            right: this.grid[y]?.[x + 1]?.content instanceof Tree,
           };
           cell.content.setNeighbors(neighbors);
         }
@@ -117,16 +68,13 @@ export class GameMap {
     for (const village of this.villages) {
       village.generateFarms(this.rng)
         .forEach(farm => {
-          this.map[farm.row][farm.col].content = farm;
+          this.grid[farm.row][farm.col].content = farm;
         });
       village.generateHouses(this.rng)
         .forEach(house => {
-          this.map[house.row][house.col].content = house;
+          this.grid[house.row][house.col].content = house;
         });
-      village.generateVillagers(this.rng, this)
-        .forEach(villager => {
-          this.map[villager.row][villager.col].content = villager;
-        });
+      village.generateVillagers(this);
     }
   }
 
@@ -154,11 +102,11 @@ export class GameMap {
         for (let oy = -halfWidth; oy <= halfWidth; oy++) {
           const clearX = x + ox + jitterX;
           const clearY = y + oy + jitterY;
-          if (clearY >= 0 && clearY < this.map.length &&
-            clearX >= 0 && clearX < this.map[0].length) {
+          if (clearY >= 0 && clearY < this.grid.length &&
+            clearX >= 0 && clearX < this.grid[0].length) {
             // Add probability for partial clearing to create natural edges
             if (this.rng.next() > 0.1) { // 90% chance to clear
-              this.map[clearY][clearX].content = null;
+              this.grid[clearY][clearX].content = null;
             }
           }
         }
@@ -196,7 +144,7 @@ export class GameMap {
           const clearProbability = Math.min(1, edgeDistance / 2 + 0.7);
 
           if (this.rng.next() < clearProbability) {
-            this.map[y][x].content = null;
+            this.grid[y][x].content = null;
           }
         }
       }
@@ -204,30 +152,31 @@ export class GameMap {
   }
 
   set(x: number, y: number, content: Drawable | null) {
-    if (this.map[y] && this.map[y][x]) {
-      this.map[y][x].content = content;
+    if (this.grid[y] && this.grid[y][x]) {
+      this.grid[y][x].content = content;
     }
   }
 
   update(timeElapsed: number) {
-    for (const row of this.map) {
+    for (const row of this.grid) {
       for (const cell of row) {
         if (cell.content) {
           cell.content.update?.(timeElapsed);
           if (cell.x != cell.content.col || cell.y != cell.content.row) {
-            this.map[cell.content.row][cell.content.col].content = cell.content;
+            this.grid[cell.content.row][cell.content.col].content = cell.content;
             cell.content = null;
           }
         }
       }
     }
+    this.villages.forEach((village) => village.update(timeElapsed));
   }
 
   draw(cx: number, cy: number) {
     const radius = 150; // Define the radius for the circular area
     const radiusSquared = radius * radius;
 
-    for (const row of this.map) {
+    for (const row of this.grid) {
       for (const cell of row) {
         const dx = cell.x * CELL_WIDTH - cx;
         const dy = cell.y * CELL_HEIGHT - cy;

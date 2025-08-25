@@ -35,7 +35,7 @@ export class Actions {
   }
 
   private ifFacingStatue(): boolean {
-    const cellInFront = this.map.map[this.player.row - 1][this.player.col];
+    const cellInFront = this.map.grid[this.player.row - 1][this.player.col];
     return cellInFront.content?.type === 'statue' && this.player.col != statues.peak.x;
   }
 }

@@ -40,7 +40,7 @@ export class MiniMap {
     // Draw map pixels
     for (let my = 0; my < mapSize; my++) {
       for (let mx = 0; mx < mapSize; mx++) {
-        const cell = this.map.map[my][mx];
+        const cell = this.map.grid[my][mx];
 
         if (!cell.seen) {
           ctx.fillStyle = pixelColors.unseen;

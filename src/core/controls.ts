@@ -81,7 +81,6 @@ class Controls {
   }
 
   private toggleKey(event: KeyboardEvent, isPressed: boolean) {
-    console.log(`Key ${event.code} is ${isPressed ? 'pressed' : 'released'}`);
     this.keyMap.set(event.code, isPressed);
   }
 }

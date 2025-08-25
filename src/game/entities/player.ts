@@ -2,11 +2,10 @@ import { CatStates, GameAssets } from "@/game/game-assets";
 import { GameObject } from "../../core/game-object";
 import { controls } from "../../core/controls";
 import { GameMap, statues } from "../game-map";
-import { Drawable } from "../game-grid";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 import { on } from "@/core/event";
 
-export class Player extends GameObject<CatStates> implements Drawable {
+export class Player extends GameObject<CatStates> {
   map: GameMap;
   type = 'cat';
 
@@ -22,20 +21,17 @@ export class Player extends GameObject<CatStates> implements Drawable {
     this.map = map;
 
     on('teleport', () => {
-      console.log('teleporting to peak');
-
       this.setPos(statues.peak.x, statues.peak.y + 1);
     })
   }
 
   update(timeElapsed: number) {
     super.update(timeElapsed);
-    debugger
     super.updatePositionSmoothly(timeElapsed);
 
     if (!this.moving.y && controls.inputDirection.y) {
       const newRow = this.row + controls.inputDirection.y;
-      if (newRow >= 0 && newRow < this.map.height && !this.map.map[newRow][this.col].content) {
+      if (newRow >= 0 && newRow < this.map.height && !this.map.grid[newRow][this.col].content) {
         this.animation = 'run';
         this.moving.y = controls.inputDirection.y;
         this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;
@@ -46,7 +42,7 @@ export class Player extends GameObject<CatStates> implements Drawable {
     if (!this.moving.x && controls.inputDirection.x) {
       this.mirrored = controls.isLeft;
       const newCol = this.col + controls.inputDirection.x;
-      if (newCol >= 0 && newCol < this.map.width && !this.map.map[this.row][newCol].content) {
+      if (newCol >= 0 && newCol < this.map.width && !this.map.grid[this.row][newCol].content) {
         this.animation = 'run';
         this.moving.x = controls.inputDirection.x;
         this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;

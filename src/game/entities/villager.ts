@@ -2,17 +2,17 @@ import { GameObject } from "@/core/game-object";
 import { GameAssets, VillagerStates } from "../game-assets";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 import { GameMap } from "../game-map";
-import { findNearestMatch, Position } from "@/core/util/path-findind";
 import { House } from "./house";
 
 export class Villager extends GameObject<VillagerStates> {
   map: GameMap;
-  home: House | null = null;
+  home: House;
+  atHome = true;
   lastDirection: { x: number; y: number } | null = null;
   moveTimer: number = 0;
   moveInterval: number = 1000;
 
-  constructor(col: number, row: number, map: GameMap) {
+  constructor(col: number, row: number, map: GameMap, home: House) {
     super(
       GameAssets.villager,
       col * CELL_WIDTH,
@@ -22,6 +22,7 @@ export class Villager extends GameObject<VillagerStates> {
       10,
     );
     this.map = map;
+    this.home = home;
   }
 
   update(timeElapsed: number): void {
@@ -35,31 +36,15 @@ export class Villager extends GameObject<VillagerStates> {
     this.updatePositionSmoothly(timeElapsed);
   }
 
-  findNearestHouse(): Position | null {
-    const maxSearchDistance = 30; // Maximum steps to search for a house
-
-    const housePosition = findNearestMatch(
-      this.map.map,
-      { x: this.col, y: this.row },
-      (cell) => {
-        // Check if the cell contains a house; multiple villagers can live in one house.
-        return cell?.content?.type === 'house';
-      },
-      maxSearchDistance
-    );
-
-    if (housePosition) {
-      this.home = this.map.map[housePosition.y][housePosition.x].content as House;
-      this.home.residents.push(this);
-    }
-
-    return housePosition;
-  }
-
   // Looks around for an empty cell to move to.
   // Has 50% chance of moving forward in the same direction as before.
   // Otherwise moves in a random direction, if that direction is free. 
   takeNextStep(): void {
+    if (this.atHome) {
+      this.tryToLeaveHome();
+      return;
+    }
+
     const directions = [
       { x: 0, y: -1 }, // north
       { x: 0, y: 1 },  // south
@@ -117,9 +102,21 @@ export class Villager extends GameObject<VillagerStates> {
     }
   }
 
+  tryToLeaveHome() {
+    debugger
+    const frontOfHome = { col: this.home.col, row: this.home.row + 1 };
+    if (!this.map.grid[frontOfHome.row][frontOfHome.col].content) {
+      this.atHome = false;
+      this.animation = 'idle';
+      this.map.grid[frontOfHome.row][frontOfHome.col].content = this;
+      this.setPos(frontOfHome.col, frontOfHome.row);
+
+    }
+  }
+
   private isValidMove(col: number, row: number): boolean {
     // Check if cell is empty
-    const cell = this.map.map[row][col];
+    const cell = this.map.grid[row][col];
     return cell.content === null;
   }
 }
