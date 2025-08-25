@@ -1,11 +1,24 @@
+import { on } from "@/core/event";
 import { MAX_LIVES } from "./constants";
 
 export class GameData {
   paused = false;
   lives = MAX_LIVES;
   superstition = 0;
+  superstitionCooldown = 0;
 
   constructor() {
+    on('scared', () => {
+      this.superstition += 0.05;
+      this.superstitionCooldown = 5000;
+    })
+  }
+
+  update(timeElapsed: number) {
+    this.superstitionCooldown -= timeElapsed;
+    if (this.superstition > 0 && this.superstitionCooldown <= 0) {
+      this.superstition -= (1 / timeElapsed) * 0.001
+    }
   }
 }
 

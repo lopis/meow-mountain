@@ -1,8 +1,9 @@
-export const on = (event: string, listener: () => void) => {
-  document.addEventListener(event, listener);
+export const on = (event: string, listener: (detail: any) => void) => {
+  document.addEventListener(event, (e: Event) => {
+    listener((e as CustomEvent).detail);
+  });
 }
 
-export const emit = (event: string) => {
-  console.log(`[Event] Emitting event: ${event}`);
-  document.dispatchEvent(new Event(event));
+export const emit = (event: string, data?: any) => {
+  document.dispatchEvent(new CustomEvent(event, { detail: data }));
 }

@@ -3,6 +3,7 @@ import { GameAssets, VillagerStates } from "../game-assets";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 import { GameMap } from "../game-map";
 import { House } from "./house";
+import { emit } from "@/core/event";
 
 export class Villager extends GameObject<VillagerStates> {
   map: GameMap;
@@ -11,6 +12,7 @@ export class Villager extends GameObject<VillagerStates> {
   lastDirection: { x: number; y: number } | null = null;
   moveTimer: number = 0;
   moveInterval: number = 1000;
+  isScared = false;
 
   constructor(col: number, row: number, map: GameMap, home: House) {
     super(
@@ -30,6 +32,10 @@ export class Villager extends GameObject<VillagerStates> {
 
     this.moveTimer += timeElapsed;
     if (this.seesCat()) {
+      if (!this.isScared && this.moveTimer >= this.moveInterval) {
+        this.moveTimer = 0;
+        emit('scared');
+      }
       this.animation = 'scared';
       this.animationDuration = 50;
     } else {

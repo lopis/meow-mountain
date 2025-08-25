@@ -41,6 +41,7 @@ class GameState implements State {
 
     this.map.update(timeElapsed);
     this.hud.update(timeElapsed);
+    this.gameData.update(timeElapsed);
     this.map.draw(this.cat.x, this.cat.y);
     this.hud.draw();
     drawEngine.resetCamera();
