@@ -53,5 +53,8 @@ export class Player extends GameObject<CatStates> {
     if (!this.moving.x && !this.moving.y) {
       this.animation = 'idle';
     }
+
+    // DEBUG
+    coords.innerText = `${this.col},${this.row}`;
   }
 }
