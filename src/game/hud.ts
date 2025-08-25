@@ -98,7 +98,7 @@ export class HUD {
     drawEngine.ctx3.fillStyle = colors.blue5;
     drawEngine.ctx3.fillRect(x + padding, y + padding, boxW - 2 * padding, boxH - 2 * padding);
 
-    drawEngine.ctx3.fillStyle = colors.blue2;
+    drawEngine.ctx3.fillStyle = this.gameData.superstition > 0.9 ? colors.purple4 : colors.blue2;
     const barSize = Math.round(this.gameData.superstition * (boxW - 2 * padding) / 3) * 3;
     drawEngine.ctx3.fillRect(x + padding, y + padding, barSize, boxH - 2 * padding);
 

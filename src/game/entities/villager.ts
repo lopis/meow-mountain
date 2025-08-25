@@ -75,7 +75,7 @@ export class Villager extends GameObject<VillagerStates> {
         x: superstitionBarX,
         y: superstitionBarY,
       },
-      size: 5,
+      size: 5 + Math.round(Math.random() * 5),
       color: colors.blue4,
       duration: 500,
     }
