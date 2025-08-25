@@ -29,11 +29,17 @@ export class Villager extends GameObject<VillagerStates> {
     super.update(timeElapsed);
 
     this.moveTimer += timeElapsed;
-    if (this.moveTimer >= this.moveInterval) {
-      this.takeNextStep();
-      this.moveTimer = 0;
+    if (this.seesCat()) {
+      this.animation = 'scared';
+      this.animationDuration = 50;
+    } else {
+      this.animationDuration = 150;
+      if (this.moveTimer >= this.moveInterval) {
+        this.takeNextStep();
+        this.moveTimer = 0;
+      }
+      this.updatePositionSmoothly(timeElapsed);
     }
-    this.updatePositionSmoothly(timeElapsed);
   }
 
   // Looks around for an empty cell to move to.
@@ -103,7 +109,6 @@ export class Villager extends GameObject<VillagerStates> {
   }
 
   tryToLeaveHome() {
-    debugger
     const frontOfHome = { col: this.home.col, row: this.home.row + 1 };
     if (!this.map.grid[frontOfHome.row][frontOfHome.col].content) {
       this.atHome = false;
@@ -118,5 +123,55 @@ export class Villager extends GameObject<VillagerStates> {
     // Check if cell is empty
     const cell = this.map.grid[row][col];
     return cell.content === null;
+  }
+
+  /**
+   * Checks the 9 squares in front of it, in the direction it is moving.
+   * Also checks the 8 squares around it.
+   * If there's a cat in any of them, immediately return true.
+   * Otherwise return false.
+   */
+  seesCat(): boolean {
+    // Get all cells to check
+    const cellsToCheck: Array<{ col: number; row: number }> = [];
+
+    // 8 squares around the villager
+    for (let dx = -1; dx <= 1; dx++) {
+      for (let dy = -1; dy <= 1; dy++) {
+        if (dx === 0 && dy === 0) continue; // Skip own position
+        cellsToCheck.push({ col: this.col + dx, row: this.row + dy });
+      }
+    }
+
+    // 9 squares in front (if we have a movement direction)
+    if (this.lastDirection) {
+      const frontCol = this.col + this.lastDirection.x;
+      const frontRow = this.row + this.lastDirection.y;
+
+      // Add the 3x3 grid in front
+      for (let dx = -1; dx <= 1; dx++) {
+        for (let dy = -1; dy <= 1; dy++) {
+          cellsToCheck.push({
+            col: frontCol + dx,
+            row: frontRow + dy
+          });
+        }
+      }
+    }
+
+    // Check each cell for a cat
+    for (const { col, row } of cellsToCheck) {
+      // Bounds check
+      if (row < 0 || row >= this.map.height || col < 0 || col >= this.map.width) {
+        continue;
+      }
+
+      const cell = this.map.grid[row][col];
+      if (cell.content?.type === 'cat') {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

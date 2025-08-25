@@ -4,8 +4,8 @@ import { Tileset } from "@/core/tileset";
 const catStates = ['sit', 'idle', 'walk', 'run', 'die', 'scratch', 'hop'];
 export type CatStates = typeof catStates[number];
 
-const villagerStates = ['walk', 'idle', 'scared'];
-export type VillagerStates = typeof villagerStates[number];
+export type VillagerStates = 'walk' | 'idle' | 'scared';
+const villagerStates: VillagerStates[] = ['walk', 'idle', 'scared'];
 
 export type Asset = 'spruce' | 'oak' | 'house' | 'field' | 'statue';
 const assets: Asset[] = ['spruce', 'oak', 'house', 'field', 'statue'];
