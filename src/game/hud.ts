@@ -82,14 +82,18 @@ export class HUD {
   }
 
   drawSuperstition() {
+    const text = 'superstition';
+    const size = 3;
+    const charWidth = 5;
     const padding = 5;
-    const boxW = 215;
+    const boxW = (text.length * size + padding * 2) * charWidth;
     const boxH = 35;
     const x = Math.round(c3.width / 2 - boxW / 2);
     const y = 16;
 
+    // Background
     drawEngine.ctx3.fillStyle = colors.purple0;
-    drawEngine.ctx3.fillRect(x, y, boxW, boxH);
+    drawEngine.ctx3.fillRect(x, y, boxW, 62);
 
     drawEngine.ctx3.fillStyle = colors.blue5;
     drawEngine.ctx3.fillRect(x + padding, y + padding, boxW - 2 * padding, boxH - 2 * padding);
@@ -98,8 +102,6 @@ export class HUD {
     const barSize = Math.round(this.gameData.superstition * (boxW - 2 * padding) / 3) * 3;
     drawEngine.ctx3.fillRect(x + padding, y + padding, barSize, boxH - 2 * padding);
 
-    const text = 'superstition';
-    const size = 3;
-    drawEngine.drawText({ text, x, y: y + boxH + size, color: colors.blue5, size }, drawEngine.ctx3);
+    drawEngine.drawText({ text, x: c3.width / 2, y: y + boxH + size, color: colors.blue5, size, textAlign: 'center' }, drawEngine.ctx3);
   }
 }
