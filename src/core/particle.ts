@@ -1,6 +1,7 @@
+import { on } from "./event";
 import { easeInExpo } from "./util/util";
 
-interface Particle {
+export interface Particle {
   from: { x: number, y: number },
   to: { x: number, y: number },
   size: number,
@@ -12,7 +13,11 @@ interface Particle {
 export class ParticleEngine {
   particles: Particle[] = [];
 
-  constructor(public ctx: CanvasRenderingContext2D) { }
+  constructor(public ctx: CanvasRenderingContext2D) {
+    on('particle', (particle: Particle) => {
+      this.createParticle(particle.from, particle.to, particle.size, particle.color, particle.duration);
+    })
+  }
 
   createParticle(
     from: { x: number, y: number },

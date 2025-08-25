@@ -23,11 +23,11 @@ class GameState implements State {
   particles!: ParticleEngine;
 
   onEnter() {
-    this.particles = new ParticleEngine(drawEngine.ctx1);
+    this.particles = new ParticleEngine(drawEngine.ctx3);
     this.gameData = new GameData();
     this.map = new GameMap(160, 160);
-    this.cat = new Player(65, 85, this.map);
-    // this.cat = new Player(130, 29, this.map);
+    // this.cat = new Player(65, 85, this.map);
+    this.cat = new Player(130, 29, this.map);
     this.actions = new Actions(this.map, this.cat);
     this.hud = new HUD(this.map, this.cat, this.actions, this.gameData);
     this.map.set(this.cat.col, this.cat.row, this.cat);

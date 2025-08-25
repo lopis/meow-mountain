@@ -4,6 +4,8 @@ import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 import { GameMap } from "../game-map";
 import { House } from "./house";
 import { emit } from "@/core/event";
+import { colors } from "@/core/util/color";
+import { drawEngine } from "@/core/draw-engine";
 
 export class Villager extends GameObject<VillagerStates> {
   map: GameMap;
@@ -35,6 +37,21 @@ export class Villager extends GameObject<VillagerStates> {
       if (!this.isScared && this.moveTimer >= this.moveInterval) {
         this.moveTimer = 0;
         emit('scared');
+
+        const particle = {
+          from: {
+            x: this.x + CELL_WIDTH / 2,
+            y: this.y - drawEngine.cameraY,
+          },
+          to: {
+            x: this.x,
+            y: this.y - 10,
+          },
+          size: 1,
+          color: colors.blue4,
+          duration: 300,
+        }
+        emit('particle', particle);
       }
       this.animation = 'scared';
       this.animationDuration = 50;

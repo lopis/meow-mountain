@@ -8,11 +8,11 @@ class DrawEngine {
   ctx3: CanvasRenderingContext2D;
 
   // Camera properties
-  private cameraX = 0;
-  private cameraY = 0;
-  private targetCameraX = 0;
-  private targetCameraY = 0;
-  private cameraLerpSpeed = 0.08; // Adjust for faster/slower camera
+  cameraX = 0;
+  cameraY = 0;
+  targetCameraX = 0;
+  targetCameraY = 0;
+  cameraLerpSpeed = 0.08; // Adjust for faster/slower camera
 
   constructor() {
     this.ctx1 = c1.getContext('2d');
