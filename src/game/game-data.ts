@@ -9,7 +9,7 @@ export class GameData {
 
   constructor() {
     on('scared', () => {
-      this.superstition += 0.05;
+      this.superstition = Math.min(1, this.superstition + 0.005);
       this.superstitionCooldown = 5000;
     })
   }

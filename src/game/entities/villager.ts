@@ -37,32 +37,10 @@ export class Villager extends GameObject<VillagerStates> {
       if (!this.isScared && this.moveTimer >= this.moveInterval) {
         this.moveTimer = 0;
         this.isScared = true;
+      }
+      if (this.moveTimer % (this.moveInterval / 5) < timeElapsed) {
         emit('scared');
-
-        // Convert world coordinates to screen coordinates for the particle
-        const screenPos = drawEngine.worldToScreen(
-          this.x + CELL_WIDTH / 2,
-          this.y
-        );
-
-        // Target the center of the superstition bar in the HUD
-        const superstitionBarX = drawEngine.canvasWidth / 2;
-        const superstitionBarY = 16 + 5 + (35 - 10) / 2; // y + padding + half of bar height
-
-        const particle = {
-          from: {
-            x: screenPos.x,
-            y: screenPos.y,
-          },
-          to: {
-            x: superstitionBarX,
-            y: superstitionBarY,
-          },
-          size: 1,
-          color: colors.blue4,
-          duration: 300,
-        }
-        emit('particle', particle);
+        this.emitParticle();
       }
       this.animation = 'scared';
       this.animationDuration = 50;
@@ -75,6 +53,33 @@ export class Villager extends GameObject<VillagerStates> {
       }
       this.updatePositionSmoothly(timeElapsed);
     }
+  }
+
+  emitParticle() {
+    // Convert world coordinates to screen coordinates for the particle
+    const screenPos = drawEngine.worldToScreen(
+      this.x + CELL_WIDTH / 2,
+      this.y
+    );
+
+    // Target the center of the superstition bar in the HUD
+    const superstitionBarX = drawEngine.canvasWidth / 2;
+    const superstitionBarY = 30;
+
+    const particle = {
+      from: {
+        x: screenPos.x - 10 + Math.round(Math.random() * 20),
+        y: screenPos.y - 50 + Math.round(Math.random() * 100),
+      },
+      to: {
+        x: superstitionBarX,
+        y: superstitionBarY,
+      },
+      size: 5,
+      color: colors.blue4,
+      duration: 500,
+    }
+    emit('particle', particle);
   }
 
   // Looks around for an empty cell to move to.

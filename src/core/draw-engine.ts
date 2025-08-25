@@ -125,15 +125,13 @@ class DrawEngine {
     this.targetCameraX = x;
     this.targetCameraY = y;
     this.targetZoom = zoom;
-    [this.ctx1, this.ctx2].forEach(ctx => {
-      const cx = this.canvasWidth / 2 - 32;
-      const cy = this.canvasHeight / 2 - 64;
-      ctx.setTransform(
-        this.zoom, 0, 0, this.zoom,
-        cx - this.cameraX * this.zoom,
-        cy - this.cameraY * this.zoom,
-      );
-    });
+    const cx = this.canvasWidth / 2 - 32;
+    const cy = this.canvasHeight / 2 - 64;
+    this.ctx1.setTransform(
+      this.zoom, 0, 0, this.zoom,
+      cx - this.cameraX * this.zoom,
+      cy - this.cameraY * this.zoom,
+    );
     if (immediate) {
       this.cameraX = x;
       this.cameraY = y;
@@ -149,7 +147,6 @@ class DrawEngine {
 
   resetCamera() {
     this.ctx1.setTransform(1, 0, 0, 1, 0, 0);
-    this.ctx2.setTransform(1, 0, 0, 1, 0, 0);
   }
 
   clear() {
