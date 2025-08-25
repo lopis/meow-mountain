@@ -110,7 +110,7 @@ export class Villager extends GameObject<VillagerStates> {
       this.animation = 'idle';
       this.map.grid[frontOfHome.row][frontOfHome.col].content = this;
       this.setPos(frontOfHome.col, frontOfHome.row);
-
+      this.y -= CELL_HEIGHT / 2;
     }
   }
 
