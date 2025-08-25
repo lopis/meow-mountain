@@ -27,9 +27,9 @@ export class Tree extends GameObject<Asset> {
 
   draw() {
     if (this.neighbors.right) {
-      drawEngine.drawForegroundImage(this.image, Math.round(this.x + CELL_WIDTH / 2), this.y - CELL_HEIGHT / 2);
+      drawEngine.drawBackgroundImage(this.image, Math.round(this.x + CELL_WIDTH / 2), this.y - CELL_HEIGHT / 2);
     }
 
-    drawEngine.drawForegroundImage(this.image, this.x, this.y);
+    drawEngine.drawBackgroundImage(this.image, this.x, this.y);
   }
 }

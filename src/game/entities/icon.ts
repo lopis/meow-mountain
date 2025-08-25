@@ -16,6 +16,6 @@ export class Icon {
   }
 
   draw() {
-    drawEngine.drawForegroundImage(this.icon, this.x, this.y);
+    drawEngine.drawBackgroundImage(this.icon, this.x, this.y);
   }
 }

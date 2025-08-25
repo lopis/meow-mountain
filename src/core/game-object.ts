@@ -62,7 +62,7 @@ export class GameObject<T extends string> {
     const animationFrame = Math.floor(this.animationTime / this.animationDuration) % animation.length;
 
     if (animation[animationFrame]) {
-      drawEngine.drawForegroundImage(
+      drawEngine.drawBackgroundImage(
         animation[animationFrame],
         this.x - (this.tileset.tileSize - CELL_WIDTH) / 2,
         this.y - (this.tileset.tileSize - CELL_HEIGHT) / 2,

@@ -80,8 +80,8 @@ export class Spirit extends Icon {
 
     // Shadow
     const shadow = Math.round(2 + 1 * phase) / 10
-    drawEngine.ctx2.fillStyle = `rgba(0,0,0,${shadow})`;
-    drawEngine.ctx2.fillRect(
+    drawEngine.ctx1.fillStyle = `rgba(0,0,0,${shadow})`;
+    drawEngine.ctx1.fillRect(
       this.x + 3,
       this.y + CELL_HEIGHT * 3 / 4,
       this.icon.width - 6,
@@ -89,14 +89,14 @@ export class Spirit extends Icon {
     )
 
     // Icon
-    drawEngine.ctx2.save();
-    drawEngine.ctx2.translate(
+    drawEngine.ctx1.save();
+    drawEngine.ctx1.translate(
       0,
       Math.round(
         (phase - 1) * 2
       )
     )
     super.draw();
-    drawEngine.ctx2.restore();
+    drawEngine.ctx1.restore();
   }
 }

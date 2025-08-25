@@ -10,6 +10,9 @@ import { on } from 'events';
 import { emit } from '@/core/event';
 import { GameData } from '@/game/game-data';
 import { Spirit } from '@/game/entities/spirit';
+import { ParticleEngine } from '@/core/particle';
+import { colors } from '@/core/util/color';
+import { CELL_HEIGHT, CELL_WIDTH } from '@/game/constants';
 
 class GameState implements State {
   map!: GameMap;
@@ -17,8 +20,10 @@ class GameState implements State {
   hud!: HUD;
   actions!: Actions;
   gameData!: GameData;
+  particles!: ParticleEngine;
 
   onEnter() {
+    this.particles = new ParticleEngine(drawEngine.ctx1);
     this.gameData = new GameData();
     this.map = new GameMap(160, 160);
     this.cat = new Player(65, 85, this.map);
@@ -39,6 +44,7 @@ class GameState implements State {
 
     this.map.update(timeElapsed);
     this.hud.update(timeElapsed);
+    this.particles.update(timeElapsed);
     this.gameData.update(timeElapsed);
     this.map.draw(this.cat.x, this.cat.y);
     this.hud.draw();
