@@ -9,6 +9,7 @@ import { Actions } from '@/game/actions';
 import { on } from 'events';
 import { emit } from '@/core/event';
 import { GameData } from '@/game/game-data';
+import { Spirit } from '@/game/entities/spirit';
 
 class GameState implements State {
   map!: GameMap;
@@ -17,18 +18,15 @@ class GameState implements State {
   actions!: Actions;
   gameData!: GameData;
 
-  constructor() {
-
-  }
-
   onEnter() {
     this.gameData = new GameData();
     this.map = new GameMap(160, 160);
-    // this.cat = new Player(65, 85, this.map);
-    this.cat = new Player(130, 29, this.map);
+    this.cat = new Player(65, 85, this.map);
+    // this.cat = new Player(130, 29, this.map);
     this.actions = new Actions(this.map, this.cat);
     this.hud = new HUD(this.map, this.cat, this.actions, this.gameData);
     this.map.set(this.cat.col, this.cat.row, this.cat);
+    this.map.set(this.cat.col, this.cat.row + 1, new Spirit(this.cat.col, this.cat.row + 1, '🥨'));
     drawEngine.setCamera(this.cat.x, this.cat.y - 20, 7, true);
   }
 

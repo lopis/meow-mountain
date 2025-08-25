@@ -36,6 +36,7 @@ export const emojiToPixelArt = (
   tmpCtx.font = `${fontSize}px sans-serif`;
   tmpCtx.textBaseline = "top";
   tmpCtx.clearRect(0, 0, spriteSize, spriteSize);
+  tmpCtx.translate(-1, 0);
   tmpCtx.fillText(emoji, padding, padding);
 
   // Read pixels
