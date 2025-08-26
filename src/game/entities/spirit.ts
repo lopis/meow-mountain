@@ -203,11 +203,6 @@ export class Spirit extends Icon {
           continue;
         }
 
-        // Check if spirits can pass through this cell
-        if (!this.canSpiritPassThrough(this.map.grid[newY][newX])) {
-          continue;
-        }
-
         visited.add(key);
 
         const newNode = {
@@ -236,17 +231,6 @@ export class Spirit extends Icon {
     return null; // No path found within maxSteps
   }
 
-  private canSpiritPassThrough(cell: any): boolean {
-    if (cell.content === null) {
-      return true;
-    }
-    
-    const contentType = cell.content.type;
-    const passableTypes = ['grass', 'dirt', 'flower', 'bush', 'cat'];
-    
-    return passableTypes.includes(contentType);
-  }
-
   private isValidMove(col: number, row: number): boolean {
     // Check bounds
     if (col < 0 || col >= this.map.width || row < 0 || row >= this.map.height) {
@@ -255,16 +239,8 @@ export class Spirit extends Icon {
 
     const cell = this.map.grid[row][col];
     
-    // Can move to empty cells or cells with the player
-    if (cell.content === null || cell.content.type === 'cat') {
-      return true;
-    }
-    
-    // Spirits can pass through some obstacles but not solid ones
-    const contentType = cell.content.type;
-    const passableTypes = ['grass', 'dirt', 'flower', 'bush'];
-    
-    return passableTypes.includes(contentType);
+    // Spirits can only move to empty cells
+    return cell.content === null;
   }
 
   draw() {
