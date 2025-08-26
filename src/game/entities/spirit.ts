@@ -60,6 +60,7 @@ export class Spirit extends Icon {
   animationTime = 0;
   species: SpiritSpecies;
   map: GameMap;
+  searchRadius = 3; // Search in a 6x6 box around the spirit
 
   constructor(
     col: number,
@@ -76,6 +77,30 @@ export class Spirit extends Icon {
     this.animationTime += timeElapsed * Math.pow(this.species.level, 2);
     if (this.animationTime >= this.animationDuration) {
       this.animationTime -= this.animationDuration;
+    }
+
+    // Search for the player in a box around the spirit
+    this.searchForPlayer();
+  }
+
+  private searchForPlayer() {
+    // Search in a box around the spirit using the search radius
+    for (let dx = -this.searchRadius; dx <= this.searchRadius; dx++) {
+      for (let dy = -this.searchRadius; dy <= this.searchRadius; dy++) {
+        const searchCol = this.col + dx;
+        const searchRow = this.row + dy;
+
+        // Check bounds
+        if (searchCol >= 0 && searchCol < this.map.width && 
+            searchRow >= 0 && searchRow < this.map.height) {
+          
+          const cell = this.map.grid[searchRow][searchCol];
+          if (cell.content?.type === 'cat') {
+            console.log('found the player');
+            return; // Exit early once player is found
+          }
+        }
+      }
     }
   }
 
