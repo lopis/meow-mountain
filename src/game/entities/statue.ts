@@ -70,7 +70,7 @@ export class Statue extends GameObject<Asset> {
       const spiritTypes = Object.keys(spirits) as SpiritType[];
       const randomType = spiritTypes[Math.floor(Math.random() * spiritTypes.length)];
       
-      const spirit = new Spirit(selectedPosition.x, selectedPosition.y, randomType);
+      const spirit = new Spirit(selectedPosition.x, selectedPosition.y, randomType, this.map);
       this.spirits.push(spirit);
       
       // Place the spirit directly in the map

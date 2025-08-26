@@ -2,6 +2,7 @@ import { emojiToPixelArt } from "@/core/emoji";
 import { Icon } from "./icon";
 import { drawEngine } from "@/core/draw-engine";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { GameMap } from "../game-map";
 
 export type SpiritType = '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -58,14 +59,17 @@ export class Spirit extends Icon {
   animationDuration = 2000;
   animationTime = 0;
   species: SpiritSpecies;
+  map: GameMap;
 
   constructor(
     col: number,
     row: number,
     type: SpiritType,
+    map: GameMap,
   ) {
     super(spirits[type].icon, col, row, 'spirit');
     this.species = spirits[type];
+    this.map = map;
   }
 
   update(timeElapsed: number) {
