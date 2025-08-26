@@ -3,6 +3,7 @@ import { Icon } from "./icon";
 import { drawEngine } from "@/core/draw-engine";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 import { GameMap } from "../game-map";
+import { findPath, Position } from "@/core/util/path-findind";
 
 export type SpiritType = '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -61,6 +62,10 @@ export class Spirit extends Icon {
   species: SpiritSpecies;
   map: GameMap;
   searchRadius = 3; // Search in a 6x6 box around the spirit
+  isChasing = false;
+  moveTimer = 0;
+  moveInterval = 800; // Time between moves when chasing
+  targetPos: { col: number; row: number } | null = null;
 
   constructor(
     col: number,
@@ -81,9 +86,20 @@ export class Spirit extends Icon {
 
     // Search for the player in a box around the spirit
     this.searchForPlayer();
+
+    // Handle movement when chasing
+    if (this.isChasing) {
+      this.moveTimer += timeElapsed;
+      if (this.moveTimer >= this.moveInterval) {
+        this.moveTowardsPlayer();
+        this.moveTimer = 0;
+      }
+    }
   }
 
   private searchForPlayer() {
+    let playerFound = false;
+    
     // Search in a box around the spirit using the search radius
     for (let dx = -this.searchRadius; dx <= this.searchRadius; dx++) {
       for (let dy = -this.searchRadius; dy <= this.searchRadius; dy++) {
@@ -96,12 +112,159 @@ export class Spirit extends Icon {
           
           const cell = this.map.grid[searchRow][searchCol];
           if (cell.content?.type === 'cat') {
+            playerFound = true;
+            this.isChasing = true;
+            this.targetPos = { col: searchCol, row: searchRow };
             console.log('found the player');
             return; // Exit early once player is found
           }
         }
       }
     }
+    
+    // If player not found, stop chasing
+    if (!playerFound) {
+      this.isChasing = false;
+      this.targetPos = null;
+    }
+  }
+
+  private moveTowardsPlayer() {
+    if (!this.targetPos) {
+      return;
+    }
+
+    // Find path to the player using spirit-specific pathfinding
+    const path = this.findSpiritPath();
+
+    if (!path || path.length <= 1) {
+      // No path found or already at target
+      return;
+    }
+
+    // Get the next step in the path (skip current position)
+    const nextStep = path[1];
+    const newCol = nextStep.x;
+    const newRow = nextStep.y;
+
+    // Check if the new position is valid
+    if (this.isValidMove(newCol, newRow)) {
+      // Update spirit position - GameMap will handle grid updates automatically
+      this.col = newCol;
+      this.row = newRow;
+      this.x = newCol * CELL_WIDTH;
+      this.y = newRow * CELL_HEIGHT;
+    }
+  }
+
+  private findSpiritPath(): Position[] | null {
+    const start = { x: this.col, y: this.row };
+    const maxSteps = this.searchRadius * 2;
+    
+    const height = this.map.height;
+    const width = this.map.width;
+
+    if (width === 0 || height === 0) return null;
+    if (start.y < 0 || start.y >= height || start.x < 0 || start.x >= width) return null;
+
+    // Check if starting position is the target
+    if (this.map.grid[start.y][start.x].content?.type === 'cat') {
+      return [start];
+    }
+
+    const visited = new Set<string>();
+    const queue: Array<{ position: Position; distance: number; previous?: any }> = [{ position: start, distance: 0 }];
+    visited.add(`${start.x},${start.y}`);
+
+    // Directions: north, south, east, west
+    const directions = [
+      { x: 0, y: -1 }, // north
+      { x: 0, y: 1 },  // south
+      { x: 1, y: 0 },  // east
+      { x: -1, y: 0 }  // west
+    ];
+
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+
+      // Check all 4 directions
+      for (const dir of directions) {
+        const newX = current.position.x + dir.x;
+        const newY = current.position.y + dir.y;
+        const newDistance = current.distance + 1;
+
+        // Check bounds and max steps
+        if (newX < 0 || newX >= width || newY < 0 || newY >= height || newDistance > maxSteps) {
+          continue;
+        }
+
+        const key = `${newX},${newY}`;
+        if (visited.has(key)) {
+          continue;
+        }
+
+        // Check if spirits can pass through this cell
+        if (!this.canSpiritPassThrough(this.map.grid[newY][newX])) {
+          continue;
+        }
+
+        visited.add(key);
+
+        const newNode = {
+          position: { x: newX, y: newY },
+          distance: newDistance,
+          previous: current
+        };
+
+        // Check if this cell contains the player
+        if (this.map.grid[newY][newX].content?.type === 'cat') {
+          // Reconstruct path
+          const path: Position[] = [];
+          let node: any = newNode;
+          while (node) {
+            path.unshift(node.position);
+            node = node.previous;
+          }
+          return path;
+        }
+
+        // Add to queue for further exploration
+        queue.push(newNode);
+      }
+    }
+
+    return null; // No path found within maxSteps
+  }
+
+  private canSpiritPassThrough(cell: any): boolean {
+    if (cell.content === null) {
+      return true;
+    }
+    
+    const contentType = cell.content.type;
+    const passableTypes = ['grass', 'dirt', 'flower', 'bush', 'cat'];
+    
+    return passableTypes.includes(contentType);
+  }
+
+  private isValidMove(col: number, row: number): boolean {
+    // Check bounds
+    if (col < 0 || col >= this.map.width || row < 0 || row >= this.map.height) {
+      return false;
+    }
+
+    const cell = this.map.grid[row][col];
+    
+    // Can move to empty cells or cells with the player
+    if (cell.content === null || cell.content.type === 'cat') {
+      return true;
+    }
+    
+    // Spirits can pass through some obstacles but not solid ones
+    const contentType = cell.content.type;
+    const passableTypes = ['grass', 'dirt', 'flower', 'bush'];
+    
+    return passableTypes.includes(contentType);
   }
 
   draw() {
