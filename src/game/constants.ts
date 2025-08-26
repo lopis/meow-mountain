@@ -1,9 +1,10 @@
+import { Position } from "@/core/util/path-findind";
 import { Circle, Path } from "./types";
 
 export const CELL_WIDTH = 11;
 export const CELL_HEIGHT = 11;
 
-export const MAX_LIVES = 7;
+export const MAX_LIVES = 9;
 
 export const paths: Path[] = [
   // Main path
@@ -30,6 +31,10 @@ export const paths: Path[] = [
   [{ x: 113, y: 109 }, { x: 122, y: 74 }, 5],
   [{ x: 122, y: 74 }, { x: 113, y: 56 }, 6],
 
+  // Smaller paths
+  [{ x: 45, y: 49 }, { x: 71, y: 51 }, 0.9],
+
+
   // Northwest village path
   [{ x: 91, y: 52 }, { x: 129, y: 29 }, 2],
 ];
@@ -42,4 +47,16 @@ export const clearings: Circle[] = [
 
   // Northeast village
   { x: 129, y: 28, r: 10 },
+
+  // Eye
+  { x: 71, y: 51, r: 3 },
 ]
+
+export const statues = {
+  moon: { x: 129, y: 19 },
+  heart: { x: 69, y: 88 },
+  ear: { x: 49, y: 29 },
+  eye: { x: 71, y: 50 },
+  foot: { x: 35, y: 131 },
+  tail: { x: 114, y: 56 },
+} as const;

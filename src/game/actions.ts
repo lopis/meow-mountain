@@ -1,8 +1,8 @@
-import { GameMap, statues } from "./game-map";
+import { GameMap } from "./game-map";
 import { Player } from "./entities/player";
-import { Statue } from "./entities/statue";
 import { controls } from "@/core/controls";
 import { emit } from "@/core/event";
+import { statues } from "./constants";
 
 const actions = [
   'teleport',
@@ -36,6 +36,6 @@ export class Actions {
 
   private ifFacingStatue(): boolean {
     const cellInFront = this.map.grid[this.player.row - 1][this.player.col];
-    return cellInFront.content?.type === 'statue' && this.player.col != statues.peak.x;
+    return cellInFront.content?.type === 'statue' && this.player.col != statues.heart.x;
   }
 }

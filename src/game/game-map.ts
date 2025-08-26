@@ -1,15 +1,10 @@
 import { Tree } from "./entities/tree";
 import { SeededRandom } from "@/core/util/rng";
 import { Village } from "./entities/village";
-import { CELL_HEIGHT, CELL_WIDTH, clearings, paths } from "./constants";
+import { CELL_HEIGHT, CELL_WIDTH, clearings, paths, statues } from "./constants";
 import { Position } from "@/core/util/path-findind";
 import { Statue } from "./entities/statue";
 import { Cell, Drawable } from "./types";
-
-export const statues: Record<string, Position> = {
-  northeast: { x: 129, y: 19 },
-  peak: { x: 69, y: 88 },
-};
 
 export class GameMap {
   grid: Cell[][];
@@ -89,23 +84,26 @@ export class GameMap {
     let x = from.x;
     let y = from.y;
 
-    const halfWidth = Math.floor(width / 2);
+    const halfWidth = width / 2;
 
     while (true) {
       // Add jitter to the clearing area
-      const jitterAmount = 1.0; // Adjust for more/less randomness
-      const jitterX = Math.round(this.rng.range(-jitterAmount, jitterAmount));
-      const jitterY = Math.round(this.rng.range(-jitterAmount, jitterAmount));
+      const jitterAmount = width < 1 ? 0 : 1.2; // Adjust for more/less randomness
+      const jitterX = Math.ceil(this.rng.range(-jitterAmount, jitterAmount));
+      const jitterY = Math.ceil(this.rng.range(-jitterAmount, jitterAmount));
 
       // Clear area around the current position with jitter
       for (let ox = -halfWidth; ox <= halfWidth; ox++) {
         for (let oy = -halfWidth; oy <= halfWidth; oy++) {
-          const clearX = x + ox + jitterX;
-          const clearY = y + oy + jitterY;
+          const clearX = Math.ceil(x + ox + jitterX);
+          const clearY = Math.ceil(y + oy + jitterY);
           if (clearY >= 0 && clearY < this.grid.length &&
             clearX >= 0 && clearX < this.grid[0].length) {
-            // Add probability for partial clearing to create natural edges
-            if (this.rng.next() > 0.1) { // 90% chance to clear
+            this.grid[clearY][clearX].content = null;
+            if (width < 1) {
+              this.grid[clearY][clearX + 1].content = null;
+            } else if (this.rng.next() > 0.1) {
+              // Add probability for partial clearing to create natural edges
               this.grid[clearY][clearX].content = null;
             }
           }
@@ -185,7 +183,7 @@ export class GameMap {
         if (distanceSquared <= radiusSquared) {
           cell?.content?.draw();
 
-          if (distanceSquared <= radiusSquared / 2) {
+          if (distanceSquared <= radiusSquared / 4) {
             cell.seen = true;
           }
 

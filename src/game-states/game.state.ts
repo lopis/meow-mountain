@@ -12,7 +12,7 @@ import { GameData } from '@/game/game-data';
 import { Spirit } from '@/game/entities/spirit';
 import { ParticleEngine } from '@/core/particle';
 import { colors } from '@/core/util/color';
-import { CELL_HEIGHT, CELL_WIDTH } from '@/game/constants';
+import { CELL_HEIGHT, CELL_WIDTH, statues } from '@/game/constants';
 
 class GameState implements State {
   map!: GameMap;
@@ -27,7 +27,7 @@ class GameState implements State {
     this.gameData = new GameData();
     this.map = new GameMap(160, 160);
     // this.cat = new Player(65, 85, this.map);
-    this.cat = new Player(130, 29, this.map);
+    this.cat = new Player(statues.ear.x, statues.ear.y + 3, this.map);
     this.actions = new Actions(this.map, this.cat);
     this.hud = new HUD(this.map, this.cat, this.actions, this.gameData);
     this.map.set(this.cat.col, this.cat.row, this.cat);

@@ -57,3 +57,18 @@ Level 2 quests are more involved and provide a small amount of favour every day
 - Brew a protection potion using ingredients and place it on a house
 - Reveal a hidden shortcut between villages
 - Defeat a wave of evil spirits
+
+## The Script
+
+- Cat: zzzz.... ??
+- Cat: Have I overslept? What day is it??
+- Game: New Goal: find the home barrier talisman
+- Cat: Crap. I slep so long the forest barrier came down.
+- Game: [x] Reactivate barrier
+- Cat: Something's wrong with the cat temples
+- Game: New Goal: fix the cat home temple
+- Game: [x] Scratch
+- Game: [x] Restore temple
+- Cat: The other temples must be down too.
+- Game: New Goal: Find and fix all 5 temples
+- Game: New Goal: Restore forest barrier

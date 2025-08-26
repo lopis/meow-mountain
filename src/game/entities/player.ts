@@ -1,8 +1,8 @@
 import { CatStates, GameAssets } from "@/game/game-assets";
 import { GameObject } from "../../core/game-object";
 import { controls } from "../../core/controls";
-import { GameMap, statues } from "../game-map";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { GameMap } from "../game-map";
+import { CELL_HEIGHT, CELL_WIDTH, statues } from "../constants";
 import { on } from "@/core/event";
 
 export class Player extends GameObject<CatStates> {
@@ -21,7 +21,7 @@ export class Player extends GameObject<CatStates> {
     this.map = map;
 
     on('teleport', () => {
-      this.setPos(statues.peak.x, statues.peak.y + 1);
+      this.setPos(statues.heart.x, statues.heart.y + 1);
     })
   }
 
