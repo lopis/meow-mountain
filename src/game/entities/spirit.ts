@@ -3,7 +3,7 @@ import { Icon } from "./icon";
 import { drawEngine } from "@/core/draw-engine";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 
-type SpiritType = '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
+export type SpiritType = '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
 interface SpiritSpecies {
   type: SpiritType,
@@ -11,7 +11,7 @@ interface SpiritSpecies {
   level: 1 | 2 | 3,
 }
 
-const icons: Record<SpiritType, SpiritSpecies> = {
+export const spirits: Record<SpiritType, SpiritSpecies> = {
   '🌵': {
     icon: emojiToPixelArt('🌵'),
     type: '🌵',
@@ -64,12 +64,12 @@ export class Spirit extends Icon {
     row: number,
     type: SpiritType,
   ) {
-    super(icons[type].icon, col, row, 'spirit');
-    this.species = icons[type];
+    super(spirits[type].icon, col, row, 'spirit');
+    this.species = spirits[type];
   }
 
   update(timeElapsed: number) {
-    this.animationTime += timeElapsed * this.species.level;
+    this.animationTime += timeElapsed * Math.pow(this.species.level, 2);
     if (this.animationTime >= this.animationDuration) {
       this.animationTime -= this.animationDuration;
     }

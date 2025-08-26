@@ -41,7 +41,7 @@ export class GameMap {
     }
 
     for (const statue of Object.values(statues)) {
-      this.grid[statue.y][statue.x].content = new Statue(statue.x, statue.y);
+      this.grid[statue.y][statue.x].content = new Statue(statue.x, statue.y, this);
     }
 
     // Calculate neighbor information for each tree

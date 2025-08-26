@@ -31,7 +31,6 @@ class GameState implements State {
     this.actions = new Actions(this.map, this.cat);
     this.hud = new HUD(this.map, this.cat, this.actions, this.gameData);
     this.map.set(this.cat.col, this.cat.row, this.cat);
-    this.map.set(this.cat.col, this.cat.row + 1, new Spirit(this.cat.col, this.cat.row + 1, '💀'));
     drawEngine.setCamera(this.cat.x, this.cat.y - 40, 5, true);
   }
 
