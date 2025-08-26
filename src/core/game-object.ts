@@ -1,8 +1,9 @@
 import { CELL_WIDTH, CELL_HEIGHT } from "@/game/constants";
 import { drawEngine } from "./draw-engine";
 import { Tileset } from "./tileset";
+import { updatePositionSmoothly, SmoothMovementState } from "../utils/smooth-movement";
 
-export class GameObject<T extends string> {
+export class GameObject<T extends string> implements SmoothMovementState {
   protected animationTime = 0;
   protected animationDuration = 150; // Duration for each animation frame in milliseconds
   public col: number;
@@ -16,7 +17,7 @@ export class GameObject<T extends string> {
     public y: number,
     public type: string,
     protected animation: T,
-    protected speed: number = 0,
+    public speed: number = 0,
     protected mirrored: boolean = false,
   ) {
     this.col = Math.ceil(x / CELL_WIDTH);
@@ -38,22 +39,9 @@ export class GameObject<T extends string> {
   }
 
   updatePositionSmoothly(timeElapsed: number) {
-    for (const axis of ['x', 'y'] as const) {
-      if (this[axis] !== this.targetPos[axis]) {
-        const d = this.targetPos[axis] - this[axis];
-        const step = Math.sign(d) * this.speed * timeElapsed / 1000;
-        if (Math.abs(step) >= Math.abs(d)) {
-          this[axis] = this.targetPos[axis];
-        } else {
-          this[axis] += step;
-        }
-        if (this.moving.x !== 0) {
-          this.mirrored = this.moving.x < 0;
-        }
-      } else {
-        this.moving[axis] = 0;
-        this[axis] = Math.round(this[axis]);
-      }
+    updatePositionSmoothly(this, timeElapsed);
+    if (this.moving.x !== 0) {
+      this.mirrored = this.moving.x < 0;
     }
   }
 

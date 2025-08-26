@@ -4,6 +4,7 @@ import { drawEngine } from "@/core/draw-engine";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 import { GameMap } from "../game-map";
 import { findPath, Position } from "@/core/util/path-findind";
+import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from "@/utils/smooth-movement";
 
 export type SpiritType = '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -56,16 +57,19 @@ export const spirits: Record<SpiritType, SpiritSpecies> = {
   },
 }
 
-export class Spirit extends Icon {
+export class Spirit extends Icon implements SmoothMovementState {
   animationDuration = 2000;
   animationTime = 0;
   species: SpiritSpecies;
   map: GameMap;
-  searchRadius = 3; // Search in a 6x6 box around the spirit
+  searchRadius = 7; // Search in a 6x6 box around the spirit
   isChasing = false;
   moveTimer = 0;
   moveInterval = 800; // Time between moves when chasing
-  targetPos: { col: number; row: number } | null = null;
+  targetPos: { x: number; y: number };
+  moving = { x: 0, y: 0 };
+  speed = 50; // Pixels per second
+  playerTarget: { col: number; row: number } | null = null;
 
   constructor(
     col: number,
@@ -76,6 +80,7 @@ export class Spirit extends Icon {
     super(spirits[type].icon, col, row, 'spirit');
     this.species = spirits[type];
     this.map = map;
+    this.targetPos = { x: this.x, y: this.y };
   }
 
   update(timeElapsed: number) {
@@ -83,6 +88,9 @@ export class Spirit extends Icon {
     if (this.animationTime >= this.animationDuration) {
       this.animationTime -= this.animationDuration;
     }
+
+    // Update smooth movement
+    updatePositionSmoothly(this, timeElapsed);
 
     // Search for the player in a box around the spirit
     this.searchForPlayer();
@@ -114,7 +122,7 @@ export class Spirit extends Icon {
           if (cell.content?.type === 'cat') {
             playerFound = true;
             this.isChasing = true;
-            this.targetPos = { col: searchCol, row: searchRow };
+            this.playerTarget = { col: searchCol, row: searchRow };
             console.log('found the player');
             return; // Exit early once player is found
           }
@@ -125,12 +133,12 @@ export class Spirit extends Icon {
     // If player not found, stop chasing
     if (!playerFound) {
       this.isChasing = false;
-      this.targetPos = null;
+      this.playerTarget = null;
     }
   }
 
   private moveTowardsPlayer() {
-    if (!this.targetPos) {
+    if (!this.playerTarget) {
       return;
     }
 
@@ -149,11 +157,20 @@ export class Spirit extends Icon {
 
     // Check if the new position is valid
     if (this.isValidMove(newCol, newRow)) {
-      // Update spirit position - GameMap will handle grid updates automatically
+      // Calculate movement direction before updating position
+      const deltaCol = newCol - this.col;
+      const deltaRow = newRow - this.row;
+      
+      // Update spirit grid position
       this.col = newCol;
       this.row = newRow;
-      this.x = newCol * CELL_WIDTH;
-      this.y = newRow * CELL_HEIGHT;
+      
+      // Set movement direction for visual feedback
+      this.moving.x = Math.sign(deltaCol);
+      this.moving.y = Math.sign(deltaRow);
+      
+      // Set target pixel position for smooth movement
+      setTargetPosition(this, newCol, newRow);
     }
   }
 
