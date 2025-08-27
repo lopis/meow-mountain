@@ -1,3 +1,10 @@
+import { Cell } from "./types";
+
+export interface Coords {
+  col: number;
+  row: number;
+}
+
 export interface Position {
   x: number;
   y: number;
@@ -8,6 +15,14 @@ export interface PathNode {
   distance: number;
   previous?: PathNode;
 }
+
+// Directions: north, south, east, west
+const directions: ReadonlyArray<Readonly<{ x: number; y: number }>> = [
+  { x: 0, y: -1 }, // north
+  { x: 0, y: 1 },  // south
+  { x: 1, y: 0 },  // east
+  { x: -1, y: 0 }  // west
+] as const;
 
 /**
  * Breadth-first search to find the nearest cell that matches a condition
@@ -37,14 +52,6 @@ export function findNearestMatch<T>(
   const visited = new Set<string>();
   const queue: PathNode[] = [{ pos: start, distance: 0 }];
   visited.add(`${start.x},${start.y}`);
-
-  // Directions: north, south, east, west
-  const directions = [
-    { x: 0, y: -1 }, // north
-    { x: 0, y: 1 },  // south
-    { x: 1, y: 0 },  // east
-    { x: -1, y: 0 }  // west
-  ];
 
   while (queue.length > 0) {
     const current = queue.shift()!;
@@ -83,3 +90,12 @@ export function findNearestMatch<T>(
 
   return null; // No matching cell found within maxSteps
 }
+
+export const findShortestPath = (
+  grid: Cell[][],
+  start: Coords,
+  goal: Coords,
+  maxSteps = 20,
+) => {
+  
+};
