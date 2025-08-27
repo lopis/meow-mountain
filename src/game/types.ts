@@ -11,6 +11,7 @@ export interface Cell {
   y: number;
   content: Drawable | null;
   seen?: boolean;
+  marked?: number;
 }
 
 export type Path = [{ x: number, y: number }, { x: number, y: number }, number];

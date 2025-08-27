@@ -91,11 +91,71 @@ export function findNearestMatch<T>(
   return null; // No matching cell found within maxSteps
 }
 
+const toKey = (col: number, row: number) => {
+  return `${col},${row}`;
+};
+
+// const fromKey = (key): Coords => {
+//   const [col ,row] = key.split(',').map(Number);
+//   return { col, row };
+// };
+
+const reconstructPath = (parents: Record<string, Coords>, start: Coords, goal: Coords) => {
+  const path: Coords[] = [];
+  let current = goal;
+  while (current != start) {
+    path.unshift(current);
+    current = parents[toKey(current.col, current.row)];
+  }
+  path.unshift(start);
+  return path;
+};
+
+/**
+ * Uses breadth-first-search to find the shortest path from
+ * start to goal, and returns the path as an array of coords.
+ * The path will take at most maxSteps steps.
+ * This algo assumes that the map is fully enclosed by a boundary
+ * so it is not checking whether the coordinates are valid.
+ */
 export const findShortestPath = (
   grid: Cell[][],
   start: Coords,
   goal: Coords,
-  maxSteps = 20,
+  maxSteps = 100,
 ) => {
-  
+  let steps = maxSteps;
+
+  // Start from person A’s position.
+  // Keep a queue of cells to explore.
+  const queue: Coords[] = [start];
+
+  // Keep a record of which cells you’ve already visited, so you don’t loop back.
+  const visited = new Set();
+
+  // Keep a map of coords->cells that keeps track of the paths taken
+  const parents: Record<string, Coords> = {};
+
+  while (queue.length !== 0 && steps--) {
+    // Get the oldest cell from the queue
+    const current = queue.shift() as Coords;
+    if (current.col === goal.col && current.row === goal.row) {
+      return reconstructPath(parents, start, goal);
+    }
+
+    // Check the 4 immediate neighbours
+    const neighbours = directions.map(({x, y}) => grid[current.row + y][current.col + x]);
+    neighbours.forEach((neighbour) => {
+      if (!visited.has(neighbour)) {
+        visited.add(neighbour);
+        if (neighbour.content === null || (neighbour.x == goal.col && neighbour.y == goal.row)) {
+          parents[toKey(neighbour.x, neighbour.y)] = current;
+          queue.push({ col: neighbour.x, row: neighbour.y });
+        }
+      }
+    });
+  }
+
+  console.log('No path was found');
 };
+

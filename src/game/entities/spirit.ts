@@ -1,9 +1,10 @@
 import { emojiToPixelArt } from "@/core/emoji";
 import { Icon } from "./icon";
 import { drawEngine } from "@/core/draw-engine";
-import { CELL_HEIGHT } from "../constants";
+import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 import { GameMap } from "../game-map";
-import { updatePositionSmoothly, SmoothMovementState } from "@/utils/smooth-movement";
+import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from "@/utils/smooth-movement";
+import { Coords, findShortestPath } from "../path-findind";
 
 export type SpiritType = '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -27,13 +28,12 @@ export class Spirit extends Icon implements SmoothMovementState {
   species: SpiritSpecies;
   map: GameMap;
   searchRadius = 7; // Search in a 6x6 box around the spirit
-  isChasing = false;
   moveTimer = 0;
-  moveInterval = 800; // Time between moves when chasing
+  moveInterval = 600; // Time between moves when chasing
   targetPos: { x: number; y: number };
   moving = { x: 0, y: 0 };
-  speed = 50; // Pixels per second
-  playerTarget: { col: number; row: number } | null = null;
+  speed = 20; // Pixels per second
+  playerTarget: Coords | null = null;
 
   constructor(
     col: number,
@@ -60,21 +60,19 @@ export class Spirit extends Icon implements SmoothMovementState {
     updatePositionSmoothly(this, timeElapsed);
 
     // Search for the player in a box around the spirit
-    this.searchForPlayer();
+    const playerCoords = this.lookAroundForPlayer();
 
     // Handle movement when chasing
-    if (this.isChasing) {
+    if (playerCoords) {
       this.moveTimer += timeElapsed;
       if (this.moveTimer >= this.moveInterval) {
-        this.moveTowardsPlayer();
+        this.moveTowardsPlayer(playerCoords);
         this.moveTimer = 0;
       }
     }
   }
 
-  private searchForPlayer() {
-    let playerFound = false;
-    
+  private lookAroundForPlayer(): Coords | null {
     // Search in a box around the spirit using the search radius
     for (let dx = -this.searchRadius; dx <= this.searchRadius; dx++) {
       for (let dy = -this.searchRadius; dy <= this.searchRadius; dy++) {
@@ -87,25 +85,30 @@ export class Spirit extends Icon implements SmoothMovementState {
           
           const cell = this.map.grid[searchRow][searchCol];
           if (cell.content?.type === 'cat') {
-            playerFound = true;
-            this.isChasing = true;
-            this.playerTarget = { col: searchCol, row: searchRow };
-            return; // Exit early once player is found
+            return { col: searchCol, row: searchRow };
           }
         }
       }
     }
     
-    // If player not found, stop chasing
-    if (!playerFound) {
-      this.isChasing = false;
-      this.playerTarget = null;
-    }
+    return null;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  private moveTowardsPlayer() {
-    // TODO: implement path finding towards the player.
+  private moveTowardsPlayer(playerCoords: Coords) {
+    const path = findShortestPath(
+      this.map.grid,
+      { col: this.col, row: this.row },
+      playerCoords,
+    );
+    if (path && path.length >= 2) {
+      const nextStep = path[1];
+      setTargetPosition(this, nextStep.col, nextStep.row);
+      this.col = nextStep.col;
+      this.row = nextStep.row;
+      this.targetPos.x = nextStep.col * CELL_WIDTH;
+      this.targetPos.y = nextStep.row * CELL_HEIGHT;
+    }
   }
 
   draw() {

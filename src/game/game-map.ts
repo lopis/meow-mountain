@@ -190,10 +190,14 @@ export class GameMap {
             cell.seen = true;
           }
 
-          // drawEngine.ctx1.strokeStyle = cell.content ? colors.green0 : colors.green1;
-          // drawEngine.ctx1.lineWidth = 0.1;
-          // drawEngine.ctx1.strokeRect(cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
         }
+        // if (cell.marked) {
+        //   drawEngine.ctx1.fillStyle = '#8d518055';
+        //   drawEngine.ctx1.fillRect(cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+        //   drawEngine.ctx1.font = '8px';
+        //   drawEngine.ctx1.fillStyle = 'black';
+        //   drawEngine.ctx1.fillText(cell.marked + '', cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT);
+        // }
       }
     }
   }
