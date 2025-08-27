@@ -25,6 +25,7 @@ console.log(spirits);
 export class Spirit extends Icon implements SmoothMovementState {
   animationDuration = 2000;
   animationTime = 0;
+  opacity = 0;
   species: SpiritSpecies;
   map: GameMap;
   searchRadius = 7; // Search in a 6x6 box around the spirit
@@ -50,6 +51,10 @@ export class Spirit extends Icon implements SmoothMovementState {
 
   update(timeElapsed: number) {
     this.animationTime += timeElapsed * Math.pow(this.species.level, 2);
+    if (this.opacity < 1) {
+      console.log(this.opacity);
+      this.opacity += timeElapsed / this.animationDuration;
+    }
     if (this.animationTime >= this.animationDuration) {
       this.animationTime -= this.animationDuration;
     }
@@ -227,6 +232,8 @@ export class Spirit extends Icon implements SmoothMovementState {
 
   draw() {
     const phase = Math.sin((this.animationTime / this.animationDuration) * 2 * Math.PI);
+    drawEngine.ctx1.save();
+    drawEngine.ctx1.globalAlpha = this.opacity;
 
     // Shadow
     const shadow = Math.round(2 + 1 * phase) / 10
@@ -247,6 +254,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       )
     )
     super.draw();
+    drawEngine.ctx1.restore();
     drawEngine.ctx1.restore();
   }
 }

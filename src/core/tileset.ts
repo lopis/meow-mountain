@@ -11,6 +11,7 @@ export class Tileset<T extends string> {
     private animationNames: readonly T[] = [], // Each row in the spritesheet is an animation
   ) {
     this.loadSpriteSheet();
+    console.log(this.animations);
   }
 
   /**
