@@ -8,7 +8,7 @@ export class Tileset<T extends string> {
   constructor(
     private spriteSheetPath: string,
     public tileSize: number = 16,
-    private animationNames: T[] = [], // Each row in the spritesheet is an animation
+    private animationNames: readonly T[] = [], // Each row in the spritesheet is an animation
   ) {
     this.loadSpriteSheet();
   }

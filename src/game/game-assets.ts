@@ -1,14 +1,14 @@
 import { emojiToPixelArt } from "@/core/emoji";
 import { Tileset } from "@/core/tileset";
 
-const catStates = ['sit', 'idle', 'walk', 'run', 'die', 'scratch', 'hop'];
+const catStates = ['sit', 'idle', 'walk', 'run', 'die', 'scratch', 'hop', 'sleep'] as const;
 export type CatStates = typeof catStates[number];
 
-export type VillagerStates = 'walk' | 'idle' | 'scared';
-const villagerStates: VillagerStates[] = ['walk', 'idle', 'scared'];
+const villagerStates = ['walk', 'idle', 'scared'] as const;
+export type VillagerStates = typeof villagerStates[number];
 
-export type Asset = 'spruce' | 'oak' | 'house' | 'field' | 'statue';
-const assets: Asset[] = ['spruce', 'oak', 'house', 'field', 'statue'];
+const assets = ['spruce', 'oak', 'house', 'field', 'statue'];
+export type Asset = typeof assets[number];
 const emoji = '🔥,🍀,🌼,🐓,🌷,🌹,👻,🥚,🍎'.split(',');
 
 export const icons = emoji.map(e => emojiToPixelArt(e));
