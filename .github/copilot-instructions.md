@@ -20,6 +20,11 @@
 - Reference existing code patterns and project structure
 - When writing typescript, "any" is not acceptable
 - Use proper TS types and interfaces
+- Whenever possible, set class properties in the constructor signature, e.g.:
+```ts
+  constructor(private readonly name: string, public age: number) {}
+```
+- Use the above whenever possible.
 
 ## JS13k specific Instructions
 - Code size matters, so it's ok to forgo certain code best practices
