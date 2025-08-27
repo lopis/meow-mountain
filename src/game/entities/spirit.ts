@@ -1,9 +1,8 @@
-import { emojiToPixelArt } from "@/core/emoji";
-import { Icon } from "./icon";
+import { emojiToPixelArt } from "@/core/emoji"; import { Icon } from "./icon";
 import { drawEngine } from "@/core/draw-engine";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { CELL_HEIGHT } from "../constants";
 import { GameMap } from "../game-map";
-import { findPath, Position } from "@/core/util/path-findind";
+import { Position } from "@/core/util/path-findind";
 import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from "@/utils/smooth-movement";
 
 export type SpiritType = '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
@@ -11,51 +10,17 @@ export type SpiritType = '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '
 interface SpiritSpecies {
   type: SpiritType,
   icon: HTMLImageElement,
-  level: 1 | 2 | 3,
+  level: number,
 }
 
-export const spirits: Record<SpiritType, SpiritSpecies> = {
-  '🌵': {
-    icon: emojiToPixelArt('🌵'),
-    type: '🌵',
-    level: 1,
-  },
-  '🥨': {
-    icon: emojiToPixelArt('🥨'),
-    type: '🥨',
-    level: 1,
-  },
-  '🧚🏻‍♀️': {
-    icon: emojiToPixelArt('🧚🏻‍♀️'),
-    type: '🧚🏻‍♀️',
-    level: 1,
-  },
-  '🦀': {
-    icon: emojiToPixelArt('🦀'),
-    type: '🦀',
-    level: 2,
-  },
-  '👻': {
-    icon: emojiToPixelArt('👻'),
-    type: '👻',
-    level: 2,
-  },
-  '👹': {
-    icon: emojiToPixelArt('👹'),
-    type: '👹',
-    level: 3,
-  },
-  '🧿': {
-    icon: emojiToPixelArt('🧿'),
-    type: '🧿',
-    level: 3,
-  },
-  '💀': {
-    icon: emojiToPixelArt('💀'),
-    type: '💀',
-    level: 3,
-  },
-}
+export const spirits = ([
+  '🌵', '🥨', '🧚🏻‍♀️', '🦀', '👻', '👹', '🧿', '💀'
+] as const).reduce<Record<SpiritType, SpiritSpecies>>((acc, type, index) => {
+  acc[type] = { icon: emojiToPixelArt(type), type, level: Math.ceil((index + 1) / 2) };
+  return acc;
+}, {} as Record<SpiritType, SpiritSpecies>);
+console.log(spirits);
+
 
 export class Spirit extends Icon implements SmoothMovementState {
   animationDuration = 2000;
