@@ -101,7 +101,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       { col: this.col, row: this.row },
       playerCoords,
     );
-    if (path && path.length >= 2) {
+    if (path && path.length > 2) {
       const nextStep = path[1];
       setTargetPosition(this, nextStep.col, nextStep.row);
       this.col = nextStep.col;
