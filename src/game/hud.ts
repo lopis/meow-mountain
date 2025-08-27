@@ -25,7 +25,7 @@ export class HUD {
   }
 
   draw() {
-    this.drawLives();
+    HUD.drawLives();
     this.drawSuperstition();
     this.drawActions();
     this.miniMap.draw(this.player);
@@ -35,13 +35,13 @@ export class HUD {
     const x = drawEngine.ctx3.canvas.width / 2;
     const y = drawEngine.ctx3.canvas.height - 40;
     const fontSize = 3;
-    const width = 300;
-    const height = fontSize * 10;
+    const boxWidth = 300;
+    const boxHeight = fontSize * 10;
     drawEngine.ctx3.clearRect(
-      x - width / 2,
-      y - height / 2,
-      width,
-      height,
+      x - boxWidth / 2,
+      y - boxHeight / 2,
+      boxWidth,
+      boxHeight,
     );
 
     const actionLabel = this.actions.currentAction;
@@ -49,10 +49,10 @@ export class HUD {
       // Draw background box
       drawEngine.ctx3.fillStyle = colors.purple2;
       drawEngine.ctx3.fillRect(
-        x - width / 2,
-        y - height / 2,
-        width,
-        height,
+        x - boxWidth / 2,
+        y - boxHeight / 2,
+        boxWidth,
+        boxHeight,
       );
 
       // Draw text
@@ -68,7 +68,7 @@ export class HUD {
     }
   }
 
-  drawLives() {
+  static drawLives() {
     const x = 16;
     const y = 16;
     const text = HEART.repeat(MAX_LIVES);

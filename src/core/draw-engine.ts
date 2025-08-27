@@ -1,6 +1,5 @@
 import { GameAssets } from "@/game/game-assets";
 import { drawText, DrawTextProps } from "./font";
-import { easeInOutSine } from "./util/util";
 
 class DrawEngine {
   ctx1: CanvasRenderingContext2D;
@@ -26,19 +25,21 @@ class DrawEngine {
     window.addEventListener('orientationchange', () => this.resizeCanvas());
   }
 
-  init() {
-
-  }
-
   resizeCanvas() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    this.ctx1.canvas.width = width;
-    this.ctx1.canvas.height = height;
-    this.ctx2.canvas.width = width;
-    this.ctx2.canvas.height = height;
-    this.ctx3.canvas.width = width;
-    this.ctx3.canvas.height = height;
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+    // eslint-disable-next-line id-denylist
+    this.ctx1.canvas.width = screenWidth;
+    // eslint-disable-next-line id-denylist
+    this.ctx1.canvas.height = screenHeight;
+    // eslint-disable-next-line id-denylist
+    this.ctx2.canvas.width = screenWidth;
+    // eslint-disable-next-line id-denylist
+    this.ctx2.canvas.height = screenHeight;
+    // eslint-disable-next-line id-denylist
+    this.ctx3.canvas.width = screenWidth;
+    // eslint-disable-next-line id-denylist
+    this.ctx3.canvas.height = screenHeight;
     this.ctx1.imageSmoothingEnabled = false;
     this.ctx2.imageSmoothingEnabled = false;
     this.ctx3.imageSmoothingEnabled = false;
@@ -56,26 +57,26 @@ class DrawEngine {
     drawText(context || this.ctx2, textProps);
   }
 
-  private drawImage(
+  static drawImage(
     ctx: CanvasRenderingContext2D,
-    image: HTMLImageElement,
+    img: HTMLImageElement,
     x: number,
     y: number,
     mirrored?: boolean,
-    width?: number,
-    height?: number,
+    imgWidth?: number,
+    imgWeight?: number,
   ) {
     if (mirrored) {
       ctx.save();
       ctx.scale(-1, 1);
-      x = -x - (width ?? image.width);
+      x = -x - (imgWidth ?? img.width);
     }
     ctx.drawImage(
-      image,
+      img,
       x,
       y,
-      width ?? image.width,
-      height ?? image.height,
+      imgWidth ?? img.width,
+      imgWeight ?? img.height,
     );
     if (mirrored) {
       ctx.restore();
@@ -83,36 +84,36 @@ class DrawEngine {
   }
 
   drawBackgroundImage(
-    image: HTMLImageElement,
+    img: HTMLImageElement,
     x: number,
     y: number,
     mirrored?: boolean,
-    width?: number,
-    height?: number,
+    imgWidth?: number,
+    imgHeight?: number,
   ) {
-    this.drawImage(this.ctx1, image, x, y, mirrored, width, height);
+    DrawEngine.drawImage(this.ctx1, img, x, y, mirrored, imgWidth, imgHeight);
   }
 
   drawForegroundImage(
-    image: HTMLImageElement,
+    img: HTMLImageElement,
     x: number,
     y: number,
     mirrored?: boolean,
-    width?: number,
-    height?: number,
+    imgWidth?: number,
+    imgHeight?: number,
   ) {
-    this.drawImage(this.ctx2, image, x, y, mirrored, width, height);
+    DrawEngine.drawImage(this.ctx2, img, x, y, mirrored, imgWidth, imgHeight);
   }
 
   drawUIImage(
-    image: HTMLImageElement,
+    img: HTMLImageElement,
     x: number,
     y: number,
     mirrored?: boolean,
-    width?: number,
-    height?: number,
+    imgWidth?: number,
+    imgHeight?: number,
   ) {
-    this.drawImage(this.ctx3, image, x, y, mirrored, width, height);
+    DrawEngine.drawImage(this.ctx3, img, x, y, mirrored, imgWidth, imgHeight);
   }
 
   /**
@@ -151,8 +152,8 @@ class DrawEngine {
 
   clear() {
     this.resetCamera();
-    this.ctx1.clearRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
-    this.ctx2.clearRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
+    this.ctx1.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.ctx2.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
   }
 
   /**

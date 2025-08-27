@@ -52,7 +52,7 @@ export class Statue extends GameObject<Asset> {
         const y = this.row + dy;
         
         // Check bounds
-        if (x >= 0 && x < this.map.width && y >= 0 && y < this.map.height) {
+        if (x >= 0 && x < this.map.colCount && y >= 0 && y < this.map.rowCount) {
           // Check if cell is empty
           if (this.map.grid[y][x].content === null) {
             emptyCells.push({ x, y });

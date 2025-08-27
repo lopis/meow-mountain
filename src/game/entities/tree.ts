@@ -4,7 +4,7 @@ import { CELL_WIDTH, CELL_HEIGHT } from "@/game/constants";
 import { GameObject } from "@/core/game-object";
 
 export class Tree extends GameObject<Asset> {
-  private image: HTMLImageElement;
+  private img: HTMLImageElement;
   private neighbors: { top: boolean; bottom: boolean; left: boolean; right: boolean } = {
     top: false,
     bottom: false,
@@ -18,7 +18,7 @@ export class Tree extends GameObject<Asset> {
     assetType: Asset,
   ) {
     super(GameAssets.assets, x, y, assetType, assetType);
-    this.image = GameAssets.assets.animations[assetType][0];
+    this.img = GameAssets.assets.animations[assetType][0];
   }
 
   setNeighbors(neighbors: { top: boolean; bottom: boolean; left: boolean; right: boolean }) {
@@ -27,9 +27,9 @@ export class Tree extends GameObject<Asset> {
 
   draw() {
     if (this.neighbors.right) {
-      drawEngine.drawBackgroundImage(this.image, Math.round(this.x + CELL_WIDTH / 2), this.y - CELL_HEIGHT / 2);
+      drawEngine.drawBackgroundImage(this.img, Math.round(this.x + CELL_WIDTH / 2), this.y - CELL_HEIGHT / 2);
     }
 
-    drawEngine.drawBackgroundImage(this.image, this.x, this.y);
+    drawEngine.drawBackgroundImage(this.img, this.x, this.y);
   }
 }

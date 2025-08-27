@@ -22,7 +22,7 @@ export class Player extends GameObject<CatStates> {
 
     on('teleport', () => {
       this.setPos(statues.heart.x, statues.heart.y + 1);
-    })
+    });
   }
 
   update(timeElapsed: number) {
@@ -31,7 +31,7 @@ export class Player extends GameObject<CatStates> {
 
     if (!this.moving.y && controls.inputDirection.y) {
       const newRow = this.row + controls.inputDirection.y;
-      if (newRow >= 0 && newRow < this.map.height && !this.map.grid[newRow][this.col].content) {
+      if (newRow >= 0 && newRow < this.map.rowCount && !this.map.grid[newRow][this.col].content) {
         this.animation = 'run';
         this.moving.y = controls.inputDirection.y;
         this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;
@@ -42,7 +42,7 @@ export class Player extends GameObject<CatStates> {
     if (!this.moving.x && controls.inputDirection.x) {
       this.mirrored = controls.isLeft;
       const newCol = this.col + controls.inputDirection.x;
-      if (newCol >= 0 && newCol < this.map.width && !this.map.grid[this.row][newCol].content) {
+      if (newCol >= 0 && newCol < this.map.colCount && !this.map.grid[this.row][newCol].content) {
         this.animation = 'run';
         this.moving.x = controls.inputDirection.x;
         this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;

@@ -27,8 +27,8 @@ export class Village {
         if (villager.atHome) {
           villager.update(timeElapsed);
         }
-      })
-    })
+      });
+    });
   }
 
   generateHouses(rng: SeededRandom): House[] {
@@ -81,7 +81,7 @@ export class Village {
   }
 
   generateVillagers(map: GameMap): Villager[] {
-    const residents = this.population / this.houseCount
+    const residents = this.population / this.houseCount;
     this.houses.forEach(house => {
       while (house.residents.length < residents) {
         const villager = new Villager(house.x, house.y, map, house);

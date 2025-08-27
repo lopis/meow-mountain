@@ -11,13 +11,13 @@ export class GameData {
     on('scared', () => {
       this.superstition = Math.min(1, this.superstition + 0.005);
       this.superstitionCooldown = 5000;
-    })
+    });
   }
 
   update(timeElapsed: number) {
     this.superstitionCooldown -= timeElapsed;
     if (this.superstition > 0 && this.superstitionCooldown <= 0) {
-      this.superstition -= (1 / timeElapsed) * 0.001
+      this.superstition -= (1 / timeElapsed) * 0.001;
     }
   }
 }

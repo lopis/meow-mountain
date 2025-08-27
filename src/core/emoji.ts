@@ -11,7 +11,7 @@ const quantizeToPalette = (r: number, g: number, b: number, a: number) => {
   const qb = Math.round(b / 51) * 51;
 
   return [qr, qg, qb, 255];
-}
+};
 
 /**
  * Converts an emoji to a pixelated image by quantizing the colors
@@ -22,13 +22,15 @@ export const emojiToPixelArt = (
   fontSize = 10,
 ) => {
   // Some emoji are a bit bigger than the font
-  const spriteScale = 0.25
+  const spriteScale = 0.25;
   const spriteSize = Math.floor(fontSize * (1 + spriteScale));
   const padding = Math.floor(fontSize * spriteScale / 2);
 
   // Create temporary canvas
   const tmpCanvas = document.createElement("canvas");
+  // eslint-disable-next-line id-denylist
   tmpCanvas.width = spriteSize;
+  // eslint-disable-next-line id-denylist
   tmpCanvas.height = spriteSize;
   const tmpCtx = tmpCanvas.getContext("2d") as CanvasRenderingContext2D;
 
@@ -61,7 +63,9 @@ export const emojiToPixelArt = (
 
   // Create a new canvas to draw the quantized image
   const outCanvas = document.createElement("canvas");
+  // eslint-disable-next-line id-denylist
   outCanvas.width = spriteSize;
+  // eslint-disable-next-line id-denylist
   outCanvas.height = spriteSize;
   const outCtx = outCanvas.getContext("2d") as CanvasRenderingContext2D;
   outCtx.putImageData(outImg, 0, 0);
@@ -70,7 +74,7 @@ export const emojiToPixelArt = (
   const img = new Image();
   img.src = outCanvas.toDataURL();
   return img;
-}
+};
 
 
 // const ctx = c.getContext("2d");

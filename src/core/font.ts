@@ -27,8 +27,8 @@ const createImageData = async (text: string, size: number, color: string, space:
   const letterWidth = 5 * size;
   const spacing = space * size;
   const spaced = letterWidth + spacing;
-  const width = spaced * text.length - spacing;
-  const imageData = new ImageData(width, letterWidth);
+  const imgWidth = spaced * text.length - spacing;
+  const imageData = new ImageData(imgWidth, letterWidth);
   // this.context.getImageData(x - offsetX, y + offsetY, width, 5);
   const [r, g, b, a] = hexToRgb(color);
   text
@@ -44,8 +44,8 @@ const createImageData = async (text: string, size: number, color: string, space:
             const baseIndex = (
               (i * spaced) + // character
               (jSize % (letterWidth)) + // pixel
-              (size * width * Math.floor(jSize / letterWidth)) + // line
-              (width * q)
+              (size * imgWidth * Math.floor(jSize / letterWidth)) + // line
+              (imgWidth * q)
             ) * 4;
 
             // Draw 1 pixel (4 channels)
@@ -85,9 +85,9 @@ export const drawText = (
   const letterWidth = 5 * size;
   const spacing = space * size;
   const spaced = letterWidth + spacing;
-  const width = spaced * text.length - spacing;
+  const totalWidth = spaced * text.length - spacing;
   const id = text + color + size;
-  const offsetX = textAlign === 'left' ? 0 : textAlign === 'center' ? Math.round(width / 2) : width;
+  const offsetX = textAlign === 'left' ? 0 : textAlign === 'center' ? Math.round(totalWidth / 2) : totalWidth;
   const offsetY = textBaseline === 'top' ? 0 : textBaseline === 'middle' ? Math.round(letterWidth / 2) : letterWidth;
   if (bitmaps[id]) {
     const maxWidth = maxLetters * spaced;

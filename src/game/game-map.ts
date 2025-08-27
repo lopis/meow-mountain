@@ -2,7 +2,6 @@ import { Tree } from "./entities/tree";
 import { SeededRandom } from "@/core/util/rng";
 import { Village } from "./entities/village";
 import { CELL_HEIGHT, CELL_WIDTH, clearings, paths, statues } from "./constants";
-import { Position } from "@/core/util/path-findind";
 import { Statue } from "./entities/statue";
 import { Cell, Drawable } from "./types";
 
@@ -11,11 +10,11 @@ export class GameMap {
   villages: Village[] = [];
   private rng: SeededRandom;
 
-  constructor(public readonly width: number, public readonly height: number) {
+  constructor(public readonly colCount: number, public readonly rowCount: number) {
     this.rng = new SeededRandom();
 
-    this.grid = Array.from({ length: height }, (_, y) =>
-      Array.from({ length: width }, (_, x) => {
+    this.grid = Array.from({ length: rowCount }, (_a, y) =>
+      Array.from({ length: colCount }, (_b, x) => {
         const tree = new Tree(
           x * CELL_WIDTH - (16 - CELL_WIDTH) / 2, // Adjust x to center the image
           y * CELL_HEIGHT - (16 - CELL_HEIGHT) / 2, // Adjust y to center the image
@@ -45,8 +44,8 @@ export class GameMap {
     }
 
     // Calculate neighbor information for each tree
-    for (let y = 0; y < height; y++) {
-      for (let x = 0; x < width; x++) {
+    for (let y = 0; y < rowCount; y++) {
+      for (let x = 0; x < colCount; x++) {
         const cell = this.grid[y][x];
         if (cell.content instanceof Tree) {
           const neighbors = {
@@ -73,7 +72,11 @@ export class GameMap {
     }
   }
 
-  private clearPathWithJitter(from: { x: number, y: number }, to: { x: number, y: number }, width: number) {
+  private clearPathWithJitter(
+    from: { x: number, y: number },
+    to: { x: number, y: number },
+    pathWidth: number,
+  ) {
     // Bresenham's line algorithm for any angle
     const dx = Math.abs(to.x - from.x);
     const dy = Math.abs(to.y - from.y);
@@ -84,11 +87,11 @@ export class GameMap {
     let x = from.x;
     let y = from.y;
 
-    const halfWidth = width / 2;
+    const halfWidth = pathWidth / 2;
 
     while (true) {
       // Add jitter to the clearing area
-      const jitterAmount = width < 1 ? 0 : 1.2; // Adjust for more/less randomness
+      const jitterAmount = pathWidth < 1 ? 0 : 1.2; // Adjust for more/less randomness
       const jitterX = Math.ceil(this.rng.range(-jitterAmount, jitterAmount));
       const jitterY = Math.ceil(this.rng.range(-jitterAmount, jitterAmount));
 
@@ -100,7 +103,7 @@ export class GameMap {
           if (clearY >= 0 && clearY < this.grid.length &&
             clearX >= 0 && clearX < this.grid[0].length) {
             this.grid[clearY][clearX].content = null;
-            if (width < 1) {
+            if (pathWidth < 1) {
               this.grid[clearY][clearX + 1].content = null;
             } else if (this.rng.next() > 0.1) {
               // Add probability for partial clearing to create natural edges
@@ -126,8 +129,8 @@ export class GameMap {
   }
 
   private clearCircleWithJitter(centerX: number, centerY: number, radius: number) {
-    for (let y = 0; y < this.height; y++) {
-      for (let x = 0; x < this.width; x++) {
+    for (let y = 0; y < this.rowCount; y++) {
+      for (let x = 0; x < this.colCount; x++) {
         const dx = x - centerX;
         const dy = y - centerY;
         const distance = Math.sqrt(dx * dx + dy * dy);

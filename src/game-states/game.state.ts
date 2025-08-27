@@ -1,18 +1,12 @@
 import { State } from '@/core/state';
 import { drawEngine } from '@/core/draw-engine';
-import { controls } from '@/core/controls';
 import { Player } from '@/game/entities/player';
 import { GameMap } from '@/game/game-map';
-import { MiniMap } from '@/game/mini-map';
 import { HUD } from '@/game/hud';
 import { Actions } from '@/game/actions';
-import { on } from 'events';
-import { emit } from '@/core/event';
 import { GameData } from '@/game/game-data';
-import { Spirit } from '@/game/entities/spirit';
 import { ParticleEngine } from '@/core/particle';
-import { colors } from '@/core/util/color';
-import { CELL_HEIGHT, CELL_WIDTH, statues } from '@/game/constants';
+import { statues } from '@/game/constants';
 
 class GameState implements State {
   map!: GameMap;

@@ -4,15 +4,12 @@ import { controls } from "@/core/controls";
 import { emit } from "@/core/event";
 import { statues } from "./constants";
 
-const actions = [
-  'teleport',
-  'scratch',
-] as const;
+type Action = 'teleport' | 'scratch';
 
 export class Actions {
   map: GameMap;
   player: Player;
-  currentAction: Partial<typeof actions[number]> | null = null;
+  currentAction: Partial<Action> | null = null;
 
   constructor(map: GameMap, player: Player) {
     this.map = map;

@@ -1,4 +1,3 @@
-import { Position } from "@/core/util/path-findind";
 import { Circle, Path } from "./types";
 
 export const CELL_WIDTH = 11;
@@ -50,7 +49,7 @@ export const clearings: Circle[] = [
 
   // Eye
   { x: 71, y: 51, r: 3 },
-]
+];
 
 export const statues = {
   moon: { x: 129, y: 19 },

@@ -8,11 +8,6 @@ import { menuState } from './game-states/menu.state';
 // @ts-ignore -- is not undefined for sure
 document.querySelector('link[type="image/x-icon"]').href = 'data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'%3E%3Ctext y=\'.9em\' font-size=\'85\'%3E💜%3C/text%3E%3C/svg%3E';
 
-
-async function init() {
-  await drawEngine.init();
-}
-
 let previousTime = 0;
 let fpsBacklog: number[] = [];
 
@@ -44,8 +39,6 @@ function update(currentTime: number) {
   // }
 };
 
-init()
-.then(() => {
-  createGameStateMachine(menuState);
-  setInterval(update, 16);
-});
+
+createGameStateMachine(menuState);
+setInterval(update, 16);

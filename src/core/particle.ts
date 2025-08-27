@@ -16,7 +16,7 @@ export class ParticleEngine {
   constructor(public ctx: CanvasRenderingContext2D) {
     on('particle', (particle: Particle) => {
       this.createParticle(particle.from, particle.to, particle.size, particle.color, particle.duration);
-    })
+    });
   }
 
   createParticle(
@@ -26,7 +26,7 @@ export class ParticleEngine {
     color: string,
     duration: number,
   ) {
-    this.particles.push({ from, to, size, color, duration, time: 0 })
+    this.particles.push({ from, to, size, color, duration, time: 0 });
   }
 
   update(timeElapsed: number) {
@@ -40,7 +40,7 @@ export class ParticleEngine {
         y,
         particle.size,
         particle.size,
-      )
+      );
       particle.time += timeElapsed;
     });
     this.particles = this.particles.filter(particle => particle.time < particle.duration);

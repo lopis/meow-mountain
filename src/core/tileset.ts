@@ -11,7 +11,6 @@ export class Tileset<T extends string> {
     private animationNames: readonly T[] = [], // Each row in the spritesheet is an animation
   ) {
     this.loadSpriteSheet();
-    console.log(this.animations);
   }
 
   /**
@@ -19,30 +18,32 @@ export class Tileset<T extends string> {
    */
   private loadSpriteSheet() {
     // Load the sprite sheet image from the provided path
-    const image = new Image();
-    image.src = this.spriteSheetPath;
+    const img = new Image();
+    img.src = this.spriteSheetPath;
 
     // Wait for the image to load before processing
-    image.onload = () => {
-      this.processSpriteSheet(image);
+    img.onload = () => {
+      this.processSpriteSheet(img);
     };
   }
 
   /**
    * Processes the loaded sprite sheet image and splits it into tiles and animations.
    */
-  private processSpriteSheet(image: HTMLImageElement) {
+  private processSpriteSheet(img: HTMLImageElement) {
     // Split the image into tiles and animations
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // Set canvas dimensions to match the sprite sheet
-    canvas.width = image.width;
-    canvas.height = image.height;
+    // eslint-disable-next-line id-denylist
+    canvas.width = img.width;
+    // eslint-disable-next-line id-denylist
+    canvas.height = img.height;
 
     // Draw the sprite sheet onto the canvas
-    ctx.drawImage(image, 0, 0);
+    ctx.drawImage(img, 0, 0);
 
     // Extract tiles and animations from the canvas
     this.extractTilesAndAnimations(ctx);
@@ -58,7 +59,9 @@ export class Tileset<T extends string> {
       for (let col = 0; col < colCount; col++) {
         const tile = ctx.getImageData(col * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
         const tileCanvas = document.createElement("canvas");
+        // eslint-disable-next-line id-denylist
         tileCanvas.width = this.tileSize;
+        // eslint-disable-next-line id-denylist
         tileCanvas.height = this.tileSize;
         const tileCtx = tileCanvas.getContext("2d");
         if (tileCtx) {

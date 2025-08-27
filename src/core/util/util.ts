@@ -11,4 +11,4 @@ export const easeInOutSine = (x: number, min: number, max: number): number => {
  */
 export const easeInExpo = (x: number, ease = 5): number => {
   return x === 1 ? 1 : 1 - Math.pow(2, -ease * x);
-}
+};

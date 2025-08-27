@@ -1,9 +1,9 @@
-import { emojiToPixelArt } from "@/core/emoji"; import { Icon } from "./icon";
+import { emojiToPixelArt } from "@/core/emoji";
+import { Icon } from "./icon";
 import { drawEngine } from "@/core/draw-engine";
 import { CELL_HEIGHT } from "../constants";
 import { GameMap } from "../game-map";
-import { Position } from "@/core/util/path-findind";
-import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from "@/utils/smooth-movement";
+import { updatePositionSmoothly, SmoothMovementState } from "@/utils/smooth-movement";
 
 export type SpiritType = '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -19,8 +19,6 @@ export const spirits = ([
   acc[type] = { icon: emojiToPixelArt(type), type, level: Math.ceil((index + 1) / 2) };
   return acc;
 }, {} as Record<SpiritType, SpiritSpecies>);
-console.log(spirits);
-
 
 export class Spirit extends Icon implements SmoothMovementState {
   animationDuration = 2000;
@@ -52,7 +50,6 @@ export class Spirit extends Icon implements SmoothMovementState {
   update(timeElapsed: number) {
     this.animationTime += timeElapsed * Math.pow(this.species.level, 2);
     if (this.opacity < 1) {
-      console.log(this.opacity);
       this.opacity += timeElapsed / this.animationDuration;
     }
     if (this.animationTime >= this.animationDuration) {
@@ -85,15 +82,14 @@ export class Spirit extends Icon implements SmoothMovementState {
         const searchRow = this.row + dy;
 
         // Check bounds
-        if (searchCol >= 0 && searchCol < this.map.width && 
-            searchRow >= 0 && searchRow < this.map.height) {
+        if (searchCol >= 0 && searchCol < this.map.colCount && 
+            searchRow >= 0 && searchRow < this.map.rowCount) {
           
           const cell = this.map.grid[searchRow][searchCol];
           if (cell.content?.type === 'cat') {
             playerFound = true;
             this.isChasing = true;
             this.playerTarget = { col: searchCol, row: searchRow };
-            console.log('found the player');
             return; // Exit early once player is found
           }
         }
@@ -107,127 +103,9 @@ export class Spirit extends Icon implements SmoothMovementState {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private moveTowardsPlayer() {
-    if (!this.playerTarget) {
-      return;
-    }
-
-    // Find path to the player using spirit-specific pathfinding
-    const path = this.findSpiritPath();
-
-    if (!path || path.length <= 1) {
-      // No path found or already at target
-      return;
-    }
-
-    // Get the next step in the path (skip current position)
-    const nextStep = path[1];
-    const newCol = nextStep.x;
-    const newRow = nextStep.y;
-
-    // Check if the new position is valid
-    if (this.isValidMove(newCol, newRow)) {
-      // Calculate movement direction before updating position
-      const deltaCol = newCol - this.col;
-      const deltaRow = newRow - this.row;
-      
-      // Update spirit grid position
-      this.col = newCol;
-      this.row = newRow;
-      
-      // Set movement direction for visual feedback
-      this.moving.x = Math.sign(deltaCol);
-      this.moving.y = Math.sign(deltaRow);
-      
-      // Set target pixel position for smooth movement
-      setTargetPosition(this, newCol, newRow);
-    }
-  }
-
-  private findSpiritPath(): Position[] | null {
-    const start = { x: this.col, y: this.row };
-    const maxSteps = this.searchRadius * 2;
-    
-    const height = this.map.height;
-    const width = this.map.width;
-
-    if (width === 0 || height === 0) return null;
-    if (start.y < 0 || start.y >= height || start.x < 0 || start.x >= width) return null;
-
-    // Check if starting position is the target
-    if (this.map.grid[start.y][start.x].content?.type === 'cat') {
-      return [start];
-    }
-
-    const visited = new Set<string>();
-    const queue: Array<{ position: Position; distance: number; previous?: any }> = [{ position: start, distance: 0 }];
-    visited.add(`${start.x},${start.y}`);
-
-    // Directions: north, south, east, west
-    const directions = [
-      { x: 0, y: -1 }, // north
-      { x: 0, y: 1 },  // south
-      { x: 1, y: 0 },  // east
-      { x: -1, y: 0 }  // west
-    ];
-
-    while (queue.length > 0) {
-      const current = queue.shift()!;
-
-      // Check all 4 directions
-      for (const dir of directions) {
-        const newX = current.position.x + dir.x;
-        const newY = current.position.y + dir.y;
-        const newDistance = current.distance + 1;
-
-        // Check bounds and max steps
-        if (newX < 0 || newX >= width || newY < 0 || newY >= height || newDistance > maxSteps) {
-          continue;
-        }
-
-        const key = `${newX},${newY}`;
-        if (visited.has(key)) {
-          continue;
-        }
-
-        visited.add(key);
-
-        const newNode = {
-          position: { x: newX, y: newY },
-          distance: newDistance,
-          previous: current
-        };
-
-        // Check if this cell contains the player
-        if (this.map.grid[newY][newX].content?.type === 'cat') {
-          // Reconstruct path
-          const path: Position[] = [];
-          let node: any = newNode;
-          while (node) {
-            path.unshift(node.position);
-            node = node.previous;
-          }
-          return path;
-        }
-
-        // Add to queue for further exploration
-        queue.push(newNode);
-      }
-    }
-
-    return null; // No path found within maxSteps
-  }
-
-  private isValidMove(col: number, row: number): boolean {
-    // Check bounds
-    if (col < 0 || col >= this.map.width || row < 0 || row >= this.map.height) {
-      return false;
-    }
-
-    const cell = this.map.grid[row][col];
-    
-    // Spirits can only move to empty cells
-    return cell.content === null;
+    // TODO: implement path finding towards the player.
   }
 
   draw() {
@@ -236,14 +114,14 @@ export class Spirit extends Icon implements SmoothMovementState {
     drawEngine.ctx1.globalAlpha = this.opacity;
 
     // Shadow
-    const shadow = Math.round(2 + 1 * phase) / 10
+    const shadow = Math.round(2 + 1 * phase) / 10;
     drawEngine.ctx1.fillStyle = `rgba(0,0,0,${shadow})`;
     drawEngine.ctx1.fillRect(
       this.x + 3,
       this.y + CELL_HEIGHT * 3 / 4,
       this.icon.width - 6,
       CELL_HEIGHT / 4 + 1,
-    )
+    );
 
     // Icon
     drawEngine.ctx1.save();
@@ -252,7 +130,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       Math.round(
         (phase - 1) * 2
       )
-    )
+    );
     super.draw();
     drawEngine.ctx1.restore();
     drawEngine.ctx1.restore();

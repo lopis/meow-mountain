@@ -78,7 +78,7 @@ export class Villager extends GameObject<VillagerStates> {
       size: 5 + Math.round(Math.random() * 5),
       color: colors.blue4,
       duration: 500,
-    }
+    };
     emit('particle', particle);
   }
 
@@ -116,12 +116,12 @@ export class Villager extends GameObject<VillagerStates> {
       // Shuffle directions for random selection
       const shuffledDirections = [...directions].sort(() => Math.random() - 0.5);
 
-      for (const direction of shuffledDirections) {
-        const newCol = this.col + direction.x;
-        const newRow = this.row + direction.y;
+      for (const dir of shuffledDirections) {
+        const newCol = this.col + dir.x;
+        const newRow = this.row + dir.y;
 
         if (this.isValidMove(newCol, newRow)) {
-          targetDirection = direction;
+          targetDirection = dir;
           break;
         }
       }
@@ -202,7 +202,7 @@ export class Villager extends GameObject<VillagerStates> {
     // Check each cell for a cat
     for (const { col, row } of cellsToCheck) {
       // Bounds check
-      if (row < 0 || row >= this.map.height || col < 0 || col >= this.map.width) {
+      if (row < 0 || row >= this.map.rowCount || col < 0 || col >= this.map.colCount) {
         continue;
       }
 
