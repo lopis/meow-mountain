@@ -61,8 +61,9 @@ Level 2 quests are more involved and provide a small amount of favour every day
 ## The Script
 
 - Cat: zzzz.... ??
-- Cat: Have I overslept? What day is it??
-- Game: New Goal: find the home barrier talisman
+- Cat: Have I overslept?
+- Cat: Evil spirits? Has the barrier come down?
+- Game: New Goal: find the barrier obelisk
 - Cat: Crap. I slep so long the forest barrier came down.
 - Game: [x] Reactivate barrier
 - Cat: Something's wrong with the cat temples

@@ -6,6 +6,7 @@ import { HUD } from '@/game/hud';
 import { Actions } from '@/game/actions';
 import { GameData } from '@/game/game-data';
 import { ParticleEngine } from '@/core/particle';
+import { GameStory } from '@/game/game-story';
 
 class GameState implements State {
   map!: GameMap;
@@ -14,16 +15,18 @@ class GameState implements State {
   actions!: Actions;
   gameData!: GameData;
   particles!: ParticleEngine;
+  story!: GameStory;
 
   onEnter() {
     this.particles = new ParticleEngine(drawEngine.ctx2);
     this.gameData = new GameData();
     this.map = new GameMap(160, 160);
-    this.cat = new Player(65, 85, this.map);
-    // this.cat = new Player(statues.ear.x, statues.ear.y + 3, this.map);
-    
+    this.cat = new Player(60, 85, this.map);
     this.actions = new Actions(this.map, this.cat);
     this.hud = new HUD(this.map, this.cat, this.actions, this.gameData);
+    this.story = new GameStory();
+    // this.cat = new Player(statues.ear.x, statues.ear.y + 3, this.map);
+    
     this.map.set(this.cat.col, this.cat.row, this.cat);
     drawEngine.setCamera(this.cat.x, this.cat.y - 40, 5, true);
   }
@@ -32,13 +35,15 @@ class GameState implements State {
     drawEngine.setCamera(this.cat.x, this.cat.y, 7);
     drawEngine.updateCamera();
 
-    // Update actions based on player position
-    this.actions.update();
+    if (!(this.gameData.cutscene || this.gameData.paused)) {
+      this.actions.update();
+      this.map.update(timeElapsed);
+      this.hud.update(timeElapsed);
+      this.particles.update(timeElapsed);
+      this.gameData.update(timeElapsed);
+    }
+    this.story.update(timeElapsed);
 
-    this.map.update(timeElapsed);
-    this.hud.update(timeElapsed);
-    this.particles.update(timeElapsed);
-    this.gameData.update(timeElapsed);
     this.map.draw(this.cat.x, this.cat.y);
     this.hud.draw();
     drawEngine.resetCamera();

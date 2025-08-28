@@ -5,7 +5,7 @@ interface DialogState {
   dialogs: string[];
 }
 
-interface Script {
+export interface Script {
   [stateKey: string]: DialogState;
 }
 
@@ -19,14 +19,13 @@ export class Story {
   public currentState: string | null = null;
 
   constructor(private readonly script: Script) {
-    
     // Listen for story-state-enter events
     on('story-state-enter', (stateKey: string) => {
       this.enterState(stateKey);
     });
   }
 
-  private enterState(stateKey: string) {
+  public enterState(stateKey: string) {
     if (!this.script[stateKey]) {
       return;
     }

@@ -7,9 +7,11 @@ import { Player } from "./entities/player";
 import { Actions } from "./actions";
 import { GameData } from "./game-data";
 import { MAX_LIVES } from "./constants";
+import { DialogBox } from "./dialog-box";
 
 export class HUD {
   miniMap: MiniMap;
+  dialogBox: DialogBox;
 
   constructor(
     map: GameMap,
@@ -18,6 +20,7 @@ export class HUD {
     public gameData: GameData,
   ) {
     this.miniMap = new MiniMap(map);
+    this.dialogBox = new DialogBox();
   }
 
   update(timeElapsed: number) {
@@ -29,6 +32,7 @@ export class HUD {
     this.drawSuperstition();
     this.drawActions();
     this.miniMap.draw(this.player);
+    this.dialogBox.draw();
   }
 
   drawActions() {

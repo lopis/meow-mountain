@@ -8,6 +8,7 @@ import { on } from "@/core/event";
 export class Player extends GameObject<CatStates> {
   map: GameMap;
   type = 'cat';
+  sleeping = true;
 
   constructor(col: number, row: number, map: GameMap) {
     super(
@@ -15,7 +16,7 @@ export class Player extends GameObject<CatStates> {
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
       'cat',
-      'idle',
+      'sleep',
       80,
     );
     this.map = map;
@@ -23,35 +24,44 @@ export class Player extends GameObject<CatStates> {
     on('teleport', () => {
       this.setPos(statues.heart.x, statues.heart.y + 1);
     });
+
+    on('wake-up', () => {
+      this.sleeping = false;
+    });
   }
 
   update(timeElapsed: number) {
     super.update(timeElapsed);
-    super.updatePositionSmoothly(timeElapsed);
+    
+    if (this.sleeping) {
+      this.animation = 'sleep';
+    } else {
+      super.updatePositionSmoothly(timeElapsed);
 
-    if (!this.moving.y && controls.inputDirection.y) {
-      const newRow = this.row + controls.inputDirection.y;
-      if (newRow >= 0 && newRow < this.map.rowCount && !this.map.grid[newRow][this.col].content) {
-        this.animation = 'run';
-        this.moving.y = controls.inputDirection.y;
-        this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;
-        this.row = newRow;
+      if (!this.moving.y && controls.inputDirection.y) {
+        const newRow = this.row + controls.inputDirection.y;
+        if (newRow >= 0 && newRow < this.map.rowCount && !this.map.grid[newRow][this.col].content) {
+          this.animation = 'run';
+          this.moving.y = controls.inputDirection.y;
+          this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;
+          this.row = newRow;
+        }
       }
-    }
 
-    if (!this.moving.x && controls.inputDirection.x) {
-      this.mirrored = controls.isLeft;
-      const newCol = this.col + controls.inputDirection.x;
-      if (newCol >= 0 && newCol < this.map.colCount && !this.map.grid[this.row][newCol].content) {
-        this.animation = 'run';
-        this.moving.x = controls.inputDirection.x;
-        this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;
-        this.col = newCol;
+      if (!this.moving.x && controls.inputDirection.x) {
+        this.mirrored = controls.isLeft;
+        const newCol = this.col + controls.inputDirection.x;
+        if (newCol >= 0 && newCol < this.map.colCount && !this.map.grid[this.row][newCol].content) {
+          this.animation = 'run';
+          this.moving.x = controls.inputDirection.x;
+          this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;
+          this.col = newCol;
+        }
       }
-    }
 
-    if (!this.moving.x && !this.moving.y) {
-      this.animation = 'idle';
+      if (!this.moving.x && !this.moving.y) {
+        this.animation = 'idle';
+      }
     }
 
     // DEBUG

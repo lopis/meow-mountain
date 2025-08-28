@@ -52,8 +52,8 @@ export const clearings: Circle[] = [
 ];
 
 export const statues = {
-  moon: { x: 129, y: 19 },
   heart: { x: 69, y: 88 },
+  moon: { x: 129, y: 19 },
   ear: { x: 49, y: 29 },
   eye: { x: 71, y: 50 },
   foot: { x: 35, y: 131 },

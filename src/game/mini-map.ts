@@ -29,10 +29,11 @@ export class MiniMap {
     }
 
     this.lastUpdate = 0;
-    const ctx = drawEngine.ctx3;
+    const ctx = drawEngine.ctx4;
     const mapSize = 160;
-    const x = ctx.canvas.width - mapSize - 10; // Bottom right with 10px margin
-    const y = ctx.canvas.height - mapSize - 10;
+    const margin = 10;
+    const x = ctx.canvas.width - mapSize - margin; // Bottom right with margin
+    const y = ctx.canvas.height - mapSize - margin;
 
     // Clear previous minimap
     ctx.clearRect(x, y, mapSize, mapSize);

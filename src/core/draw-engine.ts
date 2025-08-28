@@ -5,6 +5,7 @@ class DrawEngine {
   ctx1: CanvasRenderingContext2D;
   ctx2: CanvasRenderingContext2D;
   ctx3: CanvasRenderingContext2D;
+  ctx4: CanvasRenderingContext2D;
 
   // Camera properties
   cameraX = 0;
@@ -19,6 +20,7 @@ class DrawEngine {
     this.ctx1 = c1.getContext('2d');
     this.ctx2 = c2.getContext('2d');
     this.ctx3 = c3.getContext('2d');
+    this.ctx4 = c4.getContext('2d');
     GameAssets.initialize();
     this.resizeCanvas();
     window.addEventListener('resize', () => this.resizeCanvas());
@@ -40,9 +42,14 @@ class DrawEngine {
     this.ctx3.canvas.width = screenWidth;
     // eslint-disable-next-line id-denylist
     this.ctx3.canvas.height = screenHeight;
+    // eslint-disable-next-line id-denylist
+    this.ctx4.canvas.width = screenWidth;
+    // eslint-disable-next-line id-denylist
+    this.ctx4.canvas.height = screenHeight;
     this.ctx1.imageSmoothingEnabled = false;
     this.ctx2.imageSmoothingEnabled = false;
     this.ctx3.imageSmoothingEnabled = false;
+    this.ctx4.imageSmoothingEnabled = false;
   }
 
   get canvasWidth() {
@@ -154,6 +161,7 @@ class DrawEngine {
     this.resetCamera();
     this.ctx1.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     this.ctx2.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    this.ctx3.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
   }
 
   /**

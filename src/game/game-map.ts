@@ -39,8 +39,13 @@ export class GameMap {
       this.clearCircleWithJitter(clearing.x, clearing.y, clearing.r);
     }
 
-    for (const statue of Object.values(statues)) {
-      this.grid[statue.y][statue.x].content = new Statue(statue.x, statue.y, this);
+    for (const statueProps of Object.entries(statues)) {
+      const [ name, {x, y} ] = statueProps;
+      const statue = new Statue(x, y, this);
+      if (name === 'heart') {
+        statue.maxSpirits = 0;
+      }
+      this.grid[y][x].content = statue;
     }
 
     // Calculate neighbor information for each tree

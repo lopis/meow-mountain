@@ -19,7 +19,7 @@ export type DrawTextProps = {
 }
 
 const getCharacterData = (letter: string) => {
-  if (letter === ' ') return { paddedBinary: '0'.repeat(25), leftmostCol: 0, charWidth: 3 };
+  if (letter === '0') return { paddedBinary: '0'.repeat(25), leftmostCol: 0, charWidth: 5 };
   
   const paddedBinary = String(parseInt(letter, 36).toString(2)).padStart(25, '0');
   let leftmostCol = 5;

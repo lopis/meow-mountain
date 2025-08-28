@@ -23,8 +23,9 @@
     --white: var(--yellow0);
 }
 
-#c1, #c2, #c3 {
-    width: min(100vw, calc(100vh * 16/9));
+canvas {
+    height: 100%;
+    width: 100%;
     position: absolute;
     image-rendering: pixelated; /* You definitely want this if you are doing pixel art */
 }

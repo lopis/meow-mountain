@@ -3,6 +3,7 @@ import { MAX_LIVES } from "./constants";
 
 export class GameData {
   paused = false;
+  cutscene = true;
   lives = MAX_LIVES;
   superstition = 0;
   superstitionCooldown = 0;
@@ -11,6 +12,14 @@ export class GameData {
     on('scared', () => {
       this.superstition = Math.min(1, this.superstition + 0.005);
       this.superstitionCooldown = 5000;
+    });
+
+    on('cutscene-start', () => {
+      this.cutscene = true;
+    });
+
+    on('cutscene-end', () => {
+      this.cutscene = false;
     });
   }
 
