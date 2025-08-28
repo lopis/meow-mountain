@@ -73,7 +73,7 @@ export class Player extends GameObject<CatStates> {
         this.animationTime = 0;
 
         // Check if there is an enemy right in front
-        this.attackEnemyInFront();
+        addTimeEvent(() => this.attackEnemyInFront(), 500);
 
         addTimeEvent(() => {
           this.attacking = false;
@@ -94,12 +94,7 @@ export class Player extends GameObject<CatStates> {
     const cell = this.map.grid[targetRow][targetCol];
     if (cell.content && cell.content.type === 'spirit') {
       const spirit = cell.content as Spirit;
-      const isDead = spirit.takeDamage(1);
-      
-      if (isDead) {
-        // Remove spirit from the map
-        cell.content = null;
-      }
+      spirit.takeDamage(1);
     }
   }
 }

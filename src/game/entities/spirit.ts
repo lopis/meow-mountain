@@ -5,6 +5,8 @@ import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 import { GameMap } from "../game-map";
 import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from "@/utils/smooth-movement";
 import { Coords, findShortestPath } from "../path-findind";
+import { addTimeEvent } from "@/core/timer";
+import { colors } from "@/core/util/color";
 
 export type SpiritType = '🎈' | '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -17,7 +19,7 @@ interface SpiritSpecies {
 export const spirits = ([
   '🎈', '🥨', '🌵', '🧚🏻‍♀️', '🦀', '👻', '👹', '🧿', '💀'
 ] as const).reduce<Record<SpiritType, SpiritSpecies>>((acc, type, index) => {
-  acc[type] = { icon: emojiToPixelArt(type), type, level: Math.ceil((index + 1) / 2) };
+  acc[type] = { icon: emojiToPixelArt(type), type, level: Math.ceil((index) / 2) };
   return acc;
 }, {} as Record<SpiritType, SpiritSpecies>);
 
@@ -34,7 +36,9 @@ export class Spirit extends Icon implements SmoothMovementState {
   moving = { x: 0, y: 0 };
   speed = 20; // Pixels per second
   playerTarget: Coords | null = null;
+  maxHp: number;
   hp: number;
+  dead = false;
 
   constructor(
     col: number,
@@ -46,10 +50,15 @@ export class Spirit extends Icon implements SmoothMovementState {
     this.species = spirits[type];
     this.map = map;
     this.targetPos = { x: this.x, y: this.y };
-    this.hp = Math.pow(2, this.species.level);
+    this.maxHp = Math.round(Math.pow(1.5, this.species.level + 1));
+    this.hp = this.maxHp;
   }
 
   update(timeElapsed: number) {
+    if (this.hp <=0) {
+      return;
+    }
+
     this.animationTime += timeElapsed * Math.pow(this.species.level, 2);
     if (this.opacity < 1) {
       this.opacity += timeElapsed / this.animationDuration;
@@ -128,6 +137,25 @@ export class Spirit extends Icon implements SmoothMovementState {
       CELL_HEIGHT / 4 + 1,
     );
 
+    const hpRatio = Math.max(0, Math.min(1, this.hp / this.maxHp));
+    if (hpRatio < 1) {
+      const barWidth = this.icon.width;
+      const hpWidth = barWidth * hpRatio;
+      const barHeight = 1;
+      const barX = this.x;
+      const barY = this.y - 5;
+
+      drawEngine.ctx1.fillStyle = colors.blue1;
+      drawEngine.ctx1.fillRect(barX, barY, Math.round(hpWidth), barHeight);
+      drawEngine.ctx1.fillStyle = colors.blue2;
+      drawEngine.ctx1.fillRect(barX, barY + 1, Math.round(hpWidth), barHeight);
+
+      drawEngine.ctx1.fillStyle = colors.purple5;
+      drawEngine.ctx1.fillRect(barX + Math.round(hpWidth), barY, Math.round(barWidth - hpWidth), barHeight);
+      drawEngine.ctx1.fillStyle = colors.purple4;
+      drawEngine.ctx1.fillRect(barX + Math.round(hpWidth), barY + 1, Math.round(barWidth - hpWidth), barHeight);
+    }
+
     // Icon
     drawEngine.ctx1.save();
     drawEngine.ctx1.translate(
@@ -143,7 +171,12 @@ export class Spirit extends Icon implements SmoothMovementState {
 
   takeDamage(damage: number = 1): boolean {
     this.hp -= damage;
-    console.log(this.type, this.hp);
+    if (this.hp <= 0) {
+      addTimeEvent(() => {
+        this.map.set(this.col, this.row, null);
+        this.dead = true;
+      }, 2000);
+    }
     return this.hp <= 0;
   }
 }

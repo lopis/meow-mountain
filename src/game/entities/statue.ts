@@ -35,6 +35,8 @@ export class Statue extends GameObject<Asset> {
         this.spawnSpirit();
       }
     }
+
+    this.spirits = this.spirits.filter(spirit => !spirit.dead);
   }
 
   private spawnSpirit() {
