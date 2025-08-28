@@ -4,11 +4,13 @@ import { controls } from "../../core/controls";
 import { GameMap } from "../game-map";
 import { CELL_HEIGHT, CELL_WIDTH, statues } from "../constants";
 import { on } from "@/core/event";
+import { addTimeEvent } from "@/core/timer";
 
 export class Player extends GameObject<CatStates> {
   map: GameMap;
   type = 'cat';
   sleeping = true;
+  attacking = false;
 
   constructor(col: number, row: number, map: GameMap) {
     super(
@@ -35,6 +37,8 @@ export class Player extends GameObject<CatStates> {
     
     if (this.sleeping) {
       this.animation = 'sleep';
+    } else if (this.attacking) {
+      this.animation = 'scratch';
     } else {
       super.updatePositionSmoothly(timeElapsed);
 
@@ -61,6 +65,14 @@ export class Player extends GameObject<CatStates> {
 
       if (!this.moving.x && !this.moving.y) {
         this.animation = 'idle';
+      }
+
+      if (!this.attacking && controls.isAction1 && !controls.previousState.isAction1) {
+        this.attacking = true;
+        this.animationTime = 0;
+        addTimeEvent(() => {
+          this.attacking = false;
+        }, this.animationDuration * 5);
       }
     }
 

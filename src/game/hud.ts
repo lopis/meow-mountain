@@ -70,7 +70,7 @@ export class HUD {
 
       // Draw key binding
       drawEngine.drawText({
-        text: "(x)",
+        text: `key: ${index + 1}`,
         x: x + boxWidth / 2,
         y: y + 70,
         color: colors.black,

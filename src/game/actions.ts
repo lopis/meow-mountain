@@ -50,11 +50,6 @@ export class Actions {
   update(): void {
     // Check if player is near a statue
     this.actions[2].enabled = this.ifFacingStatue();
-
-    // Handle action key press
-    // if (controls.actionJustPressed && this.currentAction) {
-    //   emit(this.currentAction);
-    // }
   }
 
   private ifFacingStatue(): boolean {

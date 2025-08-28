@@ -24,7 +24,9 @@ class Controls {
   isRight = false;
   isConfirm = false;
   isEscape = false;
-  isAction = false;
+  isAction1 = false;
+  isAction2 = false;
+  isAction3 = false;
   isMoving = false;
   inputDirection: DOMPoint;
 
@@ -34,7 +36,9 @@ class Controls {
     isDown: this.isDown,
     isConfirm: this.isConfirm,
     isEscape: this.isEscape,
-    isAction: this.isAction
+    isAction1: this.isAction1,
+    isAction2: this.isAction2,
+    isAction3: this.isAction3,
   };
 
   constructor() {
@@ -48,7 +52,9 @@ class Controls {
     this.previousState.isDown = this.isDown;
     this.previousState.isConfirm = this.isConfirm;
     this.previousState.isEscape = this.isEscape;
-    this.previousState.isAction = this.isAction;
+    this.previousState.isAction1 = this.isAction1;
+    this.previousState.isAction2 = this.isAction2;
+    this.previousState.isAction3 = this.isAction3;
     const gamepad = navigator.getGamepads()[0];
     const isButtonPressed = (button: XboxControllerButton) => gamepad?.buttons[button].pressed;
 
@@ -72,15 +78,13 @@ class Controls {
     this.isMoving = this.inputDirection.x !== 0 || this.inputDirection.y !== 0;
     this.isConfirm = Boolean(this.keyMap.get('Enter') || isButtonPressed(XboxControllerButton.A) || isButtonPressed(XboxControllerButton.Start));
     this.isEscape = Boolean(this.keyMap.get('Escape') || isButtonPressed(XboxControllerButton.Select));
-    this.isAction = Boolean(this.keyMap.get('KeyX') || isButtonPressed(XboxControllerButton.X));
-  }
-
-  // Helper method to check if action key was just pressed
-  get actionJustPressed(): boolean {
-    return this.isAction && !this.previousState.isAction;
+    this.isAction1 = Boolean(this.keyMap.get('Digit1') || isButtonPressed(XboxControllerButton.X));
+    this.isAction2 = Boolean(this.keyMap.get('Digit2') || isButtonPressed(XboxControllerButton.X));
+    this.isAction3 = Boolean(this.keyMap.get('Digit3') || isButtonPressed(XboxControllerButton.X));
   }
 
   private toggleKey(event: KeyboardEvent, isPressed: boolean) {
+    console.log(event.code);
     this.keyMap.set(event.code, isPressed);
   }
 }
