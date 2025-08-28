@@ -5,6 +5,7 @@ import { GameMap } from "../game-map";
 import { CELL_HEIGHT, CELL_WIDTH, statues } from "../constants";
 import { on } from "@/core/event";
 import { addTimeEvent } from "@/core/timer";
+import { Spirit } from "./spirit";
 
 export class Player extends GameObject<CatStates> {
   map: GameMap;
@@ -70,6 +71,10 @@ export class Player extends GameObject<CatStates> {
       if (!this.attacking && controls.isAction1 && !controls.previousState.isAction1) {
         this.attacking = true;
         this.animationTime = 0;
+
+        // Check if there is an enemy right in front
+        this.attackEnemyInFront();
+
         addTimeEvent(() => {
           this.attacking = false;
         }, this.animationDuration * 5);
@@ -78,5 +83,23 @@ export class Player extends GameObject<CatStates> {
 
     // DEBUG
     coords.innerText = `${this.col},${this.row}`;
+  }
+
+  private attackEnemyInFront() {
+    // Determine which direction the player is facing
+    const targetCol = this.mirrored ? this.col - 1 : this.col + 1;
+    const targetRow = this.row;
+
+    // Check if there's a spirit at the target position
+    const cell = this.map.grid[targetRow][targetCol];
+    if (cell.content && cell.content.type === 'spirit') {
+      const spirit = cell.content as Spirit;
+      const isDead = spirit.takeDamage(1);
+      
+      if (isDead) {
+        // Remove spirit from the map
+        cell.content = null;
+      }
+    }
   }
 }

@@ -34,6 +34,7 @@ export class Spirit extends Icon implements SmoothMovementState {
   moving = { x: 0, y: 0 };
   speed = 20; // Pixels per second
   playerTarget: Coords | null = null;
+  hp: number;
 
   constructor(
     col: number,
@@ -45,6 +46,7 @@ export class Spirit extends Icon implements SmoothMovementState {
     this.species = spirits[type];
     this.map = map;
     this.targetPos = { x: this.x, y: this.y };
+    this.hp = Math.pow(2, this.species.level);
   }
 
   update(timeElapsed: number) {
@@ -137,5 +139,11 @@ export class Spirit extends Icon implements SmoothMovementState {
     super.draw();
     drawEngine.ctx1.restore();
     drawEngine.ctx1.restore();
+  }
+
+  takeDamage(damage: number = 1): boolean {
+    this.hp -= damage;
+    console.log(this.type, this.hp);
+    return this.hp <= 0;
   }
 }
