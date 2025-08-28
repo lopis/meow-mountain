@@ -36,40 +36,60 @@ export class HUD {
   }
 
   drawActions() {
-    const x = drawEngine.ctx3.canvas.width / 2;
-    const y = drawEngine.ctx3.canvas.height - 40;
-    const fontSize = 3;
-    const boxWidth = 300;
-    const boxHeight = fontSize * 10;
-    drawEngine.ctx3.clearRect(
-      x - boxWidth / 2,
-      y - boxHeight / 2,
-      boxWidth,
-      boxHeight,
-    );
+    const actions = this.actions.actions;
+    if (actions.length === 0) return;
 
-    const actionLabel = this.actions.currentAction;
-    if (actionLabel) {
+    const boxWidth = 120;
+    const boxHeight = 120;
+    const spacing = 10;
+    const totalWidth = actions.length * boxWidth + (actions.length - 1) * spacing;
+    const startX = (drawEngine.ctx3.canvas.width - totalWidth) / 2;
+    const y = drawEngine.ctx3.canvas.height - boxHeight - 10;
+
+    actions.forEach(({ type, color, symbol, enabled }, index) => {
+      const x = startX + index * (boxWidth + spacing);
+
       // Draw background box
-      drawEngine.ctx3.fillStyle = colors.purple2;
-      drawEngine.ctx3.fillRect(
-        x - boxWidth / 2,
-        y - boxHeight / 2,
-        boxWidth,
-        boxHeight,
-      );
+      drawEngine.ctx3.fillStyle = colors.purple0;
+      drawEngine.ctx3.fillRect(x, y, boxWidth, boxHeight);
 
-      // Draw text
+      if (!enabled) {
+        return;
+      }
+
+      // Draw symbol (large font)
       drawEngine.drawText({
-        text: `(x) ${actionLabel}`,
-        x,
-        y,
-        color: colors.blue4,
+        text: symbol,
+        x: x + boxWidth / 2,
+        y: y + 30,
+        color,
         textAlign: "center",
         textBaseline: "middle",
-        size: fontSize
+        size: 7
       }, drawEngine.ctx3);
-    }
+
+      // Draw key binding
+      drawEngine.drawText({
+        text: "(x)",
+        x: x + boxWidth / 2,
+        y: y + 70,
+        color: colors.black,
+        textAlign: "center",
+        textBaseline: "middle",
+        size: 3
+      }, drawEngine.ctx3);
+
+      // Draw action name
+      drawEngine.drawText({
+        text: type,
+        x: x + boxWidth / 2,
+        y: y + 95,
+        color: colors.black,
+        textAlign: "center",
+        textBaseline: "middle",
+        size: 3
+      }, drawEngine.ctx3);
+    });
   }
 
   static drawLives() {

@@ -12,8 +12,8 @@ const script = {
   },
   spirit: {
     dialogs: [
-      "Evil spirits? Has the barrier come down?",
-      "Looks pretty weak."
+      "Evil spirits?\nHas the barrier come down?",
+      "this one looks pretty weak."
     ],
   },
   barrier: {
@@ -43,14 +43,20 @@ export class GameStory {
     this.story.enterState('intro');
 
     on('story-state-exit', (label) => {
+      emit('cutscene-end');
       if (label === 'intro') {
         emit('wake-up');
-        emit('cutscene-end');
         addTimeEvent(() => {
-          debugger;
-          emit('story-state-enter');
-        }, 2000);
+          emit('story-state-enter', 'spirit');
+        }, 6000);
       }
+      if(label === 'spirit') {
+        emit('enable-scratch');
+      }
+    });
+
+    on('story-state-enter', () => {
+      emit('cutscene-start');
     });
   }
 
