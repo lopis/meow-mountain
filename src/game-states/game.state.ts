@@ -7,6 +7,8 @@ import { Actions } from '@/game/actions';
 import { GameData } from '@/game/game-data';
 import { ParticleEngine } from '@/core/particle';
 import { GameStory } from '@/game/game-story';
+import { Spirit } from '@/game/entities/spirit';
+import { updateTimeEvents } from '@/core/timer';
 
 class GameState implements State {
   map!: GameMap;
@@ -28,6 +30,7 @@ class GameState implements State {
     // this.cat = new Player(statues.ear.x, statues.ear.y + 3, this.map);
     
     this.map.set(this.cat.col, this.cat.row, this.cat);
+    this.map.set(64, 89, new Spirit(64, 89, '🎈', this.map));
     drawEngine.setCamera(this.cat.x, this.cat.y - 40, 5, true);
   }
 
@@ -43,6 +46,7 @@ class GameState implements State {
       this.gameData.update(timeElapsed);
     }
     this.story.update(timeElapsed);
+    updateTimeEvents(timeElapsed);
 
     this.map.draw(this.cat.x, this.cat.y);
     this.hud.draw();

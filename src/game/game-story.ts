@@ -1,14 +1,20 @@
 import { emit, on } from "@/core/event";
 import { Story } from "@/core/story-engine";
+import { addTimeEvent } from "@/core/timer";
 
 const script = {
   intro: {
     dialogs: [
       "zzzz.... ??",
       "Have I overslept?",
-      "Evil spirits? Has the barrier come down?",
     ],
     goal: 'reactivate the magical barrier',
+  },
+  spirit: {
+    dialogs: [
+      "Evil spirits? Has the barrier come down?",
+      "Looks pretty weak."
+    ],
   },
   barrier: {
     dialogs: [
@@ -40,6 +46,10 @@ export class GameStory {
       if (label === 'intro') {
         emit('wake-up');
         emit('cutscene-end');
+        addTimeEvent(() => {
+          debugger;
+          emit('story-state-enter');
+        }, 2000);
       }
     });
   }
