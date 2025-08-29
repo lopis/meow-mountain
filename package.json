@@ -28,7 +28,8 @@
     "build-with-best-roadroller": "cross-env USE_RR_CONFIG=true vite build",
     "lint": "eslint src",
     "vite": "vite",
-    "tsc": "tsc --watch --noEmit"
+    "tsc": "tsc --watch --noEmit",
+    "serve": "cd dist; python3 -m http.server 3000"
   },
   "author": "Rob Louie"
 }

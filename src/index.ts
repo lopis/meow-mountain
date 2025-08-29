@@ -14,6 +14,9 @@ let fpsBacklog: number[] = [];
 function update(currentTime: number) {
   currentTime = performance.now();
   let delta = currentTime - previousTime;
+  if (delta > 1000) {
+    return;
+  }
     
   previousTime = currentTime;
   fpsBacklog.push(1000 / delta);

@@ -1,7 +1,7 @@
 import { controls } from './controls';
 import { emit, on } from './event';
 
-interface DialogState {
+export interface DialogState {
   dialogs: string[];
 }
 
@@ -11,21 +11,21 @@ export interface Script {
 
 type StoryEventName = 'story-state-enter' | 'story-dialog' | 'story-state-exit';
 
-export class Story {
-  private currentStateKey: string | null = null;
+export class Story<T extends Script> {
+  private currentStateKey: keyof T | null = null;
   private currentDialogIndex = 0;
   public isActive = false;
   private previousSpacePressed = false;
-  public currentState: string | null = null;
+  public currentState: keyof T | null = null;
 
-  constructor(private readonly script: Script) {
+  constructor(private readonly script: T) {
     // Listen for story-state-enter events
-    on('story-state-enter', (stateKey: string) => {
+    on('story-state-enter', (stateKey: keyof T) => {
       this.enterState(stateKey);
     });
   }
 
-  public enterState(stateKey: string) {
+  public enterState(stateKey: keyof T) {
     if (!this.script[stateKey]) {
       return;
     }

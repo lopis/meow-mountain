@@ -7,8 +7,8 @@ import { Input, InputAction, InputType, Packer } from 'roadroller';
 import CleanCSS from 'clean-css';
 import { statSync } from 'fs';
 import ect from 'ect-bin';
-import {defaultTerserOptions} from "./terser.config";
-import {execFileSync} from "child_process";
+import { defaultTerserOptions } from "./terser.config";
+import { execFileSync } from "child_process";
 import htmlMinify from "html-minifier";
 
 export default defineConfig(({ command, mode }) => {
@@ -45,8 +45,11 @@ export default defineConfig(({ command, mode }) => {
       },
       terserOptions: defaultTerserOptions,
     };
-    // @ts-ignore
-    config.plugins = [typescriptPlugin(), roadrollerPlugin(), ectPlugin()];
+    config.plugins = [
+      typescriptPlugin(),
+      // roadrollerPlugin(),
+      ectPlugin()
+    ];
   }
 
   return config;

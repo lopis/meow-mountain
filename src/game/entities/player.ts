@@ -6,12 +6,14 @@ import { CELL_HEIGHT, CELL_WIDTH, statues } from "../constants";
 import { on } from "@/core/event";
 import { addTimeEvent } from "@/core/timer";
 import { Spirit } from "./spirit";
+import { Coords } from "../path-findind";
 
 export class Player extends GameObject<CatStates> {
   map: GameMap;
   type = 'cat';
   sleeping = true;
   attacking = false;
+  lastMovementDirection: Coords = { col: 0, row: 0 };
 
   constructor(col: number, row: number, map: GameMap) {
     super(
@@ -50,6 +52,7 @@ export class Player extends GameObject<CatStates> {
           this.moving.y = controls.inputDirection.y;
           this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;
           this.row = newRow;
+          this.lastMovementDirection = { col: 0, row: controls.inputDirection.y };
         }
       }
 
@@ -61,6 +64,7 @@ export class Player extends GameObject<CatStates> {
           this.moving.x = controls.inputDirection.x;
           this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;
           this.col = newCol;
+          this.lastMovementDirection = { col: controls.inputDirection.x, row: 0 };
         }
       }
 

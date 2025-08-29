@@ -1,5 +1,6 @@
 export const on = (event: string, listener: (detail: any) => void) => {
   document.addEventListener(event, (e: Event) => {
+    console.log('event', event, e);
     listener((e as CustomEvent).detail);
   });
 };
