@@ -39,7 +39,9 @@ export class Spirit extends Icon implements SmoothMovementState {
   maxHp: number;
   hp: number;
   dead = false;
-  attackingCoords: any;
+  attackingCoords: Coords | null = null;
+  attackAnimationTime = 0;
+  attackAnimationDuration = 1000;
 
   constructor(
     col: number,
@@ -68,6 +70,11 @@ export class Spirit extends Icon implements SmoothMovementState {
       this.animationTime -= this.animationDuration;
     }
 
+    if (this.attackingCoords) {
+      this.updateAttackAnimation(timeElapsed);
+      return;
+    }
+
     // Update smooth movement
     updatePositionSmoothly(this, timeElapsed);
 
@@ -81,6 +88,16 @@ export class Spirit extends Icon implements SmoothMovementState {
         this.moveTowardsPlayer(playerCoords);
         this.moveTimer = 0;
       }
+    }
+  }
+
+  updateAttackAnimation(timeElapsed: number) {
+    this.attackAnimationTime += timeElapsed;
+    
+    if (this.attackAnimationTime >= this.attackAnimationDuration) {
+      // Attack animation complete, reset to normal behavior
+      this.attackingCoords = null;
+      this.attackAnimationTime = 0;
     }
   }
 
@@ -131,12 +148,59 @@ export class Spirit extends Icon implements SmoothMovementState {
     drawEngine.ctx1.save();
     drawEngine.ctx1.globalAlpha = this.opacity;
 
+    // Calculate attack movement offset
+    let offsetX = 0;
+    let offsetY = 0;
+    if (this.attackingCoords) {
+      const attackProgress = this.attackAnimationTime / this.attackAnimationDuration;
+      
+      // Calculate direction to target
+      const dirX = this.attackingCoords.col - this.col;
+      const dirY = this.attackingCoords.row - this.row;
+      
+      // Animation phase timings
+      const windUpPhase = 0.7;  // wind up backwards
+      const tacklePhase = 0.73;  // tackle forward  
+      const returnPhase = 1.0;  // return to position
+      
+      // Movement distances in pixels
+      const windUpDistance = 3;   // How far to move backwards
+      const tackleDistance = CELL_WIDTH;  // How far to move forward
+      
+      if (attackProgress < windUpPhase) {
+        // Wind-up phase: move backwards slowly
+        const windupProgress = attackProgress / windUpPhase;
+        offsetX = -dirX * windupProgress * windUpDistance;
+        offsetY = -dirY * windupProgress * windUpDistance;
+      } else if (attackProgress < tacklePhase) {
+        // Tackle phase: quickly move forward
+        const tackleProgress = (attackProgress - windUpPhase) / (tacklePhase - windUpPhase);
+        const windupOffset = -windUpDistance;
+        offsetX = dirX * (windupOffset + tackleDistance * tackleProgress);
+        offsetY = dirY * (windupOffset + tackleDistance * tackleProgress);
+      } else {
+        // Return phase: come back to resting position
+        const returnProgress = (attackProgress - tacklePhase) / (returnPhase - tacklePhase);
+        const forwardOffset = windUpDistance;
+        offsetX = dirX * forwardOffset * (1 - returnProgress);
+        offsetY = dirY * forwardOffset * (1 - returnProgress);
+      }
+
+      offsetX = Math.round(offsetX);
+      offsetY = Math.round(offsetY);
+      
+      if (attackProgress > 0.95) {
+        this.attackingCoords = null;
+        this.attackAnimationTime = 0;
+      }
+    }
+
     // Shadow
     const shadow = Math.round(2 + 1 * phase) / 10;
     drawEngine.ctx1.fillStyle = `rgba(0,0,0,${shadow})`;
     drawEngine.ctx1.fillRect(
-      this.x + 3,
-      this.y + CELL_HEIGHT * 3 / 4,
+      this.x + 3 + offsetX,
+      this.y + CELL_HEIGHT * 3 / 4 + offsetY,
       this.icon.width - 6,
       CELL_HEIGHT / 4 + 1,
     );
@@ -163,8 +227,8 @@ export class Spirit extends Icon implements SmoothMovementState {
     // Icon
     drawEngine.ctx1.save();
     drawEngine.ctx1.translate(
-      0,
-      Math.round(
+      offsetX,
+      offsetY + Math.round(
         (phase - 1) * 2
       )
     );
