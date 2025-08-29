@@ -9,6 +9,7 @@ import { ParticleEngine } from '@/core/particle';
 import { GameStory } from '@/game/game-story';
 import { Spirit } from '@/game/entities/spirit';
 import { updateTimeEvents } from '@/core/timer';
+import { Obelisk } from '@/game/entities/obelisk';
 
 class GameState implements State {
   map!: GameMap;
@@ -31,7 +32,9 @@ class GameState implements State {
     
     this.map.set(this.cat.col, this.cat.row, this.cat);
     this.map.set(64, 89, new Spirit(64, 89, '🎈', this.map));
-    drawEngine.setCamera(this.cat.x, this.cat.y - 40, 5, true);
+    new Obelisk(this.map);
+    drawEngine.setCamera(this.cat.x, this.cat.y, 20, true);
+    drawEngine.cameraLerpSpeed = 0.01;
   }
 
   onUpdate(timeElapsed: number) {
@@ -44,6 +47,8 @@ class GameState implements State {
       this.hud.update(timeElapsed);
       this.particles.update(timeElapsed);
       this.gameData.update(timeElapsed);
+    } else if (this.gameData.cutscene) {
+      this.cat.update(timeElapsed);
     }
     this.story.update(timeElapsed);
     updateTimeEvents(timeElapsed);

@@ -1,3 +1,4 @@
+import { drawEngine } from "@/core/draw-engine";
 import { emit, on } from "@/core/event";
 import { DialogState, Story } from "@/core/story-engine";
 import { addTimeEvent } from "@/core/timer";
@@ -17,34 +18,37 @@ enum Scene {
 const script: Record<Scene, SceneProps> = {
   [Scene.intro]: {
     dialogs: [
-      "zzzz.... ??",
-      "Have I overslept?",
+      "Zzz...",
+      "...Huh?",
+      "How long was i sleeping?...",
     ],
-    goal: 'reactivate the magical barrier',
   },
   [Scene.spirit]: {
     dialogs: [
-      "Evil spirits?\nHas the barrier come down?",
-      "this one looks pretty weak."
+      "Evil spirits? Has the magic barrier failed?",
+      "This one seems weak.",
+      "I'll exorcise it and go check the barrier",
+      "> Press (1) to attack",
     ],
+    goal: 'find magic barrier obelisk',
   },
   [Scene.barrier]: {
     dialogs: [
-      "I don't have enough magic left",
-      "Something must wrong with the cat altar",
+      "I don't have enough magic left.",
+      "Something must be wrong with the cat altar.",
     ],
-    goal: 'fix the cat altar',
+    goal: 'repair the cat altar',
   },
   [Scene.temple]: {
     dialogs: [
-      "My magic increased a litle",
-      "but the other altars must be damaged too"
+      "My magic has increased a little.",
+      "But the other altars must be damaged too.",
     ],
     goals: [
-      'fix all 5 temples',
-      'restore forst magic barrier',
-    ]
-  }
+      'repair all 5 temples',
+      'restore the forest magic barrier',
+    ],
+  },
 };
 
 export class GameStory {
@@ -56,6 +60,7 @@ export class GameStory {
       emit('cutscene-end');
       if (label === Scene.intro) {
         emit('wake-up');
+        drawEngine.cameraLerpSpeed = 0.08;
         addTimeEvent(() => {
           emit('story-state-enter', Scene.spirit);
         }, 6000);

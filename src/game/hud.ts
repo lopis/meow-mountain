@@ -43,7 +43,7 @@ export class HUD {
     const boxHeight = 120;
     const spacing = 10;
     const totalWidth = actions.length * boxWidth + (actions.length - 1) * spacing;
-    const startX = (drawEngine.ctx3.canvas.width - totalWidth) / 2;
+    const startX = Math.round((drawEngine.ctx3.canvas.width - totalWidth) / 2);
     const y = drawEngine.ctx3.canvas.height - boxHeight - 10;
 
     actions.forEach(({ type, color, symbol, enabled }, index) => {

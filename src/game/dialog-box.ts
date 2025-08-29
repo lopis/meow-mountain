@@ -30,7 +30,7 @@ export class DialogBox {
           text: dialog,
           x: x + margin * 2,
           y: y + margin * 2 + i * 40,
-          color: colors.black,
+          color: dialog[0] === '>' ? colors.purple4 : colors.black,
           size: 5,
         }, drawEngine.ctx3);
       });

@@ -39,10 +39,10 @@ export class GameMap {
       this.clearCircleWithJitter(clearing.x, clearing.y, clearing.r);
     }
 
-    for (const statueProps of Object.entries(statues)) {
-      const [ name, {x, y} ] = statueProps;
+    for (const statueProps of Object.values(statues)) {
+      const { x, y } = statueProps;
       const statue = new Statue(x, y, this);
-      if (name === 'heart') {
+      if (x === statues.heart.x) {
         statue.maxSpirits = 0;
       }
       this.grid[y][x].content = statue;

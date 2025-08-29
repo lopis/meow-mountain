@@ -7,7 +7,7 @@ export type CatStates = typeof catStates[number];
 const villagerStates = ['walk', 'idle', 'scared'] as const;
 export type VillagerStates = typeof villagerStates[number];
 
-const assets = ['spruce', 'oak', 'house', 'field', 'statue'];
+const assets = ['spruce', 'oak', 'house', 'field', 'statue', 'obelisk'];
 export type Asset = typeof assets[number];
 const emoji = '🔥,🍀,🌼,🐓,🌷,🌹,👻,🥚,🍎'.split(',');
 
@@ -19,8 +19,8 @@ export class GameAssets {
   public static assets: Tileset<Asset>;
 
   public static initialize() {
-    this.cat = new Tileset<CatStates>('/cat.png', 16, catStates);
-    this.assets = new Tileset<Asset>('/assets.png', 16, assets);
-    this.villager = new Tileset<VillagerStates>('/villager.png', 8, villagerStates);
+    this.cat = new Tileset<CatStates>('cat.png', 16, catStates);
+    this.assets = new Tileset<Asset>('assets.png', 16, assets);
+    this.villager = new Tileset<VillagerStates>('villager.png', 8, villagerStates);
   }
 }
