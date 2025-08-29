@@ -29,7 +29,7 @@ export class Spirit extends Icon implements SmoothMovementState {
   opacity = 0;
   species: SpiritSpecies;
   map: GameMap;
-  searchRadius = 7; // Search in a 6x6 box around the spirit
+  searchRadius = 9; // Search in a 6x6 box around the spirit
   moveTimer = 0;
   moveInterval = 600; // Time between moves when chasing
   targetPos: { x: number; y: number };
@@ -39,6 +39,7 @@ export class Spirit extends Icon implements SmoothMovementState {
   maxHp: number;
   hp: number;
   dead = false;
+  attackingCoords: any;
 
   constructor(
     col: number,
@@ -119,6 +120,9 @@ export class Spirit extends Icon implements SmoothMovementState {
       this.row = nextStep.row;
       this.targetPos.x = nextStep.col * CELL_WIDTH;
       this.targetPos.y = nextStep.row * CELL_HEIGHT;
+    } else if (path?.length === 2) {
+      const nextStep = path[1];
+      this.attackingCoords = nextStep;
     }
   }
 
