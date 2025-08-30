@@ -1,7 +1,7 @@
 import { emojiToPixelArt } from "@/core/emoji";
 import { Tileset } from "@/core/tileset";
 
-const catStates = ['sit', 'idle', 'walk', 'run', 'die', 'scratch', 'hop', 'sleep'] as const;
+const catStates = ['sit', 'idle', 'walk', 'run', 'die', 'scratch', 'confused', 'sleep'] as const;
 export type CatStates = typeof catStates[number];
 
 const villagerStates = ['walk', 'idle', 'scared'] as const;

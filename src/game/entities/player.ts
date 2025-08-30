@@ -13,6 +13,7 @@ export class Player extends GameObject<CatStates> {
   type = 'cat';
   sleeping = true;
   attacking = false;
+  confused = false;
   lastMovementDirection: Coords = { col: 0, row: 0 };
 
   constructor(col: number, row: number, map: GameMap) {
@@ -33,12 +34,24 @@ export class Player extends GameObject<CatStates> {
     on('wake-up', () => {
       this.sleeping = false;
     });
+
+    on('attack-player', () => {
+      this.confused = true;
+      const animationDuration = this.animationDuration;
+      this.animationDuration = animationDuration / 2;
+      addTimeEvent(() => {
+        this.animationDuration = animationDuration;
+        this.confused = false;
+      }, 600);
+    });
   }
 
   update(timeElapsed: number) {
     super.update(timeElapsed);
     
-    if (this.sleeping) {
+    if(this.confused) {
+      this.animation = 'confused';
+    } else if (this.sleeping) {
       this.animation = 'sleep';
     } else if (this.attacking) {
       this.animation = 'scratch';
