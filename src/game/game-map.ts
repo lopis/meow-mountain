@@ -7,6 +7,7 @@ import { Cell, Drawable } from "./types";
 import { on } from "@/core/event";
 import { Spirit } from "./entities/spirit";
 import { Coords } from "./path-findind";
+import { drawEngine } from "@/core/draw-engine";
 
 export class GameMap {
   grid: Cell[][];
@@ -192,23 +193,31 @@ export class GameMap {
   }
 
   draw(cx: number, cy: number) {
-    const radius = 150; // Define the radius for the circular area
-    const radiusSquared = radius * radius;
+    // Calculate rectangular render distance based on canvas size and current zoom
+    const zoom = drawEngine.zoom;
+    const renderWidth = (drawEngine.canvasWidth / zoom) / 2 + 50; // Add buffer
+    const renderHeight = (drawEngine.canvasHeight / zoom) / 2 + 50; // Add buffer
+    
+    // Keep circular "seen" radius for minimap
+    const seenRadius = 75;
+    const seenRadiusSquared = seenRadius * seenRadius;
 
     for (const row of this.grid) {
       for (const cell of row) {
         const dx = cell.x * CELL_WIDTH - cx;
         const dy = cell.y * CELL_HEIGHT - cy;
-        const distanceSquared = dx * dx + dy * dy;
-
-        if (distanceSquared <= radiusSquared) {
+        
+        // Use rectangular bounds for rendering
+        if (Math.abs(dx) <= renderWidth && Math.abs(dy) <= renderHeight) {
           cell?.content?.draw();
-
-          if (distanceSquared <= radiusSquared / 4) {
-            cell.seen = true;
-          }
-
         }
+        
+        // Use circular bounds for "seen" detection (minimap)
+        const distanceSquared = dx * dx + dy * dy;
+        if (distanceSquared <= seenRadiusSquared) {
+          cell.seen = true;
+        }
+
         // if (cell.marked) {
         //   drawEngine.ctx1.fillStyle = '#8d518055';
         //   drawEngine.ctx1.fillRect(cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
