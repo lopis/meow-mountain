@@ -18,16 +18,17 @@ enum Scene {
 const script: Record<Scene, SceneProps> = {
   [Scene.intro]: {
     dialogs: [
-      "Zzz...",
-      "...Huh?",
+      "Zzzzz...",
+      "Yawwwn...",
       "How long was i sleeping?...",
     ],
   },
   [Scene.spirit]: {
     dialogs: [
-      "Evil spirits?\nHas the magic barrier failed?",
+      "Evil spirits?",
+      "Has the magic barrier failed\nwhile I slept??",
       "This one seems weak.",
-      "I'll exorcise it and go check the barrier",
+      "I'll exorcise it and then\ngo check the barrier",
       "> Press (1) to attack",
     ],
     goal: 'find magic barrier obelisk',

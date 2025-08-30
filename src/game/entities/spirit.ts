@@ -7,6 +7,7 @@ import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from "
 import { Coords, findShortestPath } from "../path-findind";
 import { addTimeEvent } from "@/core/timer";
 import { colors } from "@/core/util/color";
+import { emit } from "@/core/event";
 
 export type SpiritType = '🎈' | '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -23,29 +24,31 @@ export const spirits = ([
   return acc;
 }, {} as Record<SpiritType, SpiritSpecies>);
 
+type SpiritState = 'idle' | 'moving' | 'winding' | 'attacking' | 'resting';
+
 export class Spirit extends Icon implements SmoothMovementState {
   animationDuration = 2000;
   animationTime = 0;
   opacity = 0;
   species: SpiritSpecies;
   map: GameMap;
-  searchRadius = 9; // Search in a 6x6 box around the spirit
+  searchRadius = 9;
   moveTimer = 0;
-  moveInterval = 600; // Time between moves when chasing
+  moveInterval = 600;
   targetPos: { x: number; y: number };
   moving = { x: 0, y: 0 };
-  speed = 20; // Pixels per second
-  playerTarget: Coords | null = null;
+  speed = 20;
   maxHp: number;
   hp: number;
   dead = false;
-  attackingCoords: Coords | null = null;
-  attackAnimationTime = 0;
-  attackAnimationDuration = 1000;
   
-  // Attack animation state
-  private attackOffsetX = 0;
-  private attackOffsetY = 0;
+  // Simplified state system
+  state: SpiritState = 'idle';
+  attackTimer = 0;
+  attackDuration = 1000;
+  attackTarget: Coords | null = null;
+  attackOffsetX = 0;
+  attackOffsetY = 0;
 
   constructor(
     col: number,
@@ -62,9 +65,7 @@ export class Spirit extends Icon implements SmoothMovementState {
   }
 
   update(timeElapsed: number) {
-    if (this.hp <=0) {
-      return;
-    }
+    if (this.hp <= 0) return;
 
     this.animationTime += timeElapsed * Math.pow(this.species.level, 2);
     if (this.opacity < 1) {
@@ -74,75 +75,69 @@ export class Spirit extends Icon implements SmoothMovementState {
       this.animationTime -= this.animationDuration;
     }
 
-    if (this.attackingCoords) {
-      this.updateAttackAnimation(timeElapsed);
-      return;
-    }
+    switch (this.state) {
+      case 'idle':
+      case 'moving':
+        updatePositionSmoothly(this, timeElapsed);
+        const playerCoords = this.lookAroundForPlayer();
+        if (playerCoords) {
+          this.moveTimer += timeElapsed;
+          if (this.moveTimer >= this.moveInterval) {
+            this.moveTowardsPlayer(playerCoords);
+            this.moveTimer = 0;
+          }
+        }
+        break;
 
-    // Update smooth movement
-    updatePositionSmoothly(this, timeElapsed);
-
-    // Search for the player in a box around the spirit
-    const playerCoords = this.lookAroundForPlayer();
-
-    // Handle movement when chasing
-    if (playerCoords) {
-      this.moveTimer += timeElapsed;
-      if (this.moveTimer >= this.moveInterval) {
-        this.moveTowardsPlayer(playerCoords);
-        this.moveTimer = 0;
-      }
+      case 'winding':
+      case 'attacking':
+      case 'resting':
+        this.updateAttack(timeElapsed);
+        break;
     }
   }
 
-  updateAttackAnimation(timeElapsed: number) {
-    this.attackAnimationTime += timeElapsed;
+  private updateAttack(timeElapsed: number) {
+    this.attackTimer += timeElapsed;
+    const progress = this.attackTimer / this.attackDuration;
     
-    if (this.attackAnimationTime >= this.attackAnimationDuration) {
-      // Attack animation complete, reset to normal behavior
-      this.attackingCoords = null;
-      this.attackAnimationTime = 0;
-      this.attackOffsetX = 0;
-      this.attackOffsetY = 0;
+    if (!this.attackTarget) {
+      this.state = 'idle';
       return;
     }
 
-    // Calculate attack animation offsets
-    const attackProgress = this.attackAnimationTime / this.attackAnimationDuration;
-    
-    // Calculate direction to target
-    const dirX = this.attackingCoords!.col - this.col;
-    const dirY = this.attackingCoords!.row - this.row;
-    
-    // Animation phase timings
-    const windUpPhase = 0.7;  // wind up backwards
-    const tacklePhase = 0.73;  // tackle forward  
-    
-    // Movement distances in pixels
-    const windUpDistance = 3;   // How far to move backwards
-    const tackleDistance = CELL_WIDTH;  // How far to move forward
-    
-    if (attackProgress < windUpPhase) {
-      // Wind-up phase: move backwards slowly
-      const windupProgress = attackProgress / windUpPhase;
-      this.attackOffsetX = -dirX * windupProgress * windUpDistance;
-      this.attackOffsetY = -dirY * windupProgress * windUpDistance;
-    } else if (attackProgress < tacklePhase) {
-      // Tackle phase: quickly move forward
-      const tackleProgress = (attackProgress - windUpPhase) / (tacklePhase - windUpPhase);
-      const windupOffset = -windUpDistance;
-      this.attackOffsetX = dirX * (windupOffset + tackleDistance * tackleProgress);
-      this.attackOffsetY = dirY * (windupOffset + tackleDistance * tackleProgress);
-    } else {
-      // Return phase: come back to resting position
-      const returnProgress = (attackProgress - tacklePhase) / (1.0 - tacklePhase);
-      const forwardOffset = windUpDistance;
-      this.attackOffsetX = dirX * forwardOffset * (1 - returnProgress);
-      this.attackOffsetY = dirY * forwardOffset * (1 - returnProgress);
-    }
+    const dirX = this.attackTarget.col - this.col;
+    const dirY = this.attackTarget.row - this.row;
 
-    this.attackOffsetX = Math.round(this.attackOffsetX);
-    this.attackOffsetY = Math.round(this.attackOffsetY);
+    if (progress < 0.7) {
+      // Winding up
+      if (this.state !== 'winding') this.state = 'winding';
+      const windProgress = progress / 0.7;
+      this.attackOffsetX = -dirX * windProgress * 3;
+      this.attackOffsetY = -dirY * windProgress * 3;
+    } else if (progress < 0.73) {
+      // Attacking
+      if (this.state !== 'attacking') this.state = 'attacking';
+      const attackProgress = (progress - 0.7) / 0.03;
+      this.attackOffsetX = dirX * (-3 + CELL_WIDTH * attackProgress);
+      this.attackOffsetY = dirY * (-3 + CELL_WIDTH * attackProgress);
+    } else if (progress < 1.0) {
+      // Resting (returning)
+      if (this.state !== 'resting') {
+        this.state = 'resting';
+        emit('attack-player', this.species.level); // Emit event when transitioning to resting
+      }
+      const restProgress = (progress - 0.73) / 0.27;
+      this.attackOffsetX = dirX * 3 * (1 - restProgress);
+      this.attackOffsetY = dirY * 3 * (1 - restProgress);
+    } else {
+      // Attack complete
+      this.state = 'idle';
+      this.attackTimer = 0;
+      this.attackTarget = null;
+      this.attackOffsetX = 0;
+      this.attackOffsetY = 0;
+    }
   }
 
   private lookAroundForPlayer(): Coords | null {
@@ -167,7 +162,6 @@ export class Spirit extends Icon implements SmoothMovementState {
     return null;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private moveTowardsPlayer(playerCoords: Coords) {
     const path = findShortestPath(
       this.map.grid,
@@ -175,6 +169,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       playerCoords,
     );
     if (path && path.length > 2) {
+      this.state = 'moving';
       const nextStep = path[1];
       setTargetPosition(this, nextStep.col, nextStep.row);
       this.col = nextStep.col;
@@ -182,8 +177,10 @@ export class Spirit extends Icon implements SmoothMovementState {
       this.targetPos.x = nextStep.col * CELL_WIDTH;
       this.targetPos.y = nextStep.row * CELL_HEIGHT;
     } else if (path?.length === 2) {
-      const nextStep = path[1];
-      this.attackingCoords = nextStep;
+      // Start attack
+      this.state = 'winding';
+      this.attackTarget = path[1];
+      this.attackTimer = 0;
     }
   }
 

@@ -1,5 +1,4 @@
 import { drawEngine } from "@/core/draw-engine";
-import { HEART } from "@/core/font";
 import { colors } from "@/core/util/color";
 import { MiniMap } from "./mini-map";
 import { GameMap } from "./game-map";
@@ -8,6 +7,7 @@ import { Actions } from "./actions";
 import { GameData } from "./game-data";
 import { MAX_LIVES } from "./constants";
 import { DialogBox } from "./dialog-box";
+import { EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from "@/core/font";
 
 export class HUD {
   miniMap: MiniMap;
@@ -28,7 +28,7 @@ export class HUD {
   }
 
   draw() {
-    HUD.drawLives();
+    this.drawLives();
     this.drawSuperstition();
     this.drawActions();
     this.miniMap.draw(this.player);
@@ -92,10 +92,16 @@ export class HUD {
     });
   }
 
-  static drawLives() {
+  drawLives() {
     const x = 16;
     const y = 16;
-    const text = HEART.repeat(MAX_LIVES);
+    const fullHearts = Math.floor(this.gameData.lives);
+    const emptyHearts = Math.floor(MAX_LIVES - this.gameData.lives);
+    const halfHearts = MAX_LIVES - fullHearts - emptyHearts;
+    const partialHearts = this.gameData.lives - fullHearts;
+    const text = FULL_HEART.repeat(fullHearts)
+      + (partialHearts > 0.3 ? TWO_THIRDS_HEART : ONE_THIRD_HEART).repeat(halfHearts)
+      + EMPTY_HEART.repeat(emptyHearts);
     const size = 5;
 
     const boxW = (text.length * 6 + 1) * size;

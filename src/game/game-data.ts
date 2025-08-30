@@ -1,4 +1,4 @@
-import { on } from "@/core/event";
+import { emit, on } from "@/core/event";
 import { MAX_LIVES } from "./constants";
 
 export class GameData {
@@ -19,6 +19,16 @@ export class GameData {
 
     on('cutscene-end', () => {
       this.cutscene = false;
+    });
+
+    on('attack-player', (level: number) => {
+      this.lives -= (level + 1) / 3;
+      this.lives = Math.round(this.lives * 3) / 3;
+      this.lives = Math.round(this.lives * 10) / 10;
+      if (this.lives <= 0) {
+        this.lives = 0;
+        emit('game-over');
+      }
     });
   }
 
