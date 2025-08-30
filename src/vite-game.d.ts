@@ -13,3 +13,4 @@ let fps;
 let coords;
 let localStorage;
 let c;
+

@@ -39,7 +39,7 @@ class GameState implements State {
     drawEngine.setCamera(this.cat.x, this.cat.y, 7);
     drawEngine.updateCamera();
 
-    if (!(this.gameData.cutscene || this.gameData.paused)) {
+    if (!(this.gameData.cutscene)) {
       this.actions.update();
       this.map.update(timeElapsed);
       this.hud.update(timeElapsed);

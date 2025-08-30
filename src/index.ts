@@ -2,7 +2,6 @@ import { createGameStateMachine, gameStateMachine } from './game-state-machine';
 import { controls } from '@/core/controls';
 import { drawEngine } from './core/draw-engine';
 import { updateTimeEvents } from './core/timer';
-import { gameData } from './game/game-data';
 import { menuState } from './game-states/menu.state';
 
 // @ts-ignore -- is not undefined for sure
@@ -10,15 +9,25 @@ document.querySelector('link[type="image/x-icon"]').href = 'data:image/svg+xml,%
 
 let previousTime = 0;
 let fpsBacklog: number[] = [];
+let paused = false;
+
+window.addEventListener('blur', () => {
+  paused = true;
+});
+window.addEventListener('focus', () => {
+  paused = false;
+});
 
 function update(currentTime: number) {
+  if (paused) return;
+
   currentTime = performance.now();
   let delta = currentTime - previousTime;
+  previousTime = currentTime;
   if (delta > 1000) {
     return;
   }
     
-  previousTime = currentTime;
   fpsBacklog.push(1000 / delta);
   if (fpsBacklog.length === 15) {
     fps.innerHTML = `${Math.round(fpsBacklog.reduce((a, b) => a + b) / 15)} FPS`;
@@ -26,10 +35,6 @@ function update(currentTime: number) {
   }
 
   drawEngine.clear();
-
-  if (gameData.paused){
-    delta = 0;
-  }
 
   const state = gameStateMachine.getState();
   controls.queryController();

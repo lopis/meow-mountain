@@ -2,7 +2,6 @@ import { on } from "@/core/event";
 import { MAX_LIVES } from "./constants";
 
 export class GameData {
-  paused = false;
   cutscene = true;
   lives = MAX_LIVES;
   superstition = 0;
