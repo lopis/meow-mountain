@@ -1,5 +1,5 @@
 import { emit, on } from "@/core/event";
-import { MAX_LIVES } from "./constants";
+import { MAX_LIVES, NOTIFICATION_DURATION } from "./constants";
 import { SceneProps } from "./game-story";
 
 interface Goal {
@@ -30,7 +30,7 @@ export class GameData {
         scene.goals.forEach(goal => {
           this.goals.push({
             label: goal,
-            time: 3000,
+            time: NOTIFICATION_DURATION,
           });
         });
       }
@@ -52,6 +52,8 @@ export class GameData {
     if (this.superstition > 0 && this.superstitionCooldown <= 0) {
       this.superstition -= (1 / timeElapsed) * 0.001;
     }
+
+    this.goals.forEach(goal => goal.time -= timeElapsed);
   }
 }
 

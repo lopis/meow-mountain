@@ -1,11 +1,12 @@
 import { drawEngine } from "@/core/draw-engine";
 import { colors } from "@/core/util/color";
+import { easeInOutSine } from "@/core/util/util";
 import { MiniMap } from "./mini-map";
 import { GameMap } from "./game-map";
 import { Player } from "./entities/player";
 import { Actions } from "./actions";
 import { GameData } from "./game-data";
-import { MAX_LIVES } from "./constants";
+import { MAX_LIVES, NOTIFICATION_DURATION } from "./constants";
 import { DialogBox } from "./dialog-box";
 import { EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from "@/core/font";
 
@@ -115,16 +116,36 @@ export class HUD {
   drawGoals() {
     const goals = this.gameData.goals;
 
-    const x = 16;
+    const baseX = 16;
     const y = 16 + 7 * 5 + 10; // lives y  + lives box height + margin
-    const boxW = 420; // lives box width
+    const boxW = 420;
     const boxH = 5 * 7 + 30;
     const size = 3;
     const padding = 5;
+    const animationDuration = 200; // 100ms slide animation
     
-    goals.forEach((goal, i) => {
+    goals.filter(goal => goal.time > 0)
+    .forEach((goal, i) => {
       const {label, time} = goal;
       const boxY = y + (boxH + padding) * i;
+      
+      // Calculate animation offset based on remaining time
+      let offsetX = 0;
+      const distanceX = boxW + baseX;
+      if (time > NOTIFICATION_DURATION - animationDuration) {
+        // Sliding in from left (appearing)
+        const progress = (NOTIFICATION_DURATION - time) / animationDuration;
+        const easedProgress = easeInOutSine(progress, 0, 1);
+        offsetX = -distanceX * (1 - easedProgress);
+      } else if (time < animationDuration) {
+        // Sliding out to left (disappearing)
+        const progress = time / animationDuration;
+        const easedProgress = easeInOutSine(progress, 0, 1);
+        offsetX = -distanceX * (1 - easedProgress);
+      }
+      
+      const x = baseX + offsetX;
+      
       drawEngine.ctx3.fillStyle = colors.purple4;
       drawEngine.ctx3.fillRect(x, boxY, boxW, boxH);
       drawEngine.drawText(
