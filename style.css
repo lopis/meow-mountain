@@ -31,21 +31,18 @@ canvas {
     object-fit: contain;
 }
 
-/* Get rid of any margins, set background black, use flexbox to center */
 html, body {
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+    background: var(--black);
 }
 
 
 #c1 {
-    background-image: repeating-linear-gradient(45deg, var(--blue2) 0 1px, var(--green2) 1px 2px, var(--green2) 2px 3px, var(--blue2) 3px 4px);
     background-size: 2px 2px;
-    background: var(--green2);
-    
 }
 
 .nighttime {

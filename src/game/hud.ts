@@ -29,6 +29,7 @@ export class HUD {
 
   draw() {
     this.drawLives();
+    this.drawGoals();
     this.drawSuperstition();
     this.drawActions();
     this.miniMap.draw(this.player);
@@ -109,6 +110,44 @@ export class HUD {
     drawEngine.ctx3.fillStyle = colors.purple0;
     drawEngine.ctx3.fillRect(x, y, boxW, boxH);
     drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.purple4, size }, drawEngine.ctx3);
+  }
+
+  drawGoals() {
+    const goals = [
+      'find magic barrier obelisk',
+      'repair the cat altar',
+    ];
+
+    const x = 16;
+    const y = 16 + 7 * 5 + 10; // lives y  + lives box height + margin
+    const boxW = 420; // lives box width
+    const boxH = 5 * 7 + 30;
+    const size = 3;
+    const padding = 5;
+    
+    goals.forEach((goal, i) => {
+      const boxY = y + (boxH + padding) * i;
+      drawEngine.ctx3.fillStyle = colors.purple4;
+      drawEngine.ctx3.fillRect(x, boxY, boxW, boxH);
+      drawEngine.drawText(
+      {
+        text: 'NEW GOAL',
+        x: x + size + padding,
+        y: boxY + padding,
+        color: colors.white,
+        size: size + 1,
+      }, drawEngine.ctx3
+    );
+      drawEngine.drawText(
+        {
+          text: goal,
+          x: x + size + padding + 20,
+          y: 35 + boxY + padding,
+          color: colors.white,
+          size
+        }, drawEngine.ctx3
+      );
+    });
   }
 
   drawSuperstition() {
