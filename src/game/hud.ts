@@ -113,10 +113,7 @@ export class HUD {
   }
 
   drawGoals() {
-    const goals = [
-      'find magic barrier obelisk',
-      'repair the cat altar',
-    ];
+    const goals = this.gameData.goals;
 
     const x = 16;
     const y = 16 + 7 * 5 + 10; // lives y  + lives box height + margin
@@ -126,6 +123,7 @@ export class HUD {
     const padding = 5;
     
     goals.forEach((goal, i) => {
+      const {label, time} = goal;
       const boxY = y + (boxH + padding) * i;
       drawEngine.ctx3.fillStyle = colors.purple4;
       drawEngine.ctx3.fillRect(x, boxY, boxW, boxH);
@@ -140,10 +138,10 @@ export class HUD {
     );
       drawEngine.drawText(
         {
-          text: goal,
+          text: label,
           x: x + size + padding + 20,
           y: 35 + boxY + padding,
-          color: colors.white,
+          color: colors.black,
           size
         }, drawEngine.ctx3
       );

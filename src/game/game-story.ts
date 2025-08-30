@@ -3,8 +3,7 @@ import { emit, on } from "@/core/event";
 import { DialogState, Story } from "@/core/story-engine";
 import { addTimeEvent } from "@/core/timer";
 
-interface SceneProps extends DialogState {
-  goal?: string,
+export interface SceneProps extends DialogState {
   goals?: string[],
 };
 
@@ -31,14 +30,14 @@ const script: Record<Scene, SceneProps> = {
       "I'll exorcise it and then\ngo check the barrier",
       "> Press (1) to attack",
     ],
-    goal: 'find magic barrier obelisk',
+    goals: ['find magic barrier obelisk'],
   },
   [Scene.barrier]: {
     dialogs: [
       "I don't have enough magic left.",
       "Something must be wrong with the cat altar.",
     ],
-    goal: 'repair the cat altar',
+    goals: ['repair the cat altar'],
   },
   [Scene.temple]: {
     dialogs: [
@@ -58,8 +57,8 @@ export class GameStory {
   constructor() {
     this.story = new Story(script);
 
-    on('story-state-exit', (label) => {
-      emit('cutscene-end');
+    on('story-state-exit', (label: Scene) => {
+      emit('cutscene-end', script[label]);
       if (label === Scene.intro) {
         emit('wake-up');
         emit('spawn-first-spirit');

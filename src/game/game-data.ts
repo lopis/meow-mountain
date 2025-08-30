@@ -1,11 +1,18 @@
 import { emit, on } from "@/core/event";
 import { MAX_LIVES } from "./constants";
+import { SceneProps } from "./game-story";
+
+interface Goal {
+  label: string,
+  time: number,
+}
 
 export class GameData {
   cutscene = true;
   lives = MAX_LIVES;
   superstition = 0;
   superstitionCooldown = 0;
+  goals: Goal[] = [];
 
   constructor() {
     on('scared', () => {
@@ -17,8 +24,16 @@ export class GameData {
       this.cutscene = true;
     });
 
-    on('cutscene-end', () => {
+    on('cutscene-end', (scene: SceneProps) => {
       this.cutscene = false;
+      if (scene.goals) {
+        scene.goals.forEach(goal => {
+          this.goals.push({
+            label: goal,
+            time: 3000,
+          });
+        });
+      }
     });
 
     on('attack-player', (level: number) => {
