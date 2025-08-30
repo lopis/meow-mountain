@@ -4,6 +4,8 @@ import { Village } from "./entities/village";
 import { CELL_HEIGHT, CELL_WIDTH, clearings, paths, statues } from "./constants";
 import { Statue } from "./entities/statue";
 import { Cell, Drawable } from "./types";
+import { on } from "@/core/event";
+import { Spirit } from "./entities/spirit";
 
 export class GameMap {
   grid: Cell[][];
@@ -80,6 +82,10 @@ export class GameMap {
         });
       village.generateVillagers(this);
     }
+
+    on('spawn-first-spirit', () => {
+      this.set(64, 89, new Spirit(64, 89, '🎈', this));
+    });
   }
 
   private clearPathWithJitter(

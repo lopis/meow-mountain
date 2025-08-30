@@ -25,7 +25,7 @@ const script: Record<Scene, SceneProps> = {
   },
   [Scene.spirit]: {
     dialogs: [
-      "Evil spirits? Has the magic barrier failed?",
+      "Evil spirits?\nHas the magic barrier failed?",
       "This one seems weak.",
       "I'll exorcise it and go check the barrier",
       "> Press (1) to attack",
@@ -56,10 +56,12 @@ export class GameStory {
 
   constructor() {
     this.story = new Story(script);
+
     on('story-state-exit', (label) => {
       emit('cutscene-end');
       if (label === Scene.intro) {
         emit('wake-up');
+        emit('spawn-first-spirit');
         drawEngine.cameraLerpSpeed = 0.08;
         addTimeEvent(() => {
           emit('story-state-enter', Scene.spirit);
