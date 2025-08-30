@@ -31,7 +31,12 @@ export class GameMap {
 
     // Clear paths with jitter
     for (const path of paths) {
-      this.clearPathWithJitter(path[0], path[1], path[2]);
+      for (let i = 0; i < path.length - 1; i++) {
+        const from = { x: path[i][0], y: path[i][1] };
+        const to = { x: path[i + 1][0], y: path[i + 1][1] };
+        const pathWidth = path[i][2];
+        this.clearPathWithJitter(from, to, pathWidth);
+      }
     }
 
     // Clear circular areas with jitter

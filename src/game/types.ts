@@ -14,5 +14,6 @@ export interface Cell {
   marked?: number;
 }
 
-export type Path = [{ x: number, y: number }, { x: number, y: number }, number];
+type Point = [x: number, y: number, w: number];
+export type Path = Point[];
 export type Circle = { x: number, y: number, r: number };
