@@ -28,28 +28,15 @@ class DrawEngine {
   }
 
   resizeCanvas() {
-    const screenWidth = window.innerWidth;
-    const screenHeight = window.innerHeight;
-    // eslint-disable-next-line id-denylist
-    this.ctx1.canvas.width = screenWidth;
-    // eslint-disable-next-line id-denylist
-    this.ctx1.canvas.height = screenHeight;
-    // eslint-disable-next-line id-denylist
-    this.ctx2.canvas.width = screenWidth;
-    // eslint-disable-next-line id-denylist
-    this.ctx2.canvas.height = screenHeight;
-    // eslint-disable-next-line id-denylist
-    this.ctx3.canvas.width = screenWidth;
-    // eslint-disable-next-line id-denylist
-    this.ctx3.canvas.height = screenHeight;
-    // eslint-disable-next-line id-denylist
-    this.ctx4.canvas.width = screenWidth;
-    // eslint-disable-next-line id-denylist
-    this.ctx4.canvas.height = screenHeight;
-    this.ctx1.imageSmoothingEnabled = false;
-    this.ctx2.imageSmoothingEnabled = false;
-    this.ctx3.imageSmoothingEnabled = false;
-    this.ctx4.imageSmoothingEnabled = false;
+    const aspectRatio = 4 / 3;
+    const gameWidth = 1200;
+    const gameHeight = Math.round(gameWidth / aspectRatio);
+    const ctxs: CanvasRenderingContext2D[] = [this.ctx1, this.ctx2, this.ctx3, this.ctx4];
+    for (const ctx of ctxs) {
+      ctx.canvas.width = gameWidth;
+      ctx.canvas.height = gameHeight;
+      ctx.imageSmoothingEnabled = false;
+    }
   }
 
   get canvasWidth() {

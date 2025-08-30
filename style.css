@@ -27,7 +27,8 @@ canvas {
     height: 100%;
     width: 100%;
     position: absolute;
-    image-rendering: pixelated; /* You definitely want this if you are doing pixel art */
+    image-rendering: pixelated;
+    object-fit: contain;
 }
 
 /* Get rid of any margins, set background black, use flexbox to center */
