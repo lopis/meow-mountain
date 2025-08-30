@@ -8,7 +8,7 @@ interface Goal {
 }
 
 export class GameData {
-  cutscene = true;
+  cutscene = false;
   lives = MAX_LIVES;
   superstition = 0;
   superstitionCooldown = 0;

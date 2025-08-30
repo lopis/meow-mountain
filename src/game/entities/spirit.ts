@@ -125,7 +125,12 @@ export class Spirit extends Icon implements SmoothMovementState {
       // Resting (returning)
       if (this.state !== 'resting') {
         this.state = 'resting';
-        emit('attack-player', this.species.level); // Emit event when transitioning to resting
+        
+        // Only emit if player is still in the target cell
+        const cell = this.map.grid[this.attackTarget.row][this.attackTarget.col];
+        if (cell.content?.type === 'cat') {
+          emit('attack-player', this.species.level);
+        }
       }
       const restProgress = (progress - 0.73) / 0.27;
       this.attackOffsetX = dirX * 3 * (1 - restProgress);

@@ -6,6 +6,7 @@ import { updatePositionSmoothly, SmoothMovementState } from "../utils/smooth-mov
 export class GameObject<T extends string> implements SmoothMovementState {
   protected animationTime = 0;
   protected animationDuration = 150; // Duration for each animation frame in milliseconds
+  animationLoop = true;
   public col: number;
   public row: number;
   moving = { x: 0, y: 0 };
@@ -35,6 +36,9 @@ export class GameObject<T extends string> implements SmoothMovementState {
   }
 
   update(timeElapsed: number) {
+    // if (!this.animationLoop && this.animationTime > this.animationDuration * this.tileset.animations[this.animation].length) {
+    //   return;
+    // }
     this.animationTime += timeElapsed;
   }
 

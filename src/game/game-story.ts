@@ -51,6 +51,12 @@ const script: Record<Scene, SceneProps> = {
   },
 };
 
+const postIntro = () => {
+  emit('wake-up');
+  emit('spawn-first-spirit');
+  drawEngine.cameraLerpSpeed = 0.08;
+};
+
 export class GameStory {
   story: Story<typeof script>;
 
@@ -60,9 +66,7 @@ export class GameStory {
     on('story-state-exit', (label: Scene) => {
       emit('cutscene-end', script[label]);
       if (label === Scene.intro) {
-        emit('wake-up');
-        emit('spawn-first-spirit');
-        drawEngine.cameraLerpSpeed = 0.08;
+        postIntro();
         addTimeEvent(() => {
           emit('story-state-enter', Scene.spirit);
         }, 6000);
@@ -76,7 +80,10 @@ export class GameStory {
       emit('cutscene-start');
     });
 
-    this.story.enterState(Scene.intro);
+    // this.story.enterState(Scene.intro);
+    setTimeout(() => {
+      postIntro();
+    }, 10);
   }
 
   update (timeElapsed: number) {

@@ -36,10 +36,11 @@ class GameState implements State {
   }
 
   onUpdate(timeElapsed: number) {
-    drawEngine.setCamera(this.cat.x, this.cat.y, 7);
+    const zoom = 7 + (7 - this.gameData.lives);
+    drawEngine.setCamera(this.cat.x, this.cat.y, zoom);
     drawEngine.updateCamera();
 
-    if (!(this.gameData.cutscene)) {
+    if (!(this.gameData.cutscene) && this.gameData.lives > 0) {
       this.actions.update();
       this.map.update(timeElapsed);
       this.hud.update(timeElapsed);
@@ -51,8 +52,12 @@ class GameState implements State {
     this.story.update(timeElapsed);
     updateTimeEvents(timeElapsed);
 
-    this.map.draw(this.cat.x, this.cat.y);
-    this.hud.draw();
+    if (this.gameData.lives == 0) {
+      this.cat.draw();
+    } else {
+      this.map.draw(this.cat.x, this.cat.y);
+      this.hud.draw();
+    }
     drawEngine.resetCamera();
   }
 }

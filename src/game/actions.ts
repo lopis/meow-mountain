@@ -54,6 +54,9 @@ export class Actions {
 
   private ifFacingStatue(): boolean {
     const cellInFront = this.map.grid[this.player.row - 1][this.player.col];
-    return cellInFront.content?.type === 'statue' && this.player.col != statues.heart.x;
+    return (
+      cellInFront.content?.type === 'statue'
+      || cellInFront.content?.type === 'obelisk'
+    ) && this.player.col != statues.heart.x;
   }
 }

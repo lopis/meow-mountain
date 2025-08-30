@@ -6,7 +6,6 @@ import { CELL_HEIGHT, CELL_WIDTH, statues } from "../constants";
 import { on } from "@/core/event";
 import { addTimeEvent } from "@/core/timer";
 import { Spirit } from "./spirit";
-import { Coords } from "../path-findind";
 
 export class Player extends GameObject<CatStates> {
   map: GameMap;
@@ -14,7 +13,6 @@ export class Player extends GameObject<CatStates> {
   sleeping = true;
   attacking = false;
   confused = false;
-  lastMovementDirection: Coords = { col: 0, row: 0 };
 
   constructor(col: number, row: number, map: GameMap) {
     super(
@@ -44,6 +42,11 @@ export class Player extends GameObject<CatStates> {
         this.confused = false;
       }, 600);
     });
+
+    on('game-over', () => {
+      this.animation = 'die';
+      this.animationLoop = false;
+    });
   }
 
   update(timeElapsed: number) {
@@ -65,7 +68,7 @@ export class Player extends GameObject<CatStates> {
           this.moving.y = controls.inputDirection.y;
           this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;
           this.row = newRow;
-          this.lastMovementDirection = { col: 0, row: controls.inputDirection.y };
+          this.map.lastMovementDirection = { col: 0, row: controls.inputDirection.y };
         }
       }
 
@@ -77,7 +80,7 @@ export class Player extends GameObject<CatStates> {
           this.moving.x = controls.inputDirection.x;
           this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;
           this.col = newCol;
-          this.lastMovementDirection = { col: controls.inputDirection.x, row: 0 };
+          this.map.lastMovementDirection = { col: controls.inputDirection.x, row: 0 };
         }
       }
 

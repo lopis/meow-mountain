@@ -6,11 +6,13 @@ import { Statue } from "./entities/statue";
 import { Cell, Drawable } from "./types";
 import { on } from "@/core/event";
 import { Spirit } from "./entities/spirit";
+import { Coords } from "./path-findind";
 
 export class GameMap {
   grid: Cell[][];
   villages: Village[] = [];
   private rng: SeededRandom;
+  lastMovementDirection: Coords = { col: 0, row: 0 };
 
   constructor(public readonly colCount: number, public readonly rowCount: number) {
     this.rng = new SeededRandom();
