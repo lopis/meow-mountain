@@ -1,5 +1,6 @@
 import { emojiToPixelArt } from "@/core/emoji";
 import { Tileset } from "@/core/tileset";
+import { createCornerImage } from "@/core/util/image-generator";
 
 const catStates = ['sit', 'idle', 'walk', 'run', 'die', 'scratch', 'confused', 'sleep'] as const;
 export type CatStates = typeof catStates[number];
@@ -17,10 +18,12 @@ export class GameAssets {
   public static cat: Tileset<CatStates>;
   public static villager: Tileset<VillagerStates>;
   public static assets: Tileset<Asset>;
+  public static cornerImage: HTMLImageElement;
 
   public static initialize() {
     this.cat = new Tileset<CatStates>('cat.png', 16, catStates);
     this.assets = new Tileset<Asset>('assets.png', 16, assets);
     this.villager = new Tileset<VillagerStates>('villager.png', 8, villagerStates);
+    this.cornerImage = createCornerImage();
   }
 }

@@ -8,12 +8,13 @@ import { on } from "@/core/event";
 import { Spirit } from "./entities/spirit";
 import { Coords } from "./path-findind";
 import { drawEngine } from "@/core/draw-engine";
+import { GameAssets } from "./game-assets";
 
 export class GameMap {
   grid: Cell[][];
   villages: Village[] = [];
   private rng: SeededRandom;
-  lastMovementDirection: Coords = { col: 0, row: 0 };
+  playerLookingAt: Coords = { col: 0, row: 0 };
 
   constructor(public readonly colCount: number, public readonly rowCount: number) {
     this.rng = new SeededRandom();
@@ -206,25 +207,30 @@ export class GameMap {
       for (const cell of row) {
         const dx = cell.x * CELL_WIDTH - cx;
         const dy = cell.y * CELL_HEIGHT - cy;
-        
-        // Use rectangular bounds for rendering
-        if (Math.abs(dx) <= renderWidth && Math.abs(dy) <= renderHeight) {
-          cell?.content?.draw();
-        }
-        
+
         // Use circular bounds for "seen" detection (minimap)
         const distanceSquared = dx * dx + dy * dy;
         if (distanceSquared <= seenRadiusSquared) {
           cell.seen = true;
         }
 
-        // if (cell.marked) {
-        //   drawEngine.ctx1.fillStyle = '#8d518055';
-        //   drawEngine.ctx1.fillRect(cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-        //   drawEngine.ctx1.font = '8px';
-        //   drawEngine.ctx1.fillStyle = 'black';
-        //   drawEngine.ctx1.fillText(cell.marked + '', cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT);
-        // }
+        if (
+          cell.y === this.playerLookingAt.row &&
+          cell.x === this.playerLookingAt.col &&
+          cell.content &&
+          !['oak', 'spruce'].includes(cell.content.type)
+        ) {
+          drawEngine.drawBackgroundImage(
+            GameAssets.cornerImage,
+            cell.x * CELL_WIDTH - (16 - CELL_WIDTH) / 2,
+            cell.y * CELL_HEIGHT - (16 - CELL_HEIGHT) / 2
+          );
+        }
+        
+        // Use rectangular bounds for rendering
+        if (Math.abs(dx) <= renderWidth && Math.abs(dy) <= renderHeight) {
+          cell?.content?.draw();
+        }
       }
     }
   }

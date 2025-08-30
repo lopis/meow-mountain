@@ -2,6 +2,7 @@ import { GameAssets } from "@/game/game-assets";
 import { drawText, DrawTextProps } from "./font";
 import { colors } from "./util/color";
 
+
 class DrawEngine {
   ctx1: CanvasRenderingContext2D;
   ctx2: CanvasRenderingContext2D;
@@ -87,28 +88,6 @@ class DrawEngine {
     imgHeight?: number,
   ) {
     DrawEngine.drawImage(this.ctx1, img, x, y, mirrored, imgWidth, imgHeight);
-  }
-
-  drawForegroundImage(
-    img: HTMLImageElement,
-    x: number,
-    y: number,
-    mirrored?: boolean,
-    imgWidth?: number,
-    imgHeight?: number,
-  ) {
-    DrawEngine.drawImage(this.ctx2, img, x, y, mirrored, imgWidth, imgHeight);
-  }
-
-  drawUIImage(
-    img: HTMLImageElement,
-    x: number,
-    y: number,
-    mirrored?: boolean,
-    imgWidth?: number,
-    imgHeight?: number,
-  ) {
-    DrawEngine.drawImage(this.ctx3, img, x, y, mirrored, imgWidth, imgHeight);
   }
 
   /**

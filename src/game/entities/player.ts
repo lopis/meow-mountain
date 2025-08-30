@@ -24,6 +24,9 @@ export class Player extends GameObject<CatStates> {
       80,
     );
     this.map = map;
+    
+    // Initialize looking direction to the right
+    this.map.playerLookingAt = { col: col + 1, row };
 
     on('teleport', () => {
       this.setPos(statues.heart.x, statues.heart.y + 1);
@@ -63,29 +66,41 @@ export class Player extends GameObject<CatStates> {
 
       if (!this.moving.y && controls.inputDirection.y) {
         const newRow = this.row + controls.inputDirection.y;
+        
         if (newRow >= 0 && newRow < this.map.rowCount && !this.map.grid[newRow][this.col].content) {
           this.animation = 'run';
           this.moving.y = controls.inputDirection.y;
           this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;
           this.row = newRow;
-          this.map.lastMovementDirection = { col: 0, row: controls.inputDirection.y };
+          // Update looking direction after movement to point ahead
+          this.map.playerLookingAt = { col: this.col, row: this.row + controls.inputDirection.y };
+        } else {
+          // Blocked movement - still update looking direction to attempted target
+          this.map.playerLookingAt = { col: this.col, row: this.row + controls.inputDirection.y };
         }
       }
 
       if (!this.moving.x && controls.inputDirection.x) {
         this.mirrored = controls.isLeft;
         const newCol = this.col + controls.inputDirection.x;
+        
         if (newCol >= 0 && newCol < this.map.colCount && !this.map.grid[this.row][newCol].content) {
           this.animation = 'run';
           this.moving.x = controls.inputDirection.x;
           this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;
           this.col = newCol;
-          this.map.lastMovementDirection = { col: controls.inputDirection.x, row: 0 };
+          // Update looking direction after movement to point ahead  
+          this.map.playerLookingAt = { col: this.col + controls.inputDirection.x, row: this.row };
+        } else {
+          // Blocked movement - still update looking direction to attempted target
+          this.map.playerLookingAt = { col: this.col + controls.inputDirection.x, row: this.row };
         }
       }
 
       if (!this.moving.x && !this.moving.y) {
         this.animation = 'idle';
+        // Keep looking in the same direction as before (don't reset to horizontal)
+        // playerLookingAt is already set from the last movement, so no need to update it
       }
 
       if (!this.attacking && controls.isAction1 && !controls.previousState.isAction1) {
