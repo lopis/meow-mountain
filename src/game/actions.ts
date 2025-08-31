@@ -53,7 +53,7 @@ export class Actions {
   }
 
   private ifFacingStatue(): boolean {
-    const cellInFront = this.map.grid[this.player.row - 1][this.player.col];
+    const cellInFront = this.map.getLookingAt();
     return (
       cellInFront.content?.type === 'statue'
       || cellInFront.content?.type === 'obelisk'

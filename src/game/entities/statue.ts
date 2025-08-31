@@ -1,8 +1,10 @@
+/* eslint-disable max-classes-per-file */
 import { GameObject } from "@/core/game-object";
 import { Asset, GameAssets } from "../game-assets";
 import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
-import { Spirit, spirits, SpiritType } from "./spirit";
+import { Spirit, spirits } from "./spirit";
 import { GameMap } from "../game-map";
+import { GameData } from "../game-data";
 
 export class Statue extends GameObject<Asset> {
   spirits: Spirit[] = [];
@@ -11,17 +13,21 @@ export class Statue extends GameObject<Asset> {
   spawnInterval = 100; // 100ms
   spawnChance = 0.105; // 10%
   spawnRadius = 10;
-  map!: GameMap;
 
-  constructor(col: number, row: number, map: GameMap) {
+  constructor(
+    col: number,
+    row: number,
+    public map: GameMap,
+    public gameData: GameData,
+    public name: string,
+  ) {
     super(
       GameAssets.assets,
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
       'statue',
-      'statue'
+      'statue',
     );
-    this.map = map;
   }
 
   update(timeElapsed: number) {
@@ -40,10 +46,6 @@ export class Statue extends GameObject<Asset> {
   }
 
   private spawnSpirit() {
-    if (!this.map) {
-      return; // Can't spawn without map reference
-    }
-
     // Find a random empty cell within a 20x20 area around the statue
     const emptyCells: { x: number; y: number }[] = [];
     
@@ -69,10 +71,11 @@ export class Statue extends GameObject<Asset> {
       const selectedPosition = emptyCells[randomIndex];
       
       // TODO: only spawn spirits of the appropriate level for the current game
-      const spiritTypes = Object.keys(spirits) as SpiritType[];
+      const spiritTypes = Object.values(spirits)
+        .filter((spirit) => spirit.level < this.gameData.level);
       const randomType = spiritTypes[Math.floor(Math.random() * spiritTypes.length)];
       
-      const spirit = new Spirit(selectedPosition.x, selectedPosition.y, randomType, this.map);
+      const spirit = new Spirit(selectedPosition.x, selectedPosition.y, randomType.type, this.map);
       this.spirits.push(spirit);
       
       // Place the spirit directly in the map

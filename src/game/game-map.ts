@@ -9,6 +9,7 @@ import { Spirit } from "./entities/spirit";
 import { Coords } from "./path-findind";
 import { drawEngine } from "@/core/draw-engine";
 import { GameAssets } from "./game-assets";
+import { GameData } from "./game-data";
 
 export class GameMap {
   grid: Cell[][];
@@ -16,7 +17,11 @@ export class GameMap {
   private rng: SeededRandom;
   playerLookingAt: Coords = { col: 0, row: 0 };
 
-  constructor(public readonly colCount: number, public readonly rowCount: number) {
+  constructor(
+    public readonly colCount: number,
+    public readonly rowCount: number,
+    public gameData: GameData,
+  ) {
     this.rng = new SeededRandom();
 
     this.grid = Array.from({ length: rowCount }, (_a, y) =>
@@ -51,8 +56,9 @@ export class GameMap {
     }
 
     for (const statueProps of Object.values(statues)) {
-      const { x, y } = statueProps;
-      const statue = new Statue(x, y, this);
+      const { x, y, name } = statueProps;
+      const fullName = `cat ${name} altar`;
+      const statue = new Statue(x, y, this, this.gameData, fullName);
       if (x === statues.heart.x) {
         statue.maxSpirits = 0;
       }
@@ -90,6 +96,10 @@ export class GameMap {
     on('spawn-first-spirit', () => {
       this.set(64, 89, new Spirit(64, 89, '🎈', this));
     });
+  }
+
+  getLookingAt() {
+    return this.grid[this.playerLookingAt.row][this.playerLookingAt.col];
   }
 
   private clearPathWithJitter(
@@ -205,8 +215,10 @@ export class GameMap {
 
     for (const row of this.grid) {
       for (const cell of row) {
-        const dx = cell.x * CELL_WIDTH - cx;
-        const dy = cell.y * CELL_HEIGHT - cy;
+        const x = cell.x * CELL_WIDTH;
+        const y = cell.y * CELL_HEIGHT;
+        const dx = x - cx;
+        const dy = y - cy;
 
         // Use circular bounds for "seen" detection (minimap)
         const distanceSquared = dx * dx + dy * dy;
@@ -222,8 +234,8 @@ export class GameMap {
         ) {
           drawEngine.drawBackgroundImage(
             GameAssets.cornerImage,
-            cell.x * CELL_WIDTH - (16 - CELL_WIDTH) / 2,
-            cell.y * CELL_HEIGHT - (16 - CELL_HEIGHT) / 2
+            x - (16 - CELL_WIDTH) / 2,
+            y - (16 - CELL_HEIGHT) / 2
           );
         }
         

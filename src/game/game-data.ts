@@ -10,6 +10,7 @@ interface Goal {
 export class GameData {
   cutscene = false;
   lives = MAX_LIVES;
+  level = 1;
   superstition = 0;
   superstitionCooldown = 0;
   goals: Goal[] = [];

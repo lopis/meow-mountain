@@ -5,6 +5,7 @@ import { GameMap } from "../game-map";
 
 export class Obelisk extends GameObject<Asset> {
   map: GameMap;
+  name = 'barrier obelisk';
   
   constructor(map: GameMap) {
     const col = 69;

@@ -121,12 +121,8 @@ export class Player extends GameObject<CatStates> {
   }
 
   private attackEnemyInFront() {
-    // Determine which direction the player is facing
-    const targetCol = this.mirrored ? this.col - 1 : this.col + 1;
-    const targetRow = this.row;
-
     // Check if there's a spirit at the target position
-    const cell = this.map.grid[targetRow][targetCol];
+    const cell = this.map.getLookingAt();
     if (cell.content && cell.content.type === 'spirit') {
       const spirit = cell.content as Spirit;
       spirit.takeDamage(1);

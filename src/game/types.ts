@@ -3,6 +3,7 @@ export interface Drawable {
   row: number;
   draw: () => void;
   type: string;
+  name?: string;
   update?: (timeElapsed: number) => void;
 }
 

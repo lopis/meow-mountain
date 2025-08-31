@@ -50,7 +50,7 @@ class DrawEngine {
   }
 
   drawText(textProps: DrawTextProps, context?: CanvasRenderingContext2D) {
-    drawText(context || this.ctx2, textProps);
+    drawText(context || this.ctx1, textProps);
   }
 
   static drawImage(

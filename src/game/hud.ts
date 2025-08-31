@@ -15,7 +15,7 @@ export class HUD {
   dialogBox: DialogBox;
 
   constructor(
-    map: GameMap,
+    public map: GameMap,
     public player: Player,
     public actions: Actions,
     public gameData: GameData,
@@ -33,6 +33,7 @@ export class HUD {
     this.drawGoals();
     this.drawSuperstition();
     this.drawActions();
+    this.drawLookingAt();
     this.miniMap.draw(this.player);
     this.dialogBox.draw();
   }
@@ -191,5 +192,40 @@ export class HUD {
     drawEngine.ctx3.fillRect(x + padding, y + padding, barSize, boxH - 2 * padding);
 
     drawEngine.drawText({ text, x: c3.width / 2, y: y + boxH + size, color: colors.blue5, size, textAlign: 'center' }, drawEngine.ctx3);
+  }
+
+  drawLookingAt() {
+    if (!this.map.playerLookingAt) {
+      return;
+    }
+    
+    const cell = this.map.getLookingAt();
+    if (cell?.content?.name) {
+      const boxWidth = 350;
+      const boxHeight = 35;
+      drawEngine.ctx3.fillStyle = colors.purple5;
+      drawEngine.ctx3.fillRect(
+        c3.width / 2 - boxWidth / 2 + 4,
+        c3.height - 170 - 6 * 3 - 4,
+        boxWidth - 8,
+        boxHeight + 8,
+      );
+      drawEngine.ctx3.fillStyle = colors.yellow2;
+      drawEngine.ctx3.fillRect(
+        c3.width / 2 - boxWidth / 2,
+        c3.height - 170 - 6 * 3,
+        boxWidth,
+        boxHeight,
+      );
+      drawEngine.drawText({
+        text: `${cell.content.name}`,
+        x: c3.width / 2,
+        y: c3.height - 170,
+        textAlign: 'center',
+        textBaseline: 'middle',
+        color: colors.purple4,
+        size: 3,
+      }, drawEngine.ctx3);
+    }
   }
 }
