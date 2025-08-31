@@ -1,10 +1,12 @@
 import { GameMap } from "./game-map";
 import { Player } from "./entities/player";
-import { statues } from "./constants";
+import { MAX_REPAIR, statues } from "./constants";
 import { colors } from "@/core/util/color";
 import { emit, on } from "@/core/event";
 import { MAGIC, SCRATCH, TELEPORT } from "@/core/font";
 import { controls } from "@/core/controls";
+import { Statue } from "./entities/statue";
+import { Obelisk } from "./entities/obelisk";
 
 type ActionType = 'teleport' | 'scratch' | 'restore';
 type Action = {
@@ -56,14 +58,23 @@ export class Actions {
     if (controls.isAction2 && !controls.previousState.isAction2) {
       emit('teleport');
     }
+
+    if (controls.isAction3 && !controls.previousState.isAction3) {
+      emit('restore');
+      const cellInFront = this.map.getLookingAt();
+      const object = cellInFront.content as Statue | Obelisk;
+      if(['statue', 'obelisk'].includes(object?.type ?? '')) {
+        object.repair++;
+      }
+    }
   }
 
   private canRestore(): boolean {
     const cellInFront = this.map.getLookingAt();
+    const object = cellInFront.content as Statue | Obelisk;
     return (
-      cellInFront.content?.type === 'statue'
-      || cellInFront.content?.type === 'obelisk'
-    );
+      ['statue', 'obelisk'].includes(object?.type ?? '')
+    ) && object.repair < MAX_REPAIR;
   }
 
   private canTeleport() {

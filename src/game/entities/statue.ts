@@ -1,14 +1,12 @@
 /* eslint-disable max-classes-per-file */
 import { GameObject } from "@/core/game-object";
 import { Asset, GameAssets } from "../game-assets";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { CELL_HEIGHT, CELL_WIDTH, MAX_REPAIR } from "../constants";
 import { Spirit, spirits } from "./spirit";
 import { GameMap } from "../game-map";
 import { GameData } from "../game-data";
 import { drawHpBar } from "./hp-bar";
 import { colors } from "@/core/util/color";
-
-const MAX_REPAIR = 20;
 
 export class Statue extends GameObject<Asset> {
   spirits: Spirit[] = [];

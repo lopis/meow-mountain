@@ -13,6 +13,8 @@ import { EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from "@/co
 export class HUD {
   miniMap: MiniMap;
   dialogBox: DialogBox;
+  renderSuperstition = false;
+  renderLives = false;
 
   constructor(
     public map: GameMap,
@@ -29,12 +31,12 @@ export class HUD {
   }
 
   draw() {
-    this.drawLives();
+    this.renderLives && this.drawLives();
     this.drawGoals();
-    this.drawSuperstition();
+    this.renderSuperstition && this.drawSuperstition();
     this.drawActions();
     this.drawLookingAt();
-    this.miniMap.draw(this.player);
+    this.renderLives && this.miniMap.draw(this.player);
     this.dialogBox.draw();
   }
 
