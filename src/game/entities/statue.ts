@@ -53,7 +53,8 @@ export class Statue extends GameObject<Asset> {
       drawEngine.ctx1,
       this.x + CELL_WIDTH / 2,
       this.y + CELL_HEIGHT / 2,
-      30,
+      CELL_WIDTH * 2,
+      CELL_HEIGHT * 2,
       colors.white,
     );
     super.draw();
