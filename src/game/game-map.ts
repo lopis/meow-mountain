@@ -33,7 +33,7 @@ export class GameMap {
         const distanceFromHeartPeak = Math.sqrt(dx * dx + dy * dy);
         
         let treeType: 'oak' | 'spruce';
-        if (distanceFromHeartPeak <= 20) {
+        if (distanceFromHeartPeak <= 40) {
           // Within 20 cell radius of Heart Peak: 90% spruce, 10% oak
           treeType = this.rng.next() < 0.9 ? 'spruce' : 'oak';
         } else {

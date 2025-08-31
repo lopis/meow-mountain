@@ -2,8 +2,9 @@ import { GameMap } from "./game-map";
 import { Player } from "./entities/player";
 import { statues } from "./constants";
 import { colors } from "@/core/util/color";
-import { on } from "@/core/event";
+import { emit, on } from "@/core/event";
 import { MAGIC, SCRATCH, TELEPORT } from "@/core/font";
+import { controls } from "@/core/controls";
 
 type ActionType = 'teleport' | 'scratch' | 'restore';
 type Action = {
@@ -49,14 +50,25 @@ export class Actions {
   // Update available actions based on player's current position
   update(): void {
     // Check if player is near a statue
-    this.actions[2].enabled = this.ifFacingStatue();
+    this.actions[2].enabled = this.canRestore();
+    this.actions[1].enabled = this.canTeleport();
+
+    if (controls.isAction2 && !controls.previousState.isAction2) {
+      emit('teleport');
+    }
   }
 
-  private ifFacingStatue(): boolean {
+  private canRestore(): boolean {
     const cellInFront = this.map.getLookingAt();
     return (
       cellInFront.content?.type === 'statue'
       || cellInFront.content?.type === 'obelisk'
-    ) && this.player.col != statues.heart.x;
+    );
+  }
+
+  private canTeleport() {
+    const cellInFront = this.map.getLookingAt();
+    return cellInFront.content?.type === 'statue'
+      && this.player.col != statues.heart.x;
   }
 }

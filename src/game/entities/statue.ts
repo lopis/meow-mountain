@@ -10,8 +10,8 @@ export class Statue extends GameObject<Asset> {
   spirits: Spirit[] = [];
   maxSpirits = 9;
   spawnTimer = 0;
-  spawnInterval = 100; // 100ms
-  spawnChance = 0.105; // 10%
+  spawnInterval = 1000;
+  spawnChance = 0.10;
   spawnRadius = 10;
 
   constructor(
@@ -36,7 +36,6 @@ export class Statue extends GameObject<Asset> {
     if (this.spawnTimer >= this.spawnInterval) {
       this.spawnTimer = 0;
       
-      // 10% chance to spawn a spirit if under max limit
       if (this.spirits.length < this.maxSpirits && Math.random() < this.spawnChance) {
         this.spawnSpirit();
       }

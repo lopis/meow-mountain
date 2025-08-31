@@ -28,7 +28,7 @@ const script: Record<Scene, SceneProps> = {
       "Has the magic barrier failed\nwhile I slept??",
       "This one seems weak.",
       "I'll exorcise it and then\ngo check the barrier",
-      "> Press (1) to attack",
+      "> Press (1) to attack\n> Hold (1) to charge",
     ],
     goals: ['find magic barrier obelisk'],
   },
