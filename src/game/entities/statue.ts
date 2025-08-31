@@ -49,11 +49,11 @@ export class Statue extends GameObject<Asset> {
   }
 
   draw() {
-    drawEngine.drawCircle(
+    drawEngine.drawCircumference(
       drawEngine.ctx1,
       this.x + CELL_WIDTH / 2,
       this.y + CELL_HEIGHT / 2,
-      CELL_WIDTH * 2,
+      CELL_WIDTH * 3,
       CELL_HEIGHT * 2,
       colors.white,
     );

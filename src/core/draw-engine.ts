@@ -49,34 +49,52 @@ class DrawEngine {
     return this.ctx2.canvas.height;
   }
 
-  drawCircle(
+  makeCircle(
     ctx: CanvasRenderingContext2D,
     centerX: number,
     centerY: number,
-    radius: number,
-    color: string,
+    radiusX: number,
+    radiusY: number,
     skew = 0,
   ) {
+
+    // Draw ellipse using scaled circle algorithm
+    for (let y = -radiusY; y <= radiusY; y++) {
+      // Calculate the half-width at this y position using ellipse equation
+      const normalizedY = y / radiusY;
+      const halfWidth = Math.round(radiusX * Math.sqrt(1 - normalizedY * normalizedY));
+      
+      if (halfWidth > 0) {
+        const offset = Math.round(skew * Math.abs(y));
+        const currentY = centerY + y;
+        
+        if (y >= 0) {
+          ctx.rect(centerX - halfWidth - offset, currentY, halfWidth * 2, 1);
+        } else {
+          ctx.rect(centerX - halfWidth + offset, currentY, halfWidth * 2, 1);
+        }
+      }
+    }
+  }
+
+  drawCircumference(
+    ctx: CanvasRenderingContext2D,
+    centerX: number,
+    centerY: number,
+    radiusX: number,
+    radiusY: number,
+    color: string,
+  ) {
+    ctx.save();
+    ctx.beginPath();
+    this.makeCircle(ctx, centerX, centerY, radiusX, radiusY);
+    this.makeCircle(ctx, centerX, centerY, radiusX - 2, radiusY - 2);
+    ctx.clip('evenodd');
     ctx.beginPath();
     ctx.fillStyle = color;
-
-    let x = radius, y = 0, cd = 0;
-
-    // middle line
-    ctx.rect(centerX - x, centerY, radius<<1, 1);
-
-    while (x > y) {
-      cd -= (--x) - (++y);
-      if (cd < 0) cd += x++;
-      let offset = Math.round(skew * x);
-      ctx.rect(centerX - y + offset, centerY - x, y<<1, 1);    // upper 1/4
-      ctx.rect(centerX - y - offset, centerY + x, y<<1, 1);    // lower 4/4
-      offset = Math.round(skew * y);
-      ctx.rect(centerX - x + offset, centerY - y, x<<1, 1);    // upper 2/4
-      ctx.rect(centerX - x - offset, centerY + y, x<<1, 1);    // lower 3/4
-    }
-
+    ctx.fillRect(centerX - radiusX, centerY - radiusY, radiusX*2, radiusY*2);
     ctx.fill();
+    ctx.restore();
   }
 
   drawText(textProps: DrawTextProps, context?: CanvasRenderingContext2D) {
