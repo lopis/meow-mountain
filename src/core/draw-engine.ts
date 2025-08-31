@@ -49,6 +49,36 @@ class DrawEngine {
     return this.ctx2.canvas.height;
   }
 
+  drawCircle(
+    ctx: CanvasRenderingContext2D,
+    centerX: number,
+    centerY: number,
+    radius: number,
+    color: string,
+    skew = 0,
+  ) {
+    ctx.beginPath();
+    ctx.fillStyle = color;
+
+    let x = radius, y = 0, cd = 0;
+
+    // middle line
+    ctx.rect(centerX - x, centerY, radius<<1, 1);
+
+    while (x > y) {
+      cd -= (--x) - (++y);
+      if (cd < 0) cd += x++;
+      let offset = Math.round(skew * x);
+      ctx.rect(centerX - y + offset, centerY - x, y<<1, 1);    // upper 1/4
+      ctx.rect(centerX - y - offset, centerY + x, y<<1, 1);    // lower 4/4
+      offset = Math.round(skew * y);
+      ctx.rect(centerX - x + offset, centerY - y, x<<1, 1);    // upper 2/4
+      ctx.rect(centerX - x - offset, centerY + y, x<<1, 1);    // lower 3/4
+    }
+
+    ctx.fill();
+  }
+
   drawText(textProps: DrawTextProps, context?: CanvasRenderingContext2D) {
     drawText(context || this.ctx1, textProps);
   }

@@ -1,8 +1,8 @@
 import { drawEngine } from "@/core/draw-engine";
-import { Color, colors } from "@/core/util/color";
+import { colors } from "@/core/util/color";
 import { CELL_WIDTH } from "../constants";
 
-const defaultColors: [Color, Color, Color, Color] = [colors.blue1, colors.blue2, colors.purple5, colors.purple4];
+const defaultColors: [string, string, string, string] = [colors.blue1, colors.blue2, colors.purple5, colors.purple4];
 
 export const drawHpBar = (
   hp: number,

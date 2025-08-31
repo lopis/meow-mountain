@@ -7,6 +7,7 @@ import { GameMap } from "../game-map";
 import { GameData } from "../game-data";
 import { drawHpBar } from "./hp-bar";
 import { colors } from "@/core/util/color";
+import { drawEngine } from "@/core/draw-engine";
 
 export class Statue extends GameObject<Asset> {
   spirits: Spirit[] = [];
@@ -48,6 +49,13 @@ export class Statue extends GameObject<Asset> {
   }
 
   draw() {
+    drawEngine.drawCircle(
+      drawEngine.ctx1,
+      this.x + CELL_WIDTH / 2,
+      this.y + CELL_HEIGHT / 2,
+      30,
+      colors.white,
+    );
     super.draw();
     if (this.repair > 0) {
       drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);

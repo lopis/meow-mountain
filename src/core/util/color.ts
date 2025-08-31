@@ -32,10 +32,10 @@ export type Color =
 'yellow1' | 
 'yellow2' | 
 'black' | 
-'white' | 
-'ckground';
+'white';
 
-export const colors: Record<string, Color> = new Proxy({}, {
+// @ts-expect-error
+export const colors: Record<Color, string> = new Proxy({}, {
   get: (_, prop: string) => {
     if (typeof window === 'undefined' || typeof document === 'undefined') return '';
     const value = getComputedStyle(document.documentElement).getPropertyValue(`--${prop}`);
