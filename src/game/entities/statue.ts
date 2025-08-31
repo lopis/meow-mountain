@@ -17,6 +17,8 @@ export class Statue extends GameObject<Asset> {
   spawnChance = 0.10;
   spawnRadius = 10;
   repair = 0;
+  state: 'broken' | 'animating' | 'repaired' = 'broken';
+  repairAnimationTimer = 0;
 
   constructor(
     col: number,
@@ -36,6 +38,15 @@ export class Statue extends GameObject<Asset> {
 
   update(timeElapsed: number) {
     this.spawnTimer += timeElapsed;
+
+    if (this.state === 'broken' && this.repair >= MAX_REPAIR) {
+      this.state = 'animating';
+    } else if (this.state === 'animating') {
+      this.repairAnimationTimer += timeElapsed;
+      if (this.repairAnimationTimer > 500) {
+        this.state = 'repaired';
+      }
+    }
     
     if (this.spawnTimer >= this.spawnInterval) {
       this.spawnTimer = 0;
@@ -99,9 +110,5 @@ export class Statue extends GameObject<Asset> {
       // Place the spirit directly in the map
       this.map.set(selectedPosition.x, selectedPosition.y, spirit);
     }
-  }
-
-  getSpirits(): Spirit[] {
-    return [...this.spirits];
   }
 }

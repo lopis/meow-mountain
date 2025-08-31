@@ -2,6 +2,33 @@ import { GameAssets } from "@/game/game-assets";
 import { drawText, DrawTextProps } from "./font";
 import { colors } from "./util/color";
 
+const makeCircle = (
+    ctx: CanvasRenderingContext2D,
+    centerX: number,
+    centerY: number,
+    radiusX: number,
+    radiusY: number,
+    skew = 0,
+  ) => {
+
+    // Draw ellipse using scaled circle algorithm
+    for (let y = -radiusY; y <= radiusY; y++) {
+      // Calculate the half-width at this y position using ellipse equation
+      const normalizedY = y / radiusY;
+      const halfWidth = Math.round(radiusX * Math.sqrt(1 - normalizedY * normalizedY));
+      
+      if (halfWidth > 0) {
+        const offset = Math.round(skew * Math.abs(y));
+        const currentY = centerY + y;
+        
+        if (y >= 0) {
+          ctx.rect(centerX - halfWidth - offset, currentY, halfWidth * 2, 1);
+        } else {
+          ctx.rect(centerX - halfWidth + offset, currentY, halfWidth * 2, 1);
+        }
+      }
+    }
+  };
 
 class DrawEngine {
   ctx1: CanvasRenderingContext2D;
@@ -35,7 +62,9 @@ class DrawEngine {
     const gameHeight = Math.round(gameWidth / aspectRatio);
     const ctxs: CanvasRenderingContext2D[] = [this.ctx1, this.ctx2, this.ctx3, this.ctx4];
     for (const ctx of ctxs) {
+      // eslint-disable-next-line id-denylist
       ctx.canvas.width = gameWidth;
+      // eslint-disable-next-line id-denylist
       ctx.canvas.height = gameHeight;
       ctx.imageSmoothingEnabled = false;
     }
@@ -49,34 +78,8 @@ class DrawEngine {
     return this.ctx2.canvas.height;
   }
 
-  makeCircle(
-    ctx: CanvasRenderingContext2D,
-    centerX: number,
-    centerY: number,
-    radiusX: number,
-    radiusY: number,
-    skew = 0,
-  ) {
-
-    // Draw ellipse using scaled circle algorithm
-    for (let y = -radiusY; y <= radiusY; y++) {
-      // Calculate the half-width at this y position using ellipse equation
-      const normalizedY = y / radiusY;
-      const halfWidth = Math.round(radiusX * Math.sqrt(1 - normalizedY * normalizedY));
-      
-      if (halfWidth > 0) {
-        const offset = Math.round(skew * Math.abs(y));
-        const currentY = centerY + y;
-        
-        if (y >= 0) {
-          ctx.rect(centerX - halfWidth - offset, currentY, halfWidth * 2, 1);
-        } else {
-          ctx.rect(centerX - halfWidth + offset, currentY, halfWidth * 2, 1);
-        }
-      }
-    }
-  }
-
+  
+  // eslint-disable-next-line class-methods-use-this
   drawCircumference(
     ctx: CanvasRenderingContext2D,
     centerX: number,
@@ -87,8 +90,8 @@ class DrawEngine {
   ) {
     ctx.save();
     ctx.beginPath();
-    this.makeCircle(ctx, centerX, centerY, radiusX, radiusY);
-    this.makeCircle(ctx, centerX, centerY, radiusX - 2, radiusY - 2);
+    makeCircle(ctx, centerX, centerY, radiusX, radiusY);
+    makeCircle(ctx, centerX, centerY, radiusX - 2, radiusY - 2);
     ctx.clip('evenodd');
     ctx.beginPath();
     ctx.fillStyle = color;
