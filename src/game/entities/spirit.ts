@@ -6,8 +6,8 @@ import { GameMap } from "../game-map";
 import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from "@/utils/smooth-movement";
 import { Coords, findShortestPath } from "../path-findind";
 import { addTimeEvent } from "@/core/timer";
-import { colors } from "@/core/util/color";
 import { emit } from "@/core/event";
+import { drawHpBar } from "./hp-bar";
 
 export type SpiritType = '🎈' | '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -204,23 +204,8 @@ export class Spirit extends Icon implements SmoothMovementState {
       CELL_HEIGHT / 4 + 1,
     );
 
-    const hpRatio = Math.max(0, Math.min(1, this.hp / this.maxHp));
-    if (hpRatio < 1) {
-      const barWidth = this.icon.width;
-      const hpWidth = barWidth * hpRatio;
-      const barHeight = 1;
-      const barX = this.x;
-      const barY = this.y - 5;
-
-      drawEngine.ctx1.fillStyle = colors.blue1;
-      drawEngine.ctx1.fillRect(barX, barY, Math.round(hpWidth), barHeight);
-      drawEngine.ctx1.fillStyle = colors.blue2;
-      drawEngine.ctx1.fillRect(barX, barY + 1, Math.round(hpWidth), barHeight);
-
-      drawEngine.ctx1.fillStyle = colors.purple5;
-      drawEngine.ctx1.fillRect(barX + Math.round(hpWidth), barY, Math.round(barWidth - hpWidth), barHeight);
-      drawEngine.ctx1.fillStyle = colors.purple4;
-      drawEngine.ctx1.fillRect(barX + Math.round(hpWidth), barY + 1, Math.round(barWidth - hpWidth), barHeight);
+    if (this.hp < this.maxHp) {
+      drawHpBar(this.hp, this.maxHp, this.x, this.y);
     }
 
     // Icon

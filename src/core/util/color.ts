@@ -10,7 +10,7 @@ export const hexToRgb = (hex: string) : number[] => {
 };
 
 
-type Color =
+export type Color =
 'green0' | 
 'green1' | 
 'green2' | 

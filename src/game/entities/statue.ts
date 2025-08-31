@@ -5,6 +5,10 @@ import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
 import { Spirit, spirits } from "./spirit";
 import { GameMap } from "../game-map";
 import { GameData } from "../game-data";
+import { drawHpBar } from "./hp-bar";
+import { colors } from "@/core/util/color";
+
+const MAX_REPAIR = 20;
 
 export class Statue extends GameObject<Asset> {
   spirits: Spirit[] = [];
@@ -13,6 +17,7 @@ export class Statue extends GameObject<Asset> {
   spawnInterval = 1000;
   spawnChance = 0.10;
   spawnRadius = 10;
+  repair = 0;
 
   constructor(
     col: number,
@@ -42,6 +47,13 @@ export class Statue extends GameObject<Asset> {
     }
 
     this.spirits = this.spirits.filter(spirit => !spirit.dead);
+  }
+
+  draw() {
+    super.draw();
+    if (this.repair > 0) {
+      drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
+    }
   }
 
   private spawnSpirit() {
