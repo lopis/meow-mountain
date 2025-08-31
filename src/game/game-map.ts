@@ -197,6 +197,9 @@ export class GameMap {
             this.grid[cell.content.row][cell.content.col].content = cell.content;
             cell.content = null;
           }
+          if (cell.content && (cell?.content as Spirit)?.dead) {
+            this.set(cell.content.col, cell.content.row, null);
+          }
         }
       }
     }

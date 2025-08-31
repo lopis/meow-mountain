@@ -6,15 +6,15 @@ import { CELL_HEIGHT, CELL_WIDTH, statues } from "../constants";
 import { on } from "@/core/event";
 import { addTimeEvent } from "@/core/timer";
 import { Spirit } from "./spirit";
+import { GameData } from "../game-data";
 
 export class Player extends GameObject<CatStates> {
-  map: GameMap;
   type = 'cat';
   sleeping = true;
   attacking = false;
   confused = false;
 
-  constructor(col: number, row: number, map: GameMap) {
+  constructor(col: number, row: number, public map: GameMap, public gameData: GameData) {
     super(
       GameAssets.cat,
       col * CELL_WIDTH,
@@ -23,7 +23,6 @@ export class Player extends GameObject<CatStates> {
       'sleep',
       80,
     );
-    this.map = map;
     
     // Initialize looking direction to the right
     this.map.playerLookingAt = { col: col + 1, row };
@@ -54,6 +53,13 @@ export class Player extends GameObject<CatStates> {
 
   update(timeElapsed: number) {
     super.update(timeElapsed);
+
+    // DEBUG
+    coords.innerText = `${this.col},${this.row}`;
+
+    if (this.gameData.cutscene) {
+      return;
+    }
     
     if(this.confused) {
       this.animation = 'confused';
@@ -115,9 +121,6 @@ export class Player extends GameObject<CatStates> {
         }, this.animationDuration * 5);
       }
     }
-
-    // DEBUG
-    coords.innerText = `${this.col},${this.row}`;
   }
 
   private attackEnemyInFront() {

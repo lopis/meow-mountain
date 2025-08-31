@@ -240,7 +240,6 @@ export class Spirit extends Icon implements SmoothMovementState {
     this.hp -= damage;
     if (this.hp <= 0) {
       addTimeEvent(() => {
-        this.map.set(this.col, this.row, null);
         this.dead = true;
       }, 2000);
     }
