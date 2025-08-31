@@ -24,12 +24,27 @@ export class GameMap {
   ) {
     this.rng = new SeededRandom();
 
+
     this.grid = Array.from({ length: rowCount }, (_a, y) =>
       Array.from({ length: colCount }, (_b, x) => {
+        // Determine tree species based on distance from Heart Peak (70, 90)
+        const dx = x - 70;
+        const dy = y - 90;
+        const distanceFromHeartPeak = Math.sqrt(dx * dx + dy * dy);
+        
+        let treeType: 'oak' | 'spruce';
+        if (distanceFromHeartPeak <= 20) {
+          // Within 20 cell radius of Heart Peak: 90% spruce, 10% oak
+          treeType = this.rng.next() < 0.9 ? 'spruce' : 'oak';
+        } else {
+          // Rest of map: 20% spruce, 80% oak
+          treeType = this.rng.next() < 0.2 ? 'spruce' : 'oak';
+        }
+        
         const tree = new Tree(
           x * CELL_WIDTH - (16 - CELL_WIDTH) / 2, // Adjust x to center the image
           y * CELL_HEIGHT - (16 - CELL_HEIGHT) / 2, // Adjust y to center the image
-          'oak'
+          treeType
         );
         return { x, y, content: tree };
       })
