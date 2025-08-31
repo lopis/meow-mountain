@@ -16,8 +16,9 @@ export class Statue extends GameObject<Asset> {
   spawnInterval = 1000;
   spawnChance = 0.10;
   spawnRadius = 10;
-  repair = 0;
+  repair = MAX_REPAIR -1;
   state: 'broken' | 'animating' | 'repaired' = 'broken';
+  repairAnimationDuration = 1500;
   repairAnimationTimer = 0;
 
   constructor(
@@ -43,7 +44,7 @@ export class Statue extends GameObject<Asset> {
       this.state = 'animating';
     } else if (this.state === 'animating') {
       this.repairAnimationTimer += timeElapsed;
-      if (this.repairAnimationTimer > 500) {
+      if (this.repairAnimationTimer > this.repairAnimationDuration) {
         this.state = 'repaired';
       }
     }
@@ -60,18 +61,30 @@ export class Statue extends GameObject<Asset> {
   }
 
   draw() {
-    drawEngine.drawCircumference(
-      drawEngine.ctx1,
-      this.x + CELL_WIDTH / 2,
-      this.y + CELL_HEIGHT / 2,
-      CELL_WIDTH * 3,
-      CELL_HEIGHT * 2,
-      colors.white,
-    );
+    if (this.state === 'animating') {
+      this.drawAnimation();
+    }
     super.draw();
     if (this.repair > 0) {
       drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
     }
+  }
+
+  drawAnimation() {
+    const animationProgress = (3 * this.repairAnimationTimer / this.repairAnimationDuration) % 1;
+    console.log(animationProgress);
+    
+    const maxWidth = c1.width / drawEngine.zoom;
+    const maxHeight = c1.height / drawEngine.zoom;
+    drawEngine.drawCircumference(
+      drawEngine.ctx1,
+      this.x + CELL_WIDTH / 2,
+      this.y + CELL_HEIGHT / 2,
+      maxWidth * animationProgress,
+      maxHeight * animationProgress,
+      colors.white,
+      8,
+    );
   }
 
   private spawnSpirit() {

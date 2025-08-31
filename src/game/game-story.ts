@@ -80,10 +80,10 @@ export class GameStory {
       emit('cutscene-start');
     });
 
-    this.story.enterState(Scene.intro);
-    // setTimeout(() => {
-    //   postIntro();
-    // }, 10);
+    // this.story.enterState(Scene.intro);
+    setTimeout(() => {
+      postIntro();
+    }, 10);
   }
 
   update (timeElapsed: number) {

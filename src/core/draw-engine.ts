@@ -87,11 +87,12 @@ class DrawEngine {
     radiusX: number,
     radiusY: number,
     color: string,
+    strokeWidth: number,
   ) {
     ctx.save();
     ctx.beginPath();
     makeCircle(ctx, centerX, centerY, radiusX, radiusY);
-    makeCircle(ctx, centerX, centerY, radiusX - 2, radiusY - 2);
+    makeCircle(ctx, centerX, centerY, radiusX - strokeWidth, radiusY - strokeWidth);
     ctx.clip('evenodd');
     ctx.beginPath();
     ctx.fillStyle = color;
