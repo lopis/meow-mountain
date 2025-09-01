@@ -6,9 +6,9 @@ import { GameMap } from "./game-map";
 import { Player } from "./entities/player";
 import { Actions } from "./actions";
 import { GameData } from "./game-data";
-import { MAX_LIVES, NOTIFICATION_DURATION } from "./constants";
+import { MAX_LIVES, MAX_MAGIC, NOTIFICATION_DURATION } from "./constants";
 import { DialogBox } from "./dialog-box";
-import { EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from "@/core/font";
+import { COLCHEIA, EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from "@/core/font";
 import { on } from "@/core/event";
 
 export class HUD {
@@ -16,6 +16,7 @@ export class HUD {
   dialogBox: DialogBox;
   renderSuperstition = false;
   renderLives = false;
+  renderMagic = false;
 
   constructor(
     public map: GameMap,
@@ -37,6 +38,7 @@ export class HUD {
 
   draw() {
     this.renderLives && this.drawLives();
+    this.renderMagic && this.drawMagic();
     this.drawGoals();
     this.renderSuperstition && this.drawSuperstition();
     this.drawActions();
@@ -119,6 +121,33 @@ export class HUD {
     drawEngine.ctx3.fillStyle = colors.purple0;
     drawEngine.ctx3.fillRect(x, y, boxW, boxH);
     drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.purple4, size }, drawEngine.ctx3);
+  }
+
+  drawMagic() {
+    let x = c3.width - 16;
+    const y = 16;
+    const fullMagic = this.gameData.magic;
+    const emptyMagic = this.gameData.maxMagic - this.gameData.magic;
+    const noMagic = MAX_MAGIC - this.gameData.maxMagic;
+
+    const size = 5;
+    const charWidth = (5 + 1) * size;
+    let text = COLCHEIA.repeat(fullMagic);
+    x -= text.length * charWidth;
+    drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.blue1, size }, drawEngine.ctx3);
+
+    text = COLCHEIA.repeat(emptyMagic);
+    x -= text.length * charWidth;
+    drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.blue3, size }, drawEngine.ctx3);
+
+    text = COLCHEIA.repeat(noMagic);
+    x -= text.length * charWidth;
+    drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.yellow2, size }, drawEngine.ctx3);
+    
+    const boxW = MAX_MAGIC * charWidth + size;
+    const boxH = 7 * size;
+    drawEngine.ctx3.fillStyle = colors.yellow1;
+    drawEngine.ctx3.fillRect(x, y, boxW, boxH);
   }
 
   drawGoals() {
