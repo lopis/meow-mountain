@@ -3,6 +3,7 @@ import { emit, on } from './event';
 
 export interface DialogState {
   dialogs: string[];
+  isDone?: boolean;
 }
 
 export interface Script {
@@ -115,6 +116,7 @@ export class Story<T extends Script> {
     }
 
     const currentState = this.script[this.currentStateKey];
+    currentState.isDone = true;
     this.fullText = currentState.dialogs[this.currentDialogIndex];
     
     // Reset typewriter animation

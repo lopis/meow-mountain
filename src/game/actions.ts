@@ -7,6 +7,7 @@ import { MAGIC, SCRATCH, TELEPORT } from "@/core/font";
 import { controls } from "@/core/controls";
 import { Statue } from "./entities/statue";
 import { Obelisk } from "./entities/obelisk";
+import { addTimeEvent } from "@/core/timer";
 
 type ActionType = 'teleport' | 'scratch' | 'restore';
 type Action = {
@@ -63,10 +64,17 @@ export class Actions {
       emit('restore');
       const cellInFront = this.map.getLookingAt();
       const object = cellInFront.content as Statue | Obelisk;
-      if (object instanceof Statue) {
-        object.repair++;
-      } else if (object instanceof Obelisk) {
-        object.attemptRepair();
+      if (object.repair < MAX_REPAIR) {
+        if (object instanceof Statue) {
+          object.repair++;
+          if (object.repair >= MAX_REPAIR) {
+            addTimeEvent(() => {
+              emit('statue-restored');
+            }, 4000);
+          }
+        } else if (object instanceof Obelisk) {
+          object.attemptRepair();
+        }
       }
     }
   }

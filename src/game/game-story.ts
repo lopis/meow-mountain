@@ -12,6 +12,7 @@ enum Scene {
   spirit,
   barrier,
   temple,
+  noMagic,
 }
 
 const script: Record<Scene, SceneProps> = {
@@ -39,10 +40,16 @@ const script: Record<Scene, SceneProps> = {
     ],
     goals: ['repair the cat altar'],
   },
+  [Scene.noMagic]: {
+    dialogs: [
+      "I don't have enough magic!",
+      "Something must be wrong with\nthe cat altars in the valley",
+    ],
+  },
   [Scene.temple]: {
     dialogs: [
       "My magic has increased a little.",
-      "But the other altars must be damaged too.",
+      "But the other altars...\nthey must be damaged too.",
     ],
     goals: [
       'repair all 5 temples',
@@ -81,7 +88,15 @@ export class GameStory {
     });
 
     on('not-enough-magic', () => {
-      emit('story-state-enter', Scene.barrier);
+      if (script[Scene.barrier].isDone) {
+        emit('story-state-enter', Scene.noMagic);
+      } else {
+        emit('story-state-enter', Scene.barrier);
+      }
+    });
+
+    on('statue-restored', () => {
+      emit('story-state-enter', Scene.temple);
     });
 
     addTimeEvent(() => this.story.enterState(Scene.intro), 1000);

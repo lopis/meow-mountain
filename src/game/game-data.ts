@@ -48,6 +48,11 @@ export class GameData {
         emit('game-over');
       }
     });
+
+    on('statue-restored', () => {
+      this.maxMagic++;
+      this.magic = this.maxMagic;
+    });
   }
 
   update(timeElapsed: number) {

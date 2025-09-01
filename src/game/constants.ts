@@ -7,7 +7,7 @@ export const MAX_LIVES = 9;
 export const MAX_MAGIC = 5;
 export const MAX_REPAIR = 20;
 
-export const NOTIFICATION_DURATION = 4000;
+export const NOTIFICATION_DURATION = 5000;
 
 export const paths: Path[] = [
   // Main path
