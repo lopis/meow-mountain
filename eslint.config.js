@@ -46,6 +46,9 @@ export default [{
         "arrow-parens": "off",
         semi: "warn",
         "arrow-body-style": "off",
+        
+        "quotes": ["error", "single", { "avoidEscape": true }],
+        "quote-props": ["error", "as-needed"],
 
         "no-multiple-empty-lines": ["error", {
             max: 2,

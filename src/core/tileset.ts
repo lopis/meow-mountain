@@ -32,8 +32,8 @@ export class Tileset<T extends string> {
    */
   private processSpriteSheet(img: HTMLImageElement) {
     // Split the image into tiles and animations
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
     // Set canvas dimensions to match the sprite sheet
@@ -58,12 +58,12 @@ export class Tileset<T extends string> {
 
       for (let col = 0; col < colCount; col++) {
         const tile = ctx.getImageData(col * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
-        const tileCanvas = document.createElement("canvas");
+        const tileCanvas = document.createElement('canvas');
         // eslint-disable-next-line id-denylist
         tileCanvas.width = this.tileSize;
         // eslint-disable-next-line id-denylist
         tileCanvas.height = this.tileSize;
-        const tileCtx = tileCanvas.getContext("2d");
+        const tileCtx = tileCanvas.getContext('2d');
         if (tileCtx) {
           tileCtx.putImageData(tile, 0, 0);
             const img = new Image();

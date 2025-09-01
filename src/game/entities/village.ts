@@ -1,8 +1,8 @@
-import { SeededRandom } from "@/core/util/rng";
-import { House } from "./house";
-import { GameMap } from "../game-map";
-import { Villager } from "./villager";
-import { Farm } from "./farm";
+import { SeededRandom } from '@/core/util/rng';
+import { House } from './house';
+import { GameMap } from '../game-map';
+import { Villager } from './villager';
+import { Farm } from './farm';
 
 export class Village {
   houses: House[] = [];

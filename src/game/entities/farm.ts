@@ -1,6 +1,6 @@
-import { GameObject } from "@/core/game-object";
-import { Asset, GameAssets } from "../game-assets";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { GameObject } from '@/core/game-object';
+import { Asset, GameAssets } from '../game-assets';
+import { CELL_HEIGHT, CELL_WIDTH } from '../constants';
 
 export class Farm extends GameObject<Asset> {
   constructor(col: number, row: number) {
@@ -8,8 +8,8 @@ export class Farm extends GameObject<Asset> {
       GameAssets.assets,
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
-      "field",
-      "field"
+      'field',
+      'field'
     );
   }
 }

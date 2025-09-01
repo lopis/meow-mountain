@@ -1,6 +1,6 @@
-import { drawEngine } from "@/core/draw-engine";
-import { on } from "@/core/event";
-import { colors } from "@/core/util/color";
+import { drawEngine } from '@/core/draw-engine';
+import { on } from '@/core/event';
+import { colors } from '@/core/util/color';
 
 export class DialogBox {
   dialog: string | null = null;

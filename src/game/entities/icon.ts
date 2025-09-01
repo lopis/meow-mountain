@@ -1,5 +1,5 @@
-import { drawEngine } from "@/core/draw-engine";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
+import { drawEngine } from '@/core/draw-engine';
+import { CELL_HEIGHT, CELL_WIDTH } from '../constants';
 
 export class Icon {
   x: number;

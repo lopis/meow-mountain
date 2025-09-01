@@ -1,4 +1,4 @@
-import { Circle, Path } from "./types";
+import { Circle, Path } from './types';
 
 export const CELL_WIDTH = 11;
 export const CELL_HEIGHT = 11;

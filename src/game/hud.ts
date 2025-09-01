@@ -1,15 +1,15 @@
-import { drawEngine } from "@/core/draw-engine";
-import { colors } from "@/core/util/color";
-import { easeInOutSine } from "@/core/util/util";
-import { MiniMap } from "./mini-map";
-import { GameMap } from "./game-map";
-import { Player } from "./entities/player";
-import { Actions } from "./actions";
-import { GameData } from "./game-data";
-import { MAX_LIVES, MAX_MAGIC, NOTIFICATION_DURATION } from "./constants";
-import { DialogBox } from "./dialog-box";
-import { COLCHEIA, EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from "@/core/font";
-import { on } from "@/core/event";
+import { drawEngine } from '@/core/draw-engine';
+import { colors } from '@/core/util/color';
+import { easeInOutSine } from '@/core/util/util';
+import { MiniMap } from './mini-map';
+import { GameMap } from './game-map';
+import { Player } from './entities/player';
+import { Actions } from './actions';
+import { GameData } from './game-data';
+import { MAX_LIVES, MAX_MAGIC, NOTIFICATION_DURATION } from './constants';
+import { DialogBox } from './dialog-box';
+import { COLCHEIA, EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from '@/core/font';
+import { on } from '@/core/event';
 
 export class HUD {
   miniMap: MiniMap;
@@ -81,8 +81,8 @@ export class HUD {
         x: x + boxWidth / 2,
         y: y + 30,
         color,
-        textAlign: "center",
-        textBaseline: "middle",
+        textAlign: 'center',
+        textBaseline: 'middle',
         size: 7
       }, drawEngine.ctx3);
 
@@ -92,8 +92,8 @@ export class HUD {
         x: x + boxWidth / 2,
         y: y + 70,
         color: colors.black,
-        textAlign: "center",
-        textBaseline: "middle",
+        textAlign: 'center',
+        textBaseline: 'middle',
         size: 3
       }, drawEngine.ctx3);
 
@@ -103,8 +103,8 @@ export class HUD {
         x: x + boxWidth / 2,
         y: y + 95,
         color: colors.black,
-        textAlign: "center",
-        textBaseline: "middle",
+        textAlign: 'center',
+        textBaseline: 'middle',
         size: 3
       }, drawEngine.ctx3);
     });

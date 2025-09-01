@@ -1,6 +1,6 @@
-import { GameAssets } from "@/game/game-assets";
-import { drawText, DrawTextProps } from "./font";
-import { colors } from "./util/color";
+import { GameAssets } from '@/game/game-assets';
+import { drawText, DrawTextProps } from './font';
+import { colors } from './util/color';
 
 const makeCircle = (
     ctx: CanvasRenderingContext2D,

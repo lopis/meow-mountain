@@ -12,7 +12,7 @@ class MusicPlayer {
     await this.audioContext.resume();
     await this.audioContext.audioWorklet.addModule('music-worklet.js');
 
-    this.musicProcessorNode = new AudioWorkletNode(this.audioContext, "music-processor");
+    this.musicProcessorNode = new AudioWorkletNode(this.audioContext, 'music-processor');
     
     this.musicProcessorNode.connect(this.audioContext.destination);
     this.isPlaying = true;
@@ -26,7 +26,7 @@ class MusicPlayer {
   }
 
   speedUp() {
-    this.musicProcessorNode?.port.postMessage({ name: "speed-up" });
+    this.musicProcessorNode?.port.postMessage({ name: 'speed-up' });
   }
 }
 

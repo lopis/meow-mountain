@@ -1,12 +1,12 @@
-import { CatStates, GameAssets } from "@/game/game-assets";
-import { GameObject } from "../../core/game-object";
-import { controls } from "../../core/controls";
-import { GameMap } from "../game-map";
-import { CELL_HEIGHT, CELL_WIDTH, statues } from "../constants";
-import { on } from "@/core/event";
-import { addTimeEvent } from "@/core/timer";
-import { Spirit } from "./spirit";
-import { GameData } from "../game-data";
+import { CatStates, GameAssets } from '@/game/game-assets';
+import { GameObject } from '../../core/game-object';
+import { controls } from '../../core/controls';
+import { GameMap } from '../game-map';
+import { CELL_HEIGHT, CELL_WIDTH, statues } from '../constants';
+import { on } from '@/core/event';
+import { addTimeEvent } from '@/core/timer';
+import { Spirit } from './spirit';
+import { GameData } from '../game-data';
 
 export class Player extends GameObject<CatStates> {
   type = 'cat';

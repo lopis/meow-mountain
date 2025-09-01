@@ -1,5 +1,5 @@
-import { on } from "./event";
-import { easeInExpo } from "./util/util";
+import { on } from './event';
+import { easeInExpo } from './util/util';
 
 export interface Particle {
   from: { x: number, y: number },

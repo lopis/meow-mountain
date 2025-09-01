@@ -1,7 +1,7 @@
 const STORAGE_KEY = 'whiskers_valley';
 
 export function loadLevel(): number {
-  const storage = localStorage.getItem(`${STORAGE_KEY}_save`) || "";
+  const storage = localStorage.getItem(`${STORAGE_KEY}_save`) || '';
   return parseInt(storage, 10) || 0;
 }
 
@@ -14,7 +14,7 @@ export function saveHiScore(level: number) {
 }
 
 export function loadHiScore(): number {
-  const storage = localStorage.getItem(`${STORAGE_KEY}_hs`) || "";
+  const storage = localStorage.getItem(`${STORAGE_KEY}_hs`) || '';
 
   return parseInt(storage, 10) || 0;
 }

@@ -1,6 +1,6 @@
-import { drawEngine } from "@/core/draw-engine";
-import { colors } from "@/core/util/color";
-import { CELL_WIDTH } from "../constants";
+import { drawEngine } from '@/core/draw-engine';
+import { colors } from '@/core/util/color';
+import { CELL_WIDTH } from '../constants';
 
 const defaultColors: [string, string, string, string] = [colors.blue1, colors.blue2, colors.purple5, colors.purple4];
 

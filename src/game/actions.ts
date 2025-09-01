@@ -1,13 +1,13 @@
-import { GameMap } from "./game-map";
-import { Player } from "./entities/player";
-import { MAX_REPAIR, statues } from "./constants";
-import { colors } from "@/core/util/color";
-import { emit, on } from "@/core/event";
-import { MAGIC, SCRATCH, TELEPORT } from "@/core/font";
-import { controls } from "@/core/controls";
-import { Statue } from "./entities/statue";
-import { Obelisk } from "./entities/obelisk";
-import { addTimeEvent } from "@/core/timer";
+import { GameMap } from './game-map';
+import { Player } from './entities/player';
+import { MAX_REPAIR, statues } from './constants';
+import { colors } from '@/core/util/color';
+import { emit, on } from '@/core/event';
+import { MAGIC, SCRATCH, TELEPORT } from '@/core/font';
+import { controls } from '@/core/controls';
+import { Statue } from './entities/statue';
+import { Obelisk } from './entities/obelisk';
+import { addTimeEvent } from '@/core/timer';
 
 type ActionType = 'teleport' | 'scratch' | 'restore';
 type Action = {

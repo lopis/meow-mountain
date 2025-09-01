@@ -1,7 +1,7 @@
-import { Asset, GameAssets } from "@/game/game-assets";
-import { drawEngine } from "@/core/draw-engine";
-import { CELL_WIDTH, CELL_HEIGHT } from "@/game/constants";
-import { GameObject } from "@/core/game-object";
+import { Asset, GameAssets } from '@/game/game-assets';
+import { drawEngine } from '@/core/draw-engine';
+import { CELL_WIDTH, CELL_HEIGHT } from '@/game/constants';
+import { GameObject } from '@/core/game-object';
 
 export class Tree extends GameObject<Asset> {
   private img: HTMLImageElement;

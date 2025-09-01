@@ -1,15 +1,15 @@
-import { Tree } from "./entities/tree";
-import { SeededRandom } from "@/core/util/rng";
-import { Village } from "./entities/village";
-import { CELL_HEIGHT, CELL_WIDTH, clearings, paths, statues } from "./constants";
-import { Statue } from "./entities/statue";
-import { Cell, Drawable } from "./types";
-import { on } from "@/core/event";
-import { Spirit } from "./entities/spirit";
-import { Coords } from "./path-findind";
-import { drawEngine } from "@/core/draw-engine";
-import { GameAssets } from "./game-assets";
-import { GameData } from "./game-data";
+import { Tree } from './entities/tree';
+import { SeededRandom } from '@/core/util/rng';
+import { Village } from './entities/village';
+import { CELL_HEIGHT, CELL_WIDTH, clearings, paths, statues } from './constants';
+import { Statue } from './entities/statue';
+import { Cell, Drawable } from './types';
+import { on } from '@/core/event';
+import { Spirit } from './entities/spirit';
+import { Coords } from './path-findind';
+import { drawEngine } from '@/core/draw-engine';
+import { GameAssets } from './game-assets';
+import { GameData } from './game-data';
 
 export class GameMap {
   grid: Cell[][];
@@ -51,8 +51,8 @@ export class GameMap {
     );
 
     this.villages = [
-      new Village("Heart Peak", { x: 70, y: 90 }, 4, 1, 0),
-      new Village("Moon Plains", { x: 129, y: 29 }, 8, 10, 20),
+      new Village('Heart Peak', { x: 70, y: 90 }, 4, 1, 0),
+      new Village('Moon Plains', { x: 129, y: 29 }, 8, 10, 20),
     ];
 
     // Clear paths with jitter

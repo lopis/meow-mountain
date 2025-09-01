@@ -1,13 +1,13 @@
-import { emojiToPixelArt } from "@/core/emoji";
-import { Icon } from "./icon";
-import { drawEngine } from "@/core/draw-engine";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
-import { GameMap } from "../game-map";
-import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from "@/utils/smooth-movement";
-import { Coords, findShortestPath } from "../path-findind";
-import { addTimeEvent } from "@/core/timer";
-import { emit } from "@/core/event";
-import { drawHpBar } from "./hp-bar";
+import { emojiToPixelArt } from '@/core/emoji';
+import { Icon } from './icon';
+import { drawEngine } from '@/core/draw-engine';
+import { CELL_HEIGHT, CELL_WIDTH } from '../constants';
+import { GameMap } from '../game-map';
+import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from '@/utils/smooth-movement';
+import { Coords, findShortestPath } from '../path-findind';
+import { addTimeEvent } from '@/core/timer';
+import { emit } from '@/core/event';
+import { drawHpBar } from './hp-bar';
 
 export type SpiritType = '🎈' | '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 

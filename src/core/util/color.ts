@@ -42,26 +42,48 @@ export type Color =
 //   }
 // });
 
-function getColorsFromCSS() {
-  const root = document.documentElement;
-  const computedStyle = getComputedStyle(root);
+// function getColorsFromCSS() {
+//   const root = document.documentElement;
+//   const computedStyle = getComputedStyle(root);
   
-  const colorKeys = [
-    'green0', 'green1', 'green2', 'green3',
-    'blue0', 'blue1', 'blue2', 'blue3', 'blue4', 'blue5', 'blue6',
-    'purple0', 'purple1', 'purple2', 'purple3', 'purple4', 'purple5',
-    'yellow0', 'yellow1', 'yellow2',
-    'black', 'white'
-  ];
+//   const colorKeys = [
+//     'green0', 'green1', 'green2', 'green3',
+//     'blue0', 'blue1', 'blue2', 'blue3', 'blue4', 'blue5', 'blue6',
+//     'purple0', 'purple1', 'purple2', 'purple3', 'purple4', 'purple5',
+//     'yellow0', 'yellow1', 'yellow2',
+//     'black', 'white'
+//   ];
   
-  const colors = {};
-  colorKeys.forEach((key: string) => {
-    // @ts-expect-error
-    colors[key] = computedStyle.getPropertyValue(`--${key}`).trim();
-  });
+//   const colors = {};
+//   colorKeys.forEach((key: string) => {
+//     // @ts-expect-error
+//     colors[key] = computedStyle.getPropertyValue(`--${key}`).trim();
+//   });
   
-  return colors;
-}
+//   return colors;
+// }
 
-// @ts-expect-error
-export const colors: Record<Color, string> = getColorsFromCSS();
+export const colors: Record<Color, string> = {
+  green0: '#e3ecd7',
+  green1: '#6b9a71',
+  green2: '#457a5f',
+  green3: '#255056',
+  blue0: '#b4ecf3',
+  blue1: '#86bec6',
+  blue2: '#4e9ca6',
+  blue3: '#366c73',
+  blue4: '#255056',
+  blue5: '#1f4347',
+  blue6: '#13282b',
+  purple0: '#e3c5cf',
+  purple1: '#b79fbb',
+  purple2: '#8e8bb6',
+  purple3: '#5f6791',
+  purple4: '#8d5180',
+  purple5: '#b67388',
+  yellow0: '#fffef9',
+  yellow1: '#efdbb3',
+  yellow2: '#e1ae98',
+  black: '#13282b',
+  white: '#fffef9'
+};

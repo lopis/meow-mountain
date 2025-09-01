@@ -1,6 +1,6 @@
-import { emojiToPixelArt } from "@/core/emoji";
-import { Tileset } from "@/core/tileset";
-import { createCornerImage } from "@/core/util/image-generator";
+import { emojiToPixelArt } from '@/core/emoji';
+import { Tileset } from '@/core/tileset';
+import { createCornerImage } from '@/core/util/image-generator';
 
 const catStates = ['sit', 'idle', 'walk', 'run', 'die', 'scratch', 'confused', 'sleep'] as const;
 export type CatStates = typeof catStates[number];

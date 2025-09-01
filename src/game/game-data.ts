@@ -1,6 +1,6 @@
-import { emit, on } from "@/core/event";
-import { MAX_LIVES, NOTIFICATION_DURATION } from "./constants";
-import { SceneProps } from "./game-story";
+import { emit, on } from '@/core/event';
+import { MAX_LIVES, NOTIFICATION_DURATION } from './constants';
+import { SceneProps } from './game-story';
 
 interface Goal {
   label: string,

@@ -1,7 +1,7 @@
-import { drawEngine } from "@/core/draw-engine";
-import { emit, on } from "@/core/event";
-import { DialogState, Story } from "@/core/story-engine";
-import { addTimeEvent } from "@/core/timer";
+import { drawEngine } from '@/core/draw-engine';
+import { emit, on } from '@/core/event';
+import { DialogState, Story } from '@/core/story-engine';
+import { addTimeEvent } from '@/core/timer';
 
 export interface SceneProps extends DialogState {
   goals?: string[],
@@ -18,38 +18,38 @@ enum Scene {
 const script: Record<Scene, SceneProps> = {
   [Scene.intro]: {
     dialogs: [
-      "Zzzzz...",
-      "Yawwwn...",
-      "How long was i sleeping?...",
+      'Zzzzz...',
+      'Yawwwn...',
+      'How long was i sleeping?...',
     ],
   },
   [Scene.spirit]: {
     dialogs: [
-      "Evil spirits?",
-      "Has the magic barrier failed\nwhile I slept??",
-      "This one seems weak.",
+      'Evil spirits?',
+      'Has the magic barrier failed\nwhile I slept??',
+      'This one seems weak.',
       "I'll exorcise it and then\ngo check the barrier",
-      "> Press (1) to attack\n> Hold (1) to charge",
+      '> Press (1) to attack\n> Hold (1) to charge',
     ],
     goals: ['find magic barrier obelisk'],
   },
   [Scene.barrier]: {
     dialogs: [
-      "I have no magic power left!",
-      "Something must be wrong with\nthe cat altar.",
+      'I have no magic power left!',
+      'Something must be wrong with\nthe cat altar.',
     ],
     goals: ['repair the cat altar'],
   },
   [Scene.noMagic]: {
     dialogs: [
       "I don't have enough magic!",
-      "Something must be wrong with\nthe cat altars in the valley",
+      'Something must be wrong with\nthe cat altars in the valley',
     ],
   },
   [Scene.temple]: {
     dialogs: [
-      "My magic has increased a little.",
-      "But the other altars...\nthey must be damaged too.",
+      'My magic has increased a little.',
+      'But the other altars...\nthey must be damaged too.',
     ],
     goals: [
       'repair all 5 temples',

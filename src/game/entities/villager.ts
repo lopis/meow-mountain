@@ -1,11 +1,11 @@
-import { GameObject } from "@/core/game-object";
-import { GameAssets, VillagerStates } from "../game-assets";
-import { CELL_HEIGHT, CELL_WIDTH } from "../constants";
-import { GameMap } from "../game-map";
-import { House } from "./house";
-import { emit } from "@/core/event";
-import { colors } from "@/core/util/color";
-import { drawEngine } from "@/core/draw-engine";
+import { GameObject } from '@/core/game-object';
+import { GameAssets, VillagerStates } from '../game-assets';
+import { CELL_HEIGHT, CELL_WIDTH } from '../constants';
+import { GameMap } from '../game-map';
+import { House } from './house';
+import { emit } from '@/core/event';
+import { colors } from '@/core/util/color';
+import { drawEngine } from '@/core/draw-engine';
 
 export class Villager extends GameObject<VillagerStates> {
   map: GameMap;

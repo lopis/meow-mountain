@@ -1,16 +1,16 @@
-import { colors } from "@/core/util/color";
-import { GameMap } from "./game-map";
-import { Player } from "./entities/player";
-import { drawEngine } from "@/core/draw-engine";
+import { colors } from '@/core/util/color';
+import { GameMap } from './game-map';
+import { Player } from './entities/player';
+import { drawEngine } from '@/core/draw-engine';
 
 const pixelColors: Record<string, string> = {
-  'oak': colors.green1,
-  'spruce': colors.green2,
-  'house': colors.blue4,
-  'field': colors.yellow1,
-  'statue': colors.purple3,
-  'unseen': colors.green3,
-  'default': colors.yellow2,
+  oak: colors.green1,
+  spruce: colors.green2,
+  house: colors.blue4,
+  field: colors.yellow1,
+  statue: colors.purple3,
+  unseen: colors.green3,
+  default: colors.yellow2,
 };
 
 export class MiniMap {

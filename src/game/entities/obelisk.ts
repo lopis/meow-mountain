@@ -1,10 +1,10 @@
-import { GameObject } from "@/core/game-object";
-import { Asset, GameAssets } from "../game-assets";
-import { CELL_HEIGHT, CELL_WIDTH, MAX_MAGIC, MAX_REPAIR } from "../constants";
-import { GameMap } from "../game-map";
-import { drawHpBar } from "./hp-bar";
-import { colors } from "@/core/util/color";
-import { emit } from "@/core/event";
+import { GameObject } from '@/core/game-object';
+import { Asset, GameAssets } from '../game-assets';
+import { CELL_HEIGHT, CELL_WIDTH, MAX_MAGIC, MAX_REPAIR } from '../constants';
+import { GameMap } from '../game-map';
+import { drawHpBar } from './hp-bar';
+import { colors } from '@/core/util/color';
+import { emit } from '@/core/event';
 
 export class Obelisk extends GameObject<Asset> {
   map: GameMap;
