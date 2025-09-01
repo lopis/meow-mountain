@@ -87,6 +87,6 @@ export class GameStory {
   }
 
   update (timeElapsed: number) {
-    this.story.update();
+    this.story.update(timeElapsed);
   }
 }
