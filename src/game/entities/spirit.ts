@@ -67,7 +67,7 @@ export class Spirit extends Icon implements SmoothMovementState {
   update(timeElapsed: number) {
     if (this.hp <= 0) return;
 
-    this.animationTime += timeElapsed * Math.pow(this.species.level, 2);
+    this.animationTime += timeElapsed * Math.pow(this.species.level + 0.5, 2);
     if (this.opacity < 1) {
       this.opacity += timeElapsed / this.animationDuration;
     }

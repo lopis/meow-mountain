@@ -17,6 +17,12 @@ export class Story<T extends Script> {
   public isActive = false;
   private previousSpacePressed = false;
   public currentState: keyof T | null = null;
+  
+  fullText = '';
+  visibleCharacters = 0;
+  textAnimationTimer = 0;
+  charactersPerSecond = 20;
+  textAnimationState: 'typing' | 'complete' | 'waiting' = 'waiting';
 
   constructor(private readonly script: T) {
     // Listen for story-state-enter events
@@ -39,7 +45,7 @@ export class Story<T extends Script> {
     this.showCurrentDialog();
   }
 
-  update() {
+  update(timeElapsed: number) {
     if (!this.isActive || !this.currentStateKey) {
       return;
     }
@@ -47,6 +53,23 @@ export class Story<T extends Script> {
     const spacePressed = controls.keyMap.get('Space');
     const spaceJustPressed = spacePressed && !this.previousSpacePressed;
     this.previousSpacePressed = spacePressed || false;
+
+    // Update typewriter animation
+    if (this.textAnimationState === 'typing') {
+      this.textAnimationTimer += timeElapsed;
+      const targetCharacters = Math.floor((this.textAnimationTimer / 1000) * this.charactersPerSecond);
+      
+      if (targetCharacters >= this.fullText.length) {
+        // Animation complete
+        this.visibleCharacters = this.fullText.length;
+        this.textAnimationState = 'complete';
+        this.emitCurrentVisibleText();
+      } else if (targetCharacters > this.visibleCharacters) {
+        // Show more characters
+        this.visibleCharacters = targetCharacters;
+        this.emitCurrentVisibleText();
+      }
+    }
 
     if (spaceJustPressed) {
       this.handleSpacePress();
@@ -58,16 +81,32 @@ export class Story<T extends Script> {
       return;
     }
 
-    const currentState = this.script[this.currentStateKey];
-    
-    if (this.currentDialogIndex < currentState.dialogs.length - 1) {
-      // Move to next dialog
-      this.currentDialogIndex++;
-      this.showCurrentDialog();
-    } else {
-      // All dialogs complete, exit state
-      this.exitCurrentState();
+    if (this.textAnimationState === 'typing') {
+      // Skip typing animation - show full text immediately
+      this.visibleCharacters = this.fullText.length;
+      this.textAnimationState = 'complete';
+      this.emitCurrentVisibleText();
+      return;
     }
+
+    if (this.textAnimationState === 'complete') {
+      // Move to next dialog or exit
+      const currentState = this.script[this.currentStateKey];
+      
+      if (this.currentDialogIndex < currentState.dialogs.length - 1) {
+        // Move to next dialog
+        this.currentDialogIndex++;
+        this.showCurrentDialog();
+      } else {
+        // All dialogs complete, exit state
+        this.exitCurrentState();
+      }
+    }
+  }
+
+  private emitCurrentVisibleText() {
+    const visibleText = this.fullText.substring(0, this.visibleCharacters);
+    emit('story-dialog' satisfies StoryEventName, visibleText);
   }
 
   private showCurrentDialog() {
@@ -76,9 +115,15 @@ export class Story<T extends Script> {
     }
 
     const currentState = this.script[this.currentStateKey];
-    const dialogText = currentState.dialogs[this.currentDialogIndex];
+    this.fullText = currentState.dialogs[this.currentDialogIndex];
     
-    emit('story-dialog' satisfies StoryEventName, dialogText);
+    // Reset typewriter animation
+    this.visibleCharacters = 0;
+    this.textAnimationTimer = 0;
+    this.textAnimationState = 'typing';
+    
+    // Start with empty text
+    this.emitCurrentVisibleText();
   }
 
   private exitCurrentState() {
