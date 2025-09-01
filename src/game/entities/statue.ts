@@ -65,7 +65,7 @@ export class Statue extends GameObject<Asset> {
       this.drawAnimation();
     }
     super.draw();
-    if (this.repair > 0 && this.repair < 1) {
+    if (this.repair > 0 && this.repair < MAX_REPAIR) {
       drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
     }
   }

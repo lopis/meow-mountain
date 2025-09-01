@@ -36,6 +36,7 @@ const script: Record<Scene, SceneProps> = {
   [Scene.barrier]: {
     dialogs: [
       'I have no magic power left!',
+      'My magic comes from villagers\nworshiping me...',
       'Something must be wrong with\nthe cat altar.',
     ],
     goals: ['repair the cat altar'],

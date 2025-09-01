@@ -14,10 +14,14 @@
   - Show different messages each time we restore a statue
   - Show different demons the futher we go
   - Add bushes to prevent player moving forward before finishing intro
+  - Charge attack that attacks all enemies around
+  - When restoring a statue, mark a large circle as "seen"
+  - Improve game description for better narrative flow
 - Design
   - Broken statue
   - More dynamic grass and trees
   - Better tree colors (better blue?)
+  - Draw floating fairies around restored cat altars
 - Bugs
   - Statue waves are under the trees
   - Goal text doesn't fit the message
