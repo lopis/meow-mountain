@@ -9,6 +9,7 @@ import { GameData } from "./game-data";
 import { MAX_LIVES, NOTIFICATION_DURATION } from "./constants";
 import { DialogBox } from "./dialog-box";
 import { EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from "@/core/font";
+import { on } from "@/core/event";
 
 export class HUD {
   miniMap: MiniMap;
@@ -24,6 +25,10 @@ export class HUD {
   ) {
     this.miniMap = new MiniMap(map);
     this.dialogBox = new DialogBox();
+
+    on('enable-scratch', () => {
+      this.renderLives = true;
+    });
   }
 
   update(timeElapsed: number) {
