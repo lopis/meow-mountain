@@ -1,0 +1,23 @@
+# TODO List
+
+- Audio
+  - Background music
+  - Play note in increasing pitch when restoring
+  - Sound effects
+    - steps
+    - scratch
+- Features
+  - Auto-select nearby object
+  - Make supersctition increase monsters level, size and speed
+  - Add story state for superstition
+  - Heal when a statue is restored, or at home
+  - Show different messages each time we restore a statue
+  - Show different demons the futher we go
+  - Add bushes to prevent player moving forward before finishing intro
+- Design
+  - Broken statue
+  - More dynamic grass and trees
+  - Better tree colors (better blue?)
+- Bugs
+  - Statue waves are under the trees
+  - Goal text doesn't fit the message

@@ -4,7 +4,7 @@ export const CELL_WIDTH = 11;
 export const CELL_HEIGHT = 11;
 
 export const MAX_LIVES = 9;
-export const MAX_MAGIC = 5;
+export const MAX_MAGIC = 6;
 export const MAX_REPAIR = 20;
 
 export const NOTIFICATION_DURATION = 5000;

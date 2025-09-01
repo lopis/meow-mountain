@@ -36,6 +36,7 @@ export default defineConfig(({ command, mode }) => {
       modulePreload: { polyfill: false },
       assetsInlineLimit: 800,
       assetsDir: '',
+      sourcemap: true,
       rollupOptions: {
         output: {
           inlineDynamicImports: true,
@@ -47,8 +48,8 @@ export default defineConfig(({ command, mode }) => {
     };
     config.plugins = [
       typescriptPlugin(),
-      roadrollerPlugin(),
-      ectPlugin()
+      // roadrollerPlugin(),
+      // ectPlugin()
     ];
   }
 

@@ -16,7 +16,7 @@ export class Statue extends GameObject<Asset> {
   spawnInterval = 1000;
   spawnChance = 0.10;
   spawnRadius = 10;
-  repair = MAX_REPAIR -1;
+  repair = 0;
   state: 'broken' | 'animating' | 'repaired' = 'broken';
   repairAnimationDuration = 1500;
   repairAnimationTimer = 0;
@@ -65,7 +65,7 @@ export class Statue extends GameObject<Asset> {
       this.drawAnimation();
     }
     super.draw();
-    if (this.repair > 0) {
+    if (this.repair > 0 && this.repair < 1) {
       drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
     }
   }

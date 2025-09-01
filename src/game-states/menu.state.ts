@@ -22,24 +22,24 @@ class MenuState implements State {
       text: 'Whiskers Valley',
       x: xCenter,
       y: 100,
-      color: colors.blue4,
+      color: colors.blue5,
+      size: 6,
+      textAlign: 'center',
+    });
+    drawEngine.drawText({
+      text: `${this.isStartSelected ? '>' : ' '} Start Game`,
+      x: xCenter,
+      y: 200,
+      color: this.isStartSelected ? colors.white : colors.blue4,
       size: 4,
       textAlign: 'center',
     });
     drawEngine.drawText({
-      text: 'Start Game',
-      x: xCenter,
-      y: 200,
-      color: this.isStartSelected ? colors.white : colors.blue4,
-      size: 3,
-      textAlign: 'center',
-    });
-    drawEngine.drawText({
-      text: 'Toggle Fullscreen',
+      text: `${!this.isStartSelected ? '>' : ' '} Toggle Fullscreen`,
       x: xCenter,
       y: 250,
       color: this.isStartSelected ? colors.blue4 : colors.white,
-      size: 3,
+      size: 4,
       textAlign: 'center',
     });
     this.updateControls();

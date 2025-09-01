@@ -40,7 +40,7 @@ export class Player extends GameObject<CatStates> {
       const animationDuration = this.animationDuration;
       this.animationDuration = animationDuration / 2;
       addTimeEvent(() => {
-        this.animationDuration = animationDuration;
+        this.animationDuration = animationDuration * 2;
         this.confused = false;
       }, 600);
     });
