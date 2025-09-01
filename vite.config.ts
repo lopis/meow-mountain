@@ -48,8 +48,8 @@ export default defineConfig(({ command, mode }) => {
     };
     config.plugins = [
       typescriptPlugin(),
-      // roadrollerPlugin(),
-      // ectPlugin()
+      roadrollerPlugin(),
+      ectPlugin(),
     ];
   }
 
