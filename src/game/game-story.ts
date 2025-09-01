@@ -35,7 +35,7 @@ const script: Record<Scene, SceneProps> = {
   [Scene.barrier]: {
     dialogs: [
       "I have no magic power left!",
-      "Something must be wrong with the cat altar.",
+      "Something must be wrong with\nthe cat altar.",
     ],
     goals: ['repair the cat altar'],
   },
@@ -69,7 +69,7 @@ export class GameStory {
         postIntro();
         addTimeEvent(() => {
           emit('story-state-enter', Scene.spirit);
-        }, 6000);
+        }, 3000);
       }
       if(label === Scene.spirit) {
         emit('enable-scratch');

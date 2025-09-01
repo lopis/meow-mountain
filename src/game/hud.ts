@@ -53,7 +53,9 @@ export class HUD {
 
   drawActions() {
     const actions = this.actions.actions;
-    if (actions.length === 0) return;
+    if (!actions.some(action => action.enabled)) {
+      return;
+    }
 
     const boxWidth = 120;
     const boxHeight = 120;
@@ -136,6 +138,12 @@ export class HUD {
 
     const size = 5;
     const charWidth = (5 + 1) * size;
+
+    const boxW = MAX_MAGIC * charWidth + size;
+    const boxH = 7 * size;
+    drawEngine.ctx3.fillStyle = colors.yellow1;
+    drawEngine.ctx3.fillRect(x - boxW + size, y, boxW, boxH);
+
     let text = COLCHEIA.repeat(fullMagic);
     x -= text.length * charWidth;
     drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.blue1, size }, drawEngine.ctx3);
@@ -147,11 +155,6 @@ export class HUD {
     text = COLCHEIA.repeat(noMagic);
     x -= text.length * charWidth;
     drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.yellow2, size }, drawEngine.ctx3);
-    
-    const boxW = MAX_MAGIC * charWidth + size;
-    const boxH = 7 * size;
-    drawEngine.ctx3.fillStyle = colors.yellow1;
-    drawEngine.ctx3.fillRect(x, y, boxW, boxH);
   }
 
   drawGoals() {

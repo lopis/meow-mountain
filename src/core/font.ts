@@ -2,8 +2,8 @@ import { hexToRgb, colors } from "@/core/util/color";
 
 export const tinyFont = /* font-start */'6v7ic,6trd0,6to3o,6nvic,55eyo,2np50,2jcjo,3ugt8,34ao,7k,glc,1,opzc,3xdeu,3sapz,8rhfz,8ri26,1bzky,9j1ny,3ws2u,9dv9k,3xb1i,3xbmu,2t8g,2t8s,26ndv,ajmo,fl5ug,3x7nm,n75t,54br,59u0e,53if,rlev,4jrb,1yjk4,4eav,55q95,18zsz,mi3r,574tl,1aedd,ljn9,a1bd,4f1i,a1fs,549t,53ig,5832,1dwsh,6iw6,6ix0,cbsa,6gix,6fk4,aky7,7mbws,cvtyq,deehh,'/* font-end */.split(',');
 
-// Character cache: charCode-color-size -> ImageBitmap
-const characterBitmaps: { [key: string]: ImageBitmap } = {};
+// Character cache: charCode-color-size -> Canvas
+const characterCanvases: { [key: string]: HTMLCanvasElement } = {};
 
 export const FULL_HEART = '#';
 export const TWO_THIRDS_HEART = '$';
@@ -52,15 +52,20 @@ const getCharacterWidth = (letter: string): number => {
   return getCharacterData(letter).charWidth;
 };
 
-const createCharacterBitmap = async (character: string, size: number, color: string): Promise<ImageBitmap> => {
+const createCharacterCanvas = (character: string, size: number, color: string): HTMLCanvasElement => {
   const letter = character === ' ' ? '0' : tinyFont[character.charCodeAt(0) - 35];
   const { paddedBinary, leftmostCol, charWidth } = getCharacterData(letter);
   
   const scaledWidth = charWidth * size;
   const letterHeight = 5 * size;
-  const imageData = new ImageData(scaledWidth, letterHeight);
+  
+  const canvas = document.createElement('canvas');
+  canvas.setAttribute('width', scaledWidth.toString());
+  canvas.setAttribute('height', letterHeight.toString());
+  const ctx = canvas.getContext('2d')!;
   
   const [r, g, b, a] = hexToRgb(color);
+  const fillStyle = `rgba(${r}, ${g}, ${b}, ${(a || 255) / 255})`;
   
   // Draw character bitmap
   paddedBinary.split('').forEach((bit, bitIndex) => {
@@ -73,35 +78,25 @@ const createCharacterBitmap = async (character: string, size: number, color: str
       
       const adjustedCol = col - leftmostCol;
       
-      for (let sy = 0; sy < size; sy++) {
-        for (let sx = 0; sx < size; sx++) {
-          const pixelX = adjustedCol * size + sx;
-          const pixelY = row * size + sy;
-          const index = (pixelY * scaledWidth + pixelX) * 4;
-          
-          imageData.data[index] = r;
-          imageData.data[index + 1] = g;
-          imageData.data[index + 2] = b;
-          imageData.data[index + 3] = a || 255;
-        }
-      }
+      ctx.fillStyle = fillStyle;
+      ctx.fillRect(adjustedCol * size, row * size, size, size);
     }
   });
 
-  return await createImageBitmap(imageData);
+  return canvas;
 };
 
-const getCharacterBitmap = async (character: string, size: number, color: string): Promise<ImageBitmap> => {
+const getCharacterCanvas = (character: string, size: number, color: string): HTMLCanvasElement => {
   const cacheKey = `${character.charCodeAt(0)}-${color}-${size}`;
   
-  if (!characterBitmaps[cacheKey]) {
-    characterBitmaps[cacheKey] = await createCharacterBitmap(character, size, color);
+  if (!characterCanvases[cacheKey]) {
+    characterCanvases[cacheKey] = createCharacterCanvas(character, size, color);
   }
   
-  return characterBitmaps[cacheKey];
+  return characterCanvases[cacheKey];
 };
 
-export const drawText = async (
+export const drawText = (
   c: CanvasRenderingContext2D,
   {
     text,
@@ -137,15 +132,13 @@ export const drawText = async (
   const offsetX = textAlign === 'left' ? 0 : textAlign === 'center' ? Math.round(totalWidth / 2) : totalWidth;
   const offsetY = textBaseline === 'top' ? 0 : textBaseline === 'middle' ? Math.round(letterHeight / 2) : letterHeight;
   
-  // Draw each character
-  const promises = charPositions.map(async ({ char, x: charX, charWidth }) => {
+  // Draw each character synchronously
+  charPositions.forEach(({ char, x: charX, charWidth }) => {
     if (char === ' ') return; // Skip spaces
     
-    const bitmap = await getCharacterBitmap(char, size, color);
-    c.drawImage(bitmap, 0, 0, charWidth, letterHeight, x - offsetX + charX, y - offsetY, charWidth, letterHeight);
+    const canvas = getCharacterCanvas(char, size, color);
+    c.drawImage(canvas, 0, 0, charWidth, letterHeight, x - offsetX + charX, y - offsetY, charWidth, letterHeight);
   });
-  
-  await Promise.all(promises);
 };
 
 
