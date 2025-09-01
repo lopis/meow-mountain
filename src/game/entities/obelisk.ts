@@ -4,6 +4,7 @@ import { CELL_HEIGHT, CELL_WIDTH, MAX_REPAIR } from "../constants";
 import { GameMap } from "../game-map";
 import { drawHpBar } from "./hp-bar";
 import { colors } from "@/core/util/color";
+import { emit } from "@/core/event";
 
 export class Obelisk extends GameObject<Asset> {
   map: GameMap;
@@ -28,6 +29,16 @@ export class Obelisk extends GameObject<Asset> {
     super.draw();
     if (this.repair > 0) {
       drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
+    }
+  }
+
+  attemptRepair() {
+    const maxProgress = this.map.gameData.magic / this.map.gameData.maxMagic;
+    const maxRepair = MAX_REPAIR * maxProgress;
+    if (this.repair < maxRepair) {
+      this.repair ++;
+    } else {
+      emit('not-enough-magic');
     }
   }
 }

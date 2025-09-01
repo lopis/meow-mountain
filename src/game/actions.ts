@@ -63,8 +63,10 @@ export class Actions {
       emit('restore');
       const cellInFront = this.map.getLookingAt();
       const object = cellInFront.content as Statue | Obelisk;
-      if(['statue', 'obelisk'].includes(object?.type ?? '')) {
+      if (object instanceof Statue) {
         object.repair++;
+      } else if (object instanceof Obelisk) {
+        object.attemptRepair();
       }
     }
   }

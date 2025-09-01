@@ -30,6 +30,10 @@ export class HUD {
     on('enable-scratch', () => {
       this.renderLives = true;
     });
+
+    on('not-enough-magic', () => {
+      this.renderMagic = true;
+    });
   }
 
   update(timeElapsed: number) {

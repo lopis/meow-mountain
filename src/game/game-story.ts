@@ -34,7 +34,7 @@ const script: Record<Scene, SceneProps> = {
   },
   [Scene.barrier]: {
     dialogs: [
-      "I don't have enough magic left.",
+      "I have no magic power left!",
       "Something must be wrong with the cat altar.",
     ],
     goals: ['repair the cat altar'],
@@ -78,6 +78,10 @@ export class GameStory {
 
     on('story-state-enter', () => {
       emit('cutscene-start');
+    });
+
+    on('not-enough-magic', () => {
+      emit('story-state-enter', Scene.barrier);
     });
 
     addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
