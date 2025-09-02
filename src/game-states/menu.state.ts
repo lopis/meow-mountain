@@ -18,9 +18,12 @@ const toggleFullscreen = () => {
 const rng = new SeededRandom(0);
 
 class MenuState implements State {
-  private isStartSelected = true;
+  isStartSelected = true;
+  animationTimer = 0;
 
-  onUpdate() {
+  onUpdate(timeElapsed: number) {
+    this.animationTimer += timeElapsed;
+
     this.drawBackground();
     const xCenter = drawEngine.ctx2.canvas.width / 2;
     drawEngine.drawText({
@@ -28,13 +31,13 @@ class MenuState implements State {
       x: xCenter,
       y: 100,
       color: colors.blue5,
-      size: 6,
+      size: 10,
       textAlign: 'center',
     });
     drawEngine.drawText({
       text: `${this.isStartSelected ? '>' : ' '} Start Game`,
       x: xCenter,
-      y: 200,
+      y: 220,
       color: this.isStartSelected ? colors.white : colors.blue4,
       size: 4,
       textAlign: 'center',
@@ -42,7 +45,7 @@ class MenuState implements State {
     drawEngine.drawText({
       text: `${!this.isStartSelected ? '>' : ' '} Toggle Fullscreen`,
       x: xCenter,
-      y: 250,
+      y: 270,
       color: this.isStartSelected ? colors.blue4 : colors.white,
       size: 4,
       textAlign: 'center',
@@ -59,13 +62,25 @@ class MenuState implements State {
       colors.blue4,
     ];
     const sectionHeight = Math.ceil(c2.height / bgColors.length);
-    bgColors.forEach((color, index) => {
-      drawEngine.ctx1.fillStyle = color;
-      drawEngine.ctx1.fillRect(0, sectionHeight * index, c2.width, sectionHeight);
-    });
+    const sections = 32;
+    const sectionW = c2.width / sections;
+    const offsetFreq = 4;
+    const offsetAmplitude = 16;
+    for (let index = 0; index < sections; index++) {
+      const yOffset = offsetAmplitude * Math.sin(1 - offsetFreq * 2 * Math.PI * index / sections);
+      bgColors.forEach((color, row) => {
+        drawEngine.ctx1.fillStyle = color;
+        drawEngine.ctx1.fillRect(
+          sectionW * index,
+          yOffset + sectionHeight * row - offsetAmplitude,
+          Math.ceil(c2.width / sections),
+          sectionHeight
+        );
+      });
+    }
 
-    const iconInterval = 11;
-    const iconSize = 16;
+    const iconSize = 32;
+    const iconInterval = 22;
     const cols = c2.width / iconInterval;
     const rows = (c2.height / 2) / iconInterval; // fill half the screen
     const oak: HTMLImageElement[] = GameAssets.assets.animations['oak'];
@@ -78,10 +93,10 @@ class MenuState implements State {
     for (let col = 0; col <= cols + iconSize; col++) {
       const mountainHeight = rows * (1.2 - Math.cos((col / cols) * 2 * Math.PI));
       for(let row = mountainHeight; row > 0; row--) {
-        const offsetX = 5 * Math.sin(12 * Math.PI * row / rows);
+        const offsetX = 5 * Math.sin(12 * Math.PI * (row / rows));
         drawEngine.drawBackgroundImage(
           0.2 + rng.next() > (row / (rows)) ? oak[0] : spruce[0],
-          col * iconInterval + offsetX - iconSize,
+          col * iconInterval + offsetX - iconSize/2,
           c2.height - (row * iconInterval + rng.next() * 0.7) / 2,
           false,
           iconSize,
