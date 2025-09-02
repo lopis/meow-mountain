@@ -41,11 +41,11 @@ export class PentagramAnimation {
     x: number,
     y: number,
     public animationDone: () => void,
-    public pentagramRotation: typeof _rotations[number] = 0,
+    public pentagramRotation: typeof _rotations[number] = Math.PI / 2,
     public radius: number = 12,
     public offset = 0,
     public elapsed = 0,
-    public speed = 300,
+    public speed = 3100,
     public trailLength = 16,
     public cycles = 0,
     public maxCycles = 1,
@@ -71,7 +71,7 @@ export class PentagramAnimation {
 
     this.elapsed += timeElapsed;
     const totalPixelsAdvanced = (this.elapsed / 1000) * this.speed;
-    const newOffset = totalPixelsAdvanced % this.allPixels.length;
+    const newOffset = Math.floor(totalPixelsAdvanced) % this.allPixels.length;
     
     // Check for cycle completion
     if (newOffset < this.offset) {
@@ -82,7 +82,7 @@ export class PentagramAnimation {
         return;
       }
     }
-
+1;
     console.log(this.elapsed);
     
     this.offset = newOffset;
@@ -92,11 +92,11 @@ export class PentagramAnimation {
     if (!this.active) return;
 
     this.ctx.fillStyle = colors.white;
-    const effectiveTrailLength = Math.min(this.trailLength, this.offset + 0);
+    const effectiveTrailLength = Math.min(this.trailLength, this.offset + 1);
     
     for (let i = 0; i < effectiveTrailLength; i++) {
       const idx = (this.offset - i + this.allPixels.length) % this.allPixels.length;
-      const [x, y] = this.allPixels[Math.floor(idx)];
+      const [x, y] = this.allPixels[idx];
       this.ctx.fillRect(x, y, 1, 1);
     }
   }
