@@ -109,6 +109,14 @@ export class Player extends GameObject<CatStates> {
         // playerLookingAt is already set from the last movement, so no need to update it
       }
 
+      // When not attacking, check if playerLookingAt is empty;
+      // If playerLookingAt is empty, look into 4 directions;
+      // If one of the directions is type spirit, set that direction as playerLookingAt;
+      // Else if one of the directions is a statue or obelisk, set that direction as playerLookingAt.
+      if (!this.attacking) {
+        this.autoSelectTarget();
+      }
+
       if (!this.attacking && controls.isAction1 && !controls.previousState.isAction1) {
         this.attacking = true;
         this.animationTime = 0;
@@ -120,6 +128,50 @@ export class Player extends GameObject<CatStates> {
           this.attacking = false;
         }, this.animationDuration * 5);
       }
+    }
+  }
+
+  private autoSelectTarget() {
+    // Check if current looking position is empty
+    const currentCell = this.map.getLookingAt();
+    if (currentCell?.content) {
+      return; // Already looking at something
+    }
+
+    // Check 4 directions around player
+    const directions = [
+      { col: this.col + 1, row: this.row }, // right
+      { col: this.col - 1, row: this.row }, // left
+      { col: this.col, row: this.row + 1 }, // down
+      { col: this.col, row: this.row - 1 }, // up
+    ];
+
+    let spiritTarget = null;
+    let statueTarget = null;
+
+    for (const dir of directions) {
+      const cell = this.map.grid[dir.row][dir.col];
+      if (!cell.content) continue;
+
+      const contentType = cell.content.type;
+      
+      // Prioritize spirits first
+      if (contentType === 'spirit') {
+        spiritTarget = dir;
+        break; // Spirit has highest priority, stop searching
+      }
+      
+      // Store statue/obelisk as backup
+      if ((contentType === 'statue' || contentType === 'obelisk') && !statueTarget) {
+        statueTarget = dir;
+      }
+    }
+
+    // Set target based on priority: spirit > statue/obelisk
+    if (spiritTarget) {
+      this.map.playerLookingAt = spiritTarget;
+    } else if (statueTarget) {
+      this.map.playerLookingAt = statueTarget;
     }
   }
 
