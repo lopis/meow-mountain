@@ -13,7 +13,7 @@
 
 <https://tiusic.com/os_proto.html> - Convert onlinesequence.net `.sequence` files to plain text, to more easily parse them and use them in games.
 
-## Music inspiration
+## inspiration
 
 <https://incompetech.com/music/royalty-free/music.html>
 <https://www.hooktheory.com/theorytab/view/kevin-macleod/nightmare-machine>
@@ -24,3 +24,6 @@ Maurice Ravel - Bolero M. 81
 Magic Escape Room Kevin MacLeod (incompetech.com)
 Licensed under Creative Commons: By Attribution 3.0 License
 <http://creativecommons.org/licenses/by/3.0/>
+
+https://bdragon1727.itch.io/free-smoke-fx-pixel-2
+

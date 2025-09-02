@@ -25,3 +25,4 @@
 - Bugs
   - Statue waves are under the trees
   - Goal text doesn't fit the message
+  - Can teleport when not in front of statue

@@ -7,12 +7,15 @@ import { on } from '@/core/event';
 import { addTimeEvent } from '@/core/timer';
 import { Spirit } from './spirit';
 import { GameData } from '../game-data';
+import { PentagramAnimation } from './pentagram-attack';
+import { drawEngine } from '@/core/draw-engine';
 
 export class Player extends GameObject<CatStates> {
   type = 'cat';
   sleeping = true;
   attacking = false;
   confused = false;
+  pentagramAttack: PentagramAnimation | null = null;
 
   constructor(col: number, row: number, public map: GameMap, public gameData: GameData) {
     super(
@@ -121,6 +124,15 @@ export class Player extends GameObject<CatStates> {
         this.attacking = true;
         this.animationTime = 0;
 
+        if (!this.pentagramAttack) {
+          this.pentagramAttack = new PentagramAnimation(
+            drawEngine.ctx1,
+            this.x,
+            this.y,
+            () => this.pentagramAttack = null,
+          );
+        }
+
         // Check if there is an enemy right in front
         addTimeEvent(() => this.attackEnemyInFront(), 500);
 
@@ -128,7 +140,13 @@ export class Player extends GameObject<CatStates> {
           this.attacking = false;
         }, this.animationDuration * 5);
       }
+      this.pentagramAttack?.update(timeElapsed);
     }
+  }
+
+  draw() {
+    super.draw();
+    this.pentagramAttack?.draw();
   }
 
   private autoSelectTarget() {
