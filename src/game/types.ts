@@ -1,3 +1,5 @@
+import { Village } from './entities/village';
+
 export interface Drawable {
   col: number;
   row: number;
@@ -12,7 +14,7 @@ export interface Cell {
   y: number;
   content: Drawable | null;
   seen?: boolean;
-  marked?: number;
+  village?: Village;
 }
 
 type Point = [x: number, y: number, w: number];

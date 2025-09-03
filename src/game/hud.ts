@@ -11,6 +11,7 @@ import { DialogBox } from './dialog-box';
 import { MAGIC, EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from '@/core/font';
 import { on } from '@/core/event';
 import { GameEvent } from './event-manifest';
+import { Village } from './entities/village';
 
 export class HUD {
   miniMap: MiniMap;
@@ -18,6 +19,7 @@ export class HUD {
   renderSuperstition = false;
   renderLives = false;
   renderMagic = false;
+  villageName = '';
 
   constructor(
     public map: GameMap,
@@ -35,6 +37,10 @@ export class HUD {
     on(GameEvent.NOT_ENOUGH_MAGIC, () => {
       this.renderMagic = true;
     });
+
+    on(GameEvent.ENTER_VILLAGE, (village: Village) => {
+      this.villageName = village.name;
+    });
   }
 
   update(timeElapsed: number) {
@@ -47,7 +53,7 @@ export class HUD {
     this.drawGoals();
     this.renderSuperstition && this.drawSuperstition();
     this.drawActions();
-    this.drawLookingAt();
+    // this.drawLookingAt();
     this.renderLives && this.miniMap.draw(this.player);
     this.dialogBox.draw();
   }
@@ -249,39 +255,44 @@ export class HUD {
   }
 
   drawLookingAt() {
-    if (!this.map.playerLookingAt) {
-      return;
+    if(this.villageName) {
+      this.drawInfo(`^ ${this.villageName}`);
+
+    } else if (this.map.playerLookingAt) {
+      const cell = this.map.getLookingAt();
+      if (cell?.content?.name) {
+        this.drawInfo(cell.content.name);
+      }
     }
-    
-    const cell = this.map.getLookingAt();
-    if (cell?.content?.name) {
-      const boxWidth = 350;
-      const boxHeight = 35;
-      drawEngine.ctx3.fillStyle = colors.purple5;
-      drawEngine.ctx3.fillRect(
-        c3.width / 2 - boxWidth / 2 + 4,
-        c3.height - 170 - 6 * 3 - 4,
-        boxWidth - 8,
-        boxHeight + 8,
-      );
-      drawEngine.ctx3.fillStyle = colors.yellow2;
-      drawEngine.ctx3.fillRect(
-        c3.width / 2 - boxWidth / 2,
-        c3.height - 170 - 6 * 3,
-        boxWidth,
-        boxHeight,
-      );
-      drawEngine.drawText(
-        `${cell.content.name}`,
-        c3.width / 2,
-        c3.height - 170,
-        colors.purple4,
-        1, // center
-        1, // middle
-        3,
-        1,
-        drawEngine.ctx3
-      );
-    }
+  }
+
+  drawInfo(text: string) {
+    const boxWidth = 350;
+    const boxHeight = 35;
+    drawEngine.ctx3.fillStyle = colors.purple5;
+    drawEngine.ctx3.fillRect(
+      c3.width / 2 - boxWidth / 2 + 4,
+      c3.height - 170 - 6 * 3 - 4,
+      boxWidth - 8,
+      boxHeight + 8,
+    );
+    drawEngine.ctx3.fillStyle = colors.yellow2;
+    drawEngine.ctx3.fillRect(
+      c3.width / 2 - boxWidth / 2,
+      c3.height - 170 - 6 * 3,
+      boxWidth,
+      boxHeight,
+    );
+    drawEngine.drawText(
+      text,
+      c3.width / 2,
+      c3.height - 170,
+      colors.purple4,
+      1, // center
+      1, // middle
+      3,
+      1,
+      drawEngine.ctx3
+    );
   }
 }

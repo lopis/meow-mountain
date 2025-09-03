@@ -14,6 +14,7 @@ const enum Scene {
   barrier,
   temple,
   noMagic,
+  villagers,
 }
 
 const script = {} as Record<Scene, SceneProps>;
@@ -62,6 +63,13 @@ script[Scene.temple] = {
   goals: [
     'repair all 5 temples',
     'restore the forest magic barrier',
+  ],
+};
+
+script[Scene.villagers] = {
+  dialogs: [
+    'Villagers are very supersticious.',
+    'I should not let them see me,\n that will empower the evil spirits.',
   ],
 };
 
