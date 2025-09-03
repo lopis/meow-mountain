@@ -1,6 +1,7 @@
 import { GameAssets } from '@/game/game-assets';
 import { drawText } from './font';
 import { colors } from './util/color';
+import { getCtx } from './util/canvas';
 
 const makeCircle = (
     ctx: CanvasRenderingContext2D,
@@ -46,10 +47,10 @@ class DrawEngine {
   cameraLerpSpeed = 0.08; // Adjust for faster/slower camera
 
   constructor() {
-    this.ctx1 = c1.getContext('2d');
-    this.ctx2 = c2.getContext('2d');
-    this.ctx3 = c3.getContext('2d');
-    this.ctx4 = c4.getContext('2d');
+    this.ctx1 = getCtx(c1);
+    this.ctx2 = getCtx(c2);
+    this.ctx3 = getCtx(c3);
+    this.ctx4 = getCtx(c4);
     GameAssets.initialize();
     this.resizeCanvas();
     window.addEventListener('resize', () => this.resizeCanvas());

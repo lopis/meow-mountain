@@ -1,4 +1,5 @@
 import { colors } from './color';
+import { createCanvasWithCtx } from './canvas';
 
 /**
  * Creates a 16x16 image with transparent background and colored corners
@@ -7,12 +8,7 @@ import { colors } from './color';
  */
 export function createCornerImage(cornerColor: string = colors.purple4): HTMLImageElement {
   // Create temporary canvas
-  const canvas = document.createElement('canvas');
-  // eslint-disable-next-line id-denylist
-  canvas.width = 16;
-  // eslint-disable-next-line id-denylist
-  canvas.height = 16;
-  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+  const [canvas, ctx] = createCanvasWithCtx(16, 16);
 
   // Clear to transparent
   ctx.clearRect(0, 0, 16, 16);

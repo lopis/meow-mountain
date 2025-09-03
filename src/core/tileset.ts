@@ -1,3 +1,5 @@
+import { createCanvasWithCtx } from './util/canvas';
+
 /**
  * Tileset class receives a path to a spritesheet and
  * splits it into tiles and animations.
@@ -32,15 +34,7 @@ export class Tileset<T extends string> {
    */
   private processSpriteSheet(img: HTMLImageElement) {
     // Split the image into tiles and animations
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Set canvas dimensions to match the sprite sheet
-    // eslint-disable-next-line id-denylist
-    canvas.width = img.width;
-    // eslint-disable-next-line id-denylist
-    canvas.height = img.height;
+    const [canvas, ctx] = createCanvasWithCtx(img.width, img.height);
 
     // Draw the sprite sheet onto the canvas
     ctx.drawImage(img, 0, 0);
@@ -58,18 +52,11 @@ export class Tileset<T extends string> {
 
       for (let col = 0; col < colCount; col++) {
         const tile = ctx.getImageData(col * this.tileSize, row * this.tileSize, this.tileSize, this.tileSize);
-        const tileCanvas = document.createElement('canvas');
-        // eslint-disable-next-line id-denylist
-        tileCanvas.width = this.tileSize;
-        // eslint-disable-next-line id-denylist
-        tileCanvas.height = this.tileSize;
-        const tileCtx = tileCanvas.getContext('2d');
-        if (tileCtx) {
-          tileCtx.putImageData(tile, 0, 0);
-            const img = new Image();
-            img.src = tileCanvas.toDataURL();
-            frames.push(img);
-        }
+        const [tileCanvas, tileCtx] = createCanvasWithCtx(this.tileSize, this.tileSize);
+        tileCtx.putImageData(tile, 0, 0);
+        const img = new Image();
+        img.src = tileCanvas.toDataURL();
+        frames.push(img);
       }
 
       // Store the extracted animation frames

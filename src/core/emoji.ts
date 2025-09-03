@@ -1,3 +1,5 @@
+import { createCanvasWithCtx } from './util/canvas';
+
 /**
  * Quantizes rgba color values to 8bit.
  */
@@ -27,12 +29,7 @@ export const emojiToPixelArt = (
   const padding = Math.floor(fontSize * spriteScale / 2);
 
   // Create temporary canvas
-  const tmpCanvas = document.createElement('canvas');
-  // eslint-disable-next-line id-denylist
-  tmpCanvas.width = spriteSize;
-  // eslint-disable-next-line id-denylist
-  tmpCanvas.height = spriteSize;
-  const tmpCtx = tmpCanvas.getContext('2d') as CanvasRenderingContext2D;
+  const [tmpCanvas, tmpCtx] = createCanvasWithCtx(spriteSize, spriteSize);
 
   // Draw emoji in chosen font size
   tmpCtx.font = `${fontSize}px sans-serif`;
@@ -62,12 +59,7 @@ export const emojiToPixelArt = (
   }
 
   // Create a new canvas to draw the quantized image
-  const outCanvas = document.createElement('canvas');
-  // eslint-disable-next-line id-denylist
-  outCanvas.width = spriteSize;
-  // eslint-disable-next-line id-denylist
-  outCanvas.height = spriteSize;
-  const outCtx = outCanvas.getContext('2d') as CanvasRenderingContext2D;
+  const [outCanvas, outCtx] = createCanvasWithCtx(spriteSize, spriteSize);
   outCtx.putImageData(outImg, 0, 0);
 
   // Create an image element from the canvas

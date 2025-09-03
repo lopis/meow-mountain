@@ -1,4 +1,5 @@
 import { hexToRgb, colors } from '@/core/util/color';
+import { createCanvasWithCtx } from '@/core/util/canvas';
 
 export const tinyFont = /* font-start */'6v7ic,6trd0,6to3o,6nvic,55eyo,2np50,2jcjo,3ugt8,34ao,7k,glc,1,opzc,3xdeu,3sapz,8rhfz,8ri26,1bzky,9j1ny,3ws2u,9dv9k,3xb1i,3xbmu,2t8g,2t8s,26ndv,ajmo,fl5ug,3x7nm,n75t,54br,59u0e,53if,rlev,4jrb,1yjk4,4eav,55q95,18zsz,mi3r,574tl,1aedd,ljn9,a1bd,4f1i,a1fs,549t,53ig,5832,1dwsh,6iw6,6ix0,cbsa,6gix,6fk4,aky7,7mbws,cvtyq,deehh,'/* font-end */.split(',');
 
@@ -59,10 +60,7 @@ const createCharacterCanvas = (character: string, size: number, color: string): 
   const scaledWidth = charWidth * size;
   const letterHeight = 5 * size;
   
-  const canvas = document.createElement('canvas');
-  canvas.setAttribute('width', scaledWidth.toString());
-  canvas.setAttribute('height', letterHeight.toString());
-  const ctx = canvas.getContext('2d')!;
+  const [canvas, ctx] = createCanvasWithCtx(scaledWidth, letterHeight);
   
   const [r, g, b, a] = hexToRgb(color);
   const fillStyle = `rgba(${r}, ${g}, ${b}, ${(a || 255) / 255})`;
