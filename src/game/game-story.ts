@@ -114,6 +114,12 @@ export class GameStory {
       emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.temple);
     });
 
+    on(GameEvent.SCARED, () => {
+      if (!script[Scene.villagers].isDone) {
+        emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.villagers);
+      }
+    });
+
     // addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
     setTimeout(() => {
       postIntro();

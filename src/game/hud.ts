@@ -43,6 +43,10 @@ export class HUD {
       this.villageName = village.name;
       this.villageNameTimer = 3000;
     });
+
+    on(GameEvent.SCARED, () => {
+      this.renderSuperstition = true;
+    });
   }
 
   update(timeElapsed: number) {
