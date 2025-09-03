@@ -76,8 +76,8 @@ const drawBackground = () => {
 };
 
 class MenuState implements State {
-  isStartSelected = true;
   animationTimer = 0;
+  previousFPressed = false;
 
   onUpdate(timeElapsed: number) {
     this.animationTimer += timeElapsed;
@@ -94,19 +94,19 @@ class MenuState implements State {
       15
     );
     drawEngine.drawText(
-      `${this.isStartSelected ? '>' : ' '} Start Game`,
+      'Press Enter to start',
       xCenter,
       230,
-      this.isStartSelected ? colors.white : colors.blue4,
+      colors.white,
       1, // center
       0, // top
       4
     );
     drawEngine.drawText(
-      `${!this.isStartSelected ? '>' : ' '} Toggle Fullscreen`,
+      'Press F to toggle fullscreen',
       xCenter,
       280,
-      this.isStartSelected ? colors.blue4 : colors.white,
+      colors.blue4,
       1, // center
       0, // top
       4
@@ -115,18 +115,15 @@ class MenuState implements State {
   }
 
   updateControls() {
-    if ((controls.isUp && !controls.previousState.isUp)
-      || (controls.isDown && !controls.previousState.isDown)) {
-      this.isStartSelected = !this.isStartSelected;
+    if (controls.isConfirm && !controls.previousState.isConfirm) {
+      gameStateMachine.setState(gameState);
     }
 
-    if (controls.isConfirm && !controls.previousState.isConfirm) {
-      if (this.isStartSelected) {
-        gameStateMachine.setState(gameState);
-      } else {
-        toggleFullscreen();
-      }
+    const fPressed = Boolean(controls.keyMap.get('KeyF'));
+    if (fPressed && !this.previousFPressed) {
+      toggleFullscreen();
     }
+    this.previousFPressed = fPressed;
   }
 };
 
