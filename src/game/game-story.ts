@@ -7,7 +7,7 @@ export interface SceneProps extends DialogState {
   goals?: string[],
 };
 
-enum Scene {
+const enum Scene {
   intro = 1,
   spirit,
   barrier,
@@ -15,48 +15,53 @@ enum Scene {
   noMagic,
 }
 
-const script: Record<Scene, SceneProps> = {
-  [Scene.intro]: {
-    dialogs: [
-      'Zzzzz...',
-      'Yawwwn...',
-      'How long was i sleeping?...',
-    ],
-  },
-  [Scene.spirit]: {
-    dialogs: [
-      'Evil spirits?',
-      'Has the magic barrier failed\nwhile I slept??',
-      'This one seems weak.',
-      "I'll exorcise it and then\ngo check the barrier",
-      '> Press (1) to attack\n> Hold (1) to charge',
-    ],
-    goals: ['find magic barrier obelisk'],
-  },
-  [Scene.barrier]: {
-    dialogs: [
-      'I have no magic power left!',
-      'My magic comes from villagers\nworshiping me...',
-      'Something must be wrong with\nthe cat altar.',
-    ],
-    goals: ['repair the cat altar'],
-  },
-  [Scene.noMagic]: {
-    dialogs: [
-      "I don't have enough magic!",
-      'Something must be wrong with\nthe cat altars in the valley',
-    ],
-  },
-  [Scene.temple]: {
-    dialogs: [
-      'My magic has increased a little.',
-      'But the other altars...\nthey must be damaged too.',
-    ],
-    goals: [
-      'repair all 5 temples',
-      'restore the forest magic barrier',
-    ],
-  },
+const script = {} as Record<Scene, SceneProps>;
+
+// Use programmatic assignment to avoid preserving enum string names
+script[Scene.intro] = {
+  dialogs: [
+    'Zzzzz...',
+    'Yawwwn...',
+    'How long was i sleeping?...',
+  ],
+};
+
+script[Scene.spirit] = {
+  dialogs: [
+    'Evil spirits?',
+    'Has the magic barrier failed\nwhile I slept??',
+    'This one seems weak.',
+    "I'll exorcise it and then\ngo check the barrier",
+    '> Press (1) to attack\n> Hold (1) to charge',
+  ],
+  goals: ['find magic barrier obelisk'],
+};
+
+script[Scene.barrier] = {
+  dialogs: [
+    'I have no magic power left!',
+    'My magic comes from villagers\nworshiping me...',
+    'Something must be wrong with\nthe cat altar.',
+  ],
+  goals: ['repair the cat altar'],
+};
+
+script[Scene.noMagic] = {
+  dialogs: [
+    "I don't have enough magic!",
+    'Something must be wrong with\nthe cat altars in the valley',
+  ],
+};
+
+script[Scene.temple] = {
+  dialogs: [
+    'My magic has increased a little.',
+    'But the other altars...\nthey must be damaged too.',
+  ],
+  goals: [
+    'repair all 5 temples',
+    'restore the forest magic barrier',
+  ],
 };
 
 const postIntro = () => {

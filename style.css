@@ -1,4 +1,4 @@
-:root {
+/* :root {
     --green0: #e3ecd7;
     --green1: #6b9a71;
     --green2: #457a5f;
@@ -21,7 +21,7 @@
     --yellow2: #e1ae98;
     --black: var(--blue6);
     --white: var(--yellow0);
-}
+} */
 
 canvas {
     height: 100%;
@@ -37,7 +37,7 @@ html, body {
     justify-content: center;
     align-items: center;
     height: 100%;
-    background: var(--black);
+    background: #13282b;
 }
 
 
