@@ -67,8 +67,10 @@ export class Statue extends GameObject<Asset> {
           const replaceSpirit = this.spirits
             .filter((spirit) => spirit.hp === spirit.maxHp)
             [Math.round(Math.random() * this.spirits.length - 1)];
-          replaceSpirit.dead = true;
-          this.spawnSpirit();
+          if (replaceSpirit) {
+            replaceSpirit.dead = true;
+            this.spawnSpirit();
+          }
         }
       }
     }
