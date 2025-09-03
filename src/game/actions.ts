@@ -83,8 +83,9 @@ export class Actions {
   private canRestore(): boolean {
     const cellInFront = this.map.getLookingAt();
     const object = cellInFront.content as Statue | Obelisk;
+    const type = object?.type;
     return (
-      ['statue', 'obelisk'].includes(object?.type ?? '')
+      (type === 'statue' || type === 'obelisk')
     ) && object.repair < MAX_REPAIR;
   }
 

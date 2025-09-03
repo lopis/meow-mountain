@@ -78,7 +78,6 @@ export class Statue extends GameObject<Asset> {
 
   drawAnimation() {
     const animationProgress = (3 * this.repairAnimationTimer / this.repairAnimationDuration) % 1;
-    console.log(animationProgress);
     
     const maxWidth = c1.width / drawEngine.zoom;
     const maxHeight = c1.height / drawEngine.zoom;

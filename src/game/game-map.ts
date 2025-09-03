@@ -250,7 +250,7 @@ export class GameMap {
           cell.y === this.playerLookingAt.row &&
           cell.x === this.playerLookingAt.col &&
           cell.content &&
-          !['oak', 'spruce'].includes(cell.content.type)
+          cell.content.type !== 'oak' && cell.content.type !== 'spruce'
         ) {
           drawEngine.drawBackgroundImage(
             GameAssets.cornerImage,
