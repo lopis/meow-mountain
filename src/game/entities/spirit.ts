@@ -41,6 +41,7 @@ export class Spirit extends Icon implements SmoothMovementState {
   maxHp: number;
   hp: number;
   dead = false;
+  recoil = false;
   
   // Simplified state system
   state: SpiritState = 'idle';
@@ -210,6 +211,9 @@ export class Spirit extends Icon implements SmoothMovementState {
 
     // Icon
     drawEngine.ctx1.save();
+    if (this.recoil) {
+      drawEngine.ctx1.filter = 'sepia(1) saturate(2) hue-rotate(260deg) brightness(0.7)';
+    }
     drawEngine.ctx1.translate(
       this.attackOffsetX,
       this.attackOffsetY + Math.round(
@@ -223,6 +227,10 @@ export class Spirit extends Icon implements SmoothMovementState {
 
   takeDamage(damage: number = 1): boolean {
     this.hp -= damage;
+    this.recoil = true;
+    addTimeEvent(() => {
+      this.recoil = false;
+    }, 150);
     if (this.hp <= 0) {
       addTimeEvent(() => {
         this.dead = true;

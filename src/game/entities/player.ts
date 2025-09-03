@@ -10,6 +10,10 @@ import { GameData } from '../game-data';
 import { PentagramAnimation } from './pentagram-attack';
 import { drawEngine } from '@/core/draw-engine';
 
+const ANIMATION_SLOW = 600;
+const ANIMATION_NORMAL = 150;
+const ANIMATION_FAST = 75;
+
 export class Player extends GameObject<CatStates> {
   type = 'cat';
   sleeping = true;
@@ -26,6 +30,8 @@ export class Player extends GameObject<CatStates> {
       'sleep',
       80,
     );
+
+    this.animationDuration = ANIMATION_SLOW;
     
     // Initialize looking direction to the right
     this.map.playerLookingAt = { col: col + 1, row };
@@ -36,14 +42,14 @@ export class Player extends GameObject<CatStates> {
 
     on('wake-up', () => {
       this.sleeping = false;
+      this.animationDuration = ANIMATION_NORMAL;
     });
 
     on('attack-player', () => {
       this.confused = true;
-      const animationDuration = this.animationDuration;
-      this.animationDuration = animationDuration / 2;
+      this.animationDuration = ANIMATION_FAST;
       addTimeEvent(() => {
-        this.animationDuration = animationDuration * 2;
+        this.animationDuration = ANIMATION_NORMAL;
         this.confused = false;
       }, 600);
     });
@@ -64,7 +70,7 @@ export class Player extends GameObject<CatStates> {
       return;
     }
     
-    if(this.confused) {
+    if(this.confused && !this.isSurrounded()) {
       this.animation = 'confused';
     } else if (this.sleeping) {
       this.animation = 'sleep';
@@ -124,12 +130,15 @@ export class Player extends GameObject<CatStates> {
         this.attacking = true;
         this.animationTime = 0;
 
-        if (!this.pentagramAttack) {
+        if (!this.pentagramAttack && this.isSurrounded()) {
           this.pentagramAttack = new PentagramAnimation(
             drawEngine.ctx1,
             this.x,
             this.y,
-            () => this.pentagramAttack = null,
+            () => {
+              this.pentagramAttack = null;
+              this.attackAllEnemiesAround();
+            },
           );
         }
 
@@ -142,6 +151,49 @@ export class Player extends GameObject<CatStates> {
       }
       this.pentagramAttack?.update(timeElapsed);
     }
+  }
+
+  // Deals 5 damage to all spirits
+  // in the 9 cells around the cat.
+  attackAllEnemiesAround() {
+    // Check 3x3 grid around player
+    for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+      for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+        // Skip the center cell (player's position)
+        if (deltaRow === 0 && deltaCol === 0) continue;
+        
+        const checkCol = this.col + deltaCol;
+        const checkRow = this.row + deltaRow;
+        const cell = this.map.grid[checkRow][checkCol];
+        if (cell.content?.type === 'spirit') {
+          const spirit = cell.content as Spirit;
+          spirit.takeDamage(5);
+        }
+      }
+    }
+  }
+
+  // Returns true if there are 3 or more spirits
+  // in the 9 cells around the cat.
+  isSurrounded() {
+    let spiritCount = 0;
+    
+    // Check 3x3 grid around player
+    for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+      for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+        // Skip the center cell (player's position)
+        if (deltaRow === 0 && deltaCol === 0) continue;
+        
+        const checkCol = this.col + deltaCol;
+        const checkRow = this.row + deltaRow;
+        const cell = this.map.grid[checkRow][checkCol];
+          if (cell.content?.type === 'spirit') {
+            spiritCount++;
+          }
+      }
+    }
+    
+    return spiritCount >= 3;
   }
 
   draw() {
