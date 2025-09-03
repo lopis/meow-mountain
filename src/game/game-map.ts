@@ -132,7 +132,7 @@ export class GameMap {
 
     on(GameEvent.STATUE_RESTORED, () => {
       if(!this.gameData.hasClearedIntro) {
-        this.fillCenterWithGrass(0.2);
+        this.fillCenterWithGrass(0.1);
       }
     });
   }
@@ -172,7 +172,7 @@ export class GameMap {
     }
     
     const villagePath: Path = [
-      [60, 85, 2],
+      [61, 86, 2],
       [69, 88, 0.9],
       [75, 89, 0.9],
       [76, 84, 0.9],
@@ -219,8 +219,12 @@ export class GameMap {
             if (pathWidth < 1) {
             this.clearPlants(clearX + 1, clearY);
             } else if (this.rng.next() > 0.1) {
-              // Add probability for partial clearing to create natural edges
-              this.clearPlants(clearX, clearY);
+              if (this.rng.next() > 0.05) {
+                // Add probability for partial clearing to create natural edges
+                this.clearPlants(clearX, clearY);
+              } else {
+                this.grid[clearY][clearX].content = new Farm(clearX, clearY);
+              }
             }
           }
         }
