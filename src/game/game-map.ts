@@ -52,7 +52,7 @@ export class GameMap {
     );
 
     this.villages = [
-      new Village('Heart Peak', { x: 70, y: 90 }, 4, 1, 0),
+      new Village('Heart Peak', { x: 70, y: 90 }, 10, 1, 0),
       new Village('Moon Plains', { x: 129, y: 29 }, 8, 10, 20),
       new Village('Paw\'s Ridge', { x: 99, y: 100 }, 8, 2, 3),
     ];

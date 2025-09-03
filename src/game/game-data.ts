@@ -13,14 +13,13 @@ export class GameData {
   lives = MAX_LIVES;
   maxMagic = 0;
   magic = 0;
-  level = 1;
   superstition = 0;
   superstitionCooldown = 0;
   goals: Goal[] = [];
 
   constructor() {
     on(GameEvent.SCARED, () => {
-      this.superstition = Math.min(1, this.superstition + 0.005);
+      this.superstition = Math.min(1, this.superstition + 0.01);
       this.superstitionCooldown = 5000;
     });
 
@@ -63,5 +62,9 @@ export class GameData {
     }
 
     this.goals.forEach(goal => goal.time -= timeElapsed);
+  }
+
+  getLevel() {
+    return this.superstition * 4 + this.maxMagic;
   }
 }

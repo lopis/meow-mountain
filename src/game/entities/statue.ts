@@ -17,7 +17,7 @@ export class Statue extends GameObject<Asset> {
   } as const;
 
   spirits: Spirit[] = [];
-  maxSpirits = 9;
+  maxSpirits = 4;
   spawnTimer = 0;
   spawnInterval = 1000;
   spawnChance = 0.10;
@@ -57,9 +57,19 @@ export class Statue extends GameObject<Asset> {
     
     if (this.spawnTimer >= this.spawnInterval) {
       this.spawnTimer = 0;
-      
-      if (this.spirits.length < this.maxSpirits && Math.random() < this.spawnChance) {
-        this.spawnSpirit();
+
+      if (Math.random() < this.spawnChance) {
+        if (this.spirits.length < (this.maxSpirits + this.gameData.getLevel())) {
+          // Spawn new spirit
+          this.spawnSpirit();
+        } else if (this.spirits.length > 0) {
+          // Replace spirits with full HP
+          const replaceSpirit = this.spirits
+            .filter((spirit) => spirit.hp === spirit.maxHp)
+            [Math.round(Math.random() * this.spirits.length - 1)];
+          replaceSpirit.dead = true;
+          this.spawnSpirit();
+        }
       }
     }
 
@@ -119,7 +129,9 @@ export class Statue extends GameObject<Asset> {
       
       // TODO: only spawn spirits of the appropriate level for the current game
       const spiritTypes = Object.values(spirits)
-        .filter((spirit) => spirit.level < this.gameData.level);
+        .filter((spirit) => spirit.level < this.gameData.getLevel());
+      if (spiritTypes.length === 0) return;
+
       const randomType = spiritTypes[Math.floor(Math.random() * spiritTypes.length)];
       
       const spirit = new Spirit(selectedPosition.x, selectedPosition.y, randomType.type, this.map);
