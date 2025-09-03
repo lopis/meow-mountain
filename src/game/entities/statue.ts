@@ -105,10 +105,11 @@ export class Statue extends GameObject<Asset> {
   private spawnSpirit() {
     // Find a random empty cell within a 20x20 area around the statue
     const emptyCells: { x: number; y: number }[] = [];
+    const spawnRadius = this.gameData.getLevel() + this.spawnRadius;
     
     // Collect all empty cells within the search radius
-    for (let dx = -this.spawnRadius; dx <= this.spawnRadius; dx++) {
-      for (let dy = -this.spawnRadius; dy <= this.spawnRadius; dy++) {
+    for (let dx = -spawnRadius; dx <= spawnRadius; dx++) {
+      for (let dy = -spawnRadius; dy <= spawnRadius; dy++) {
         const x = this.col + dx;
         const y = this.row + dy;
         
