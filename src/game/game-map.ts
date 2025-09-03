@@ -111,7 +111,7 @@ export class GameMap {
     }
 
     on(GameEvent.SPAWN_FIRST_SPIRIT, () => {
-      this.set(64, 89, new Spirit(64, 89, '🎈', this));
+      this.set(64, 89, new Spirit(64, 89, '☁️', this));
     });
   }
 

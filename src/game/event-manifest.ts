@@ -9,6 +9,7 @@ export const enum GameEvent {
   TELEPORT,
   RESTORE,
   ENABLE_SCRATCH,
+  ENTER_VILLAGE,
   
   // Combat events
   ATTACK_PLAYER,

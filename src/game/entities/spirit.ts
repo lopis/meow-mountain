@@ -10,7 +10,7 @@ import { emit } from '@/core/event';
 import { drawHpBar } from './hp-bar';
 import { GameEvent } from '../event-manifest';
 
-export type SpiritType = '🎈' | '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
+export type SpiritType = '☁️' | '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
 interface SpiritSpecies {
   type: SpiritType,
@@ -19,7 +19,7 @@ interface SpiritSpecies {
 }
 
 export const spirits = ([
-  '🎈', '🥨', '🌵', '🧚🏻‍♀️', '🦀', '👻', '👹', '🧿', '💀'
+  '☁️', '🥨', '🌵', '🧚🏻‍♀️', '🦀', '👻', '👹', '🧿', '💀'
 ] as const).reduce<Record<SpiritType, SpiritSpecies>>((acc, type, index) => {
   acc[type] = { icon: emojiToPixelArt(type), type, level: Math.ceil((index) / 2) };
   return acc;
