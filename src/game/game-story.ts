@@ -34,7 +34,7 @@ script[Scene.spirit] = {
     'Has the magic barrier failed\nwhile I slept??',
     'This one seems weak.',
     "I'll exorcise it and then\ngo check the barrier",
-    '> Press (1) to attack\n> Hold (1) to charge',
+    '> Press (1) to attack',
   ],
   goals: ['find magic barrier obelisk'],
 };
@@ -114,10 +114,10 @@ export class GameStory {
       emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.temple);
     });
 
-    addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
-    // setTimeout(() => {
-    //   postIntro();
-    // }, 10);
+    // addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
+    setTimeout(() => {
+      postIntro();
+    }, 10);
   }
 
   update (timeElapsed: number) {

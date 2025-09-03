@@ -20,6 +20,7 @@ export class HUD {
   renderLives = false;
   renderMagic = false;
   villageName = '';
+  villageNameTimer = 0;
 
   constructor(
     public map: GameMap,
@@ -40,11 +41,13 @@ export class HUD {
 
     on(GameEvent.ENTER_VILLAGE, (village: Village) => {
       this.villageName = village.name;
+      this.villageNameTimer = 3000;
     });
   }
 
   update(timeElapsed: number) {
     this.miniMap.update(timeElapsed);
+    this.villageNameTimer -= timeElapsed;
   }
 
   draw() {
@@ -53,7 +56,7 @@ export class HUD {
     this.drawGoals();
     this.renderSuperstition && this.drawSuperstition();
     this.drawActions();
-    // this.drawLookingAt();
+    this.drawInfoBox();
     this.renderLives && this.miniMap.draw(this.player);
     this.dialogBox.draw();
   }
@@ -254,39 +257,45 @@ export class HUD {
     drawEngine.drawText(text, c3.width / 2, y + boxH + size, colors.blue5, 1, 0, size, 1, drawEngine.ctx3);
   }
 
-  drawLookingAt() {
-    if(this.villageName) {
-      this.drawInfo(`^ ${this.villageName}`);
+  drawInfoBox() {
+    if(this.villageNameTimer > 0) {
+      const t = this.villageNameTimer;
+      const tNorm = Math.max(0, Math.min(1, Math.min(t / 150, (3000 - t) / 150)));
+      const opacity = easeInOutSine(tNorm, 0, 1);
+      drawEngine.ctx3.globalAlpha = opacity;
+      this.drawInfo(`^^ ${this.villageName}`, 170);
+      drawEngine.ctx3.globalAlpha = 1;
+    }
 
-    } else if (this.map.playerLookingAt) {
+    if (this.map.playerLookingAt) {
       const cell = this.map.getLookingAt();
       if (cell?.content?.name) {
-        this.drawInfo(cell.content.name);
+        this.drawInfo(cell.content.name, c3.height - 170);
       }
     }
   }
 
-  drawInfo(text: string) {
+  drawInfo(text: string, y: number) {
     const boxWidth = 350;
     const boxHeight = 35;
     drawEngine.ctx3.fillStyle = colors.purple5;
     drawEngine.ctx3.fillRect(
       c3.width / 2 - boxWidth / 2 + 4,
-      c3.height - 170 - 6 * 3 - 4,
+      y - 6 * 3 - 4,
       boxWidth - 8,
       boxHeight + 8,
     );
     drawEngine.ctx3.fillStyle = colors.yellow2;
     drawEngine.ctx3.fillRect(
       c3.width / 2 - boxWidth / 2,
-      c3.height - 170 - 6 * 3,
+      y - 6 * 3,
       boxWidth,
       boxHeight,
     );
     drawEngine.drawText(
       text,
       c3.width / 2,
-      c3.height - 170,
+      y,
       colors.purple4,
       1, // center
       1, // middle

@@ -3,7 +3,7 @@ import { GameObject } from '../../core/game-object';
 import { controls } from '../../core/controls';
 import { GameMap } from '../game-map';
 import { CELL_HEIGHT, CELL_WIDTH, statues } from '../constants';
-import { on } from '@/core/event';
+import { emit, on } from '@/core/event';
 import { addTimeEvent } from '@/core/timer';
 import { Spirit } from './spirit';
 import { GameData } from '../game-data';
@@ -20,6 +20,7 @@ export class Player extends GameObject<CatStates> {
   sleeping = true;
   attacking = false;
   confused = false;
+  inVillage = false;
   pentagramAttack: PentagramAnimation | null = null;
 
   constructor(col: number, row: number, public map: GameMap, public gameData: GameData) {
@@ -63,6 +64,14 @@ export class Player extends GameObject<CatStates> {
 
   update(timeElapsed: number) {
     super.update(timeElapsed);
+
+    const cellVillage = this.map.grid[this.row][this.col].village;
+    if (!this.inVillage && cellVillage) {
+      this.inVillage = true;
+      emit(GameEvent.ENTER_VILLAGE, cellVillage);
+    } else if (this.inVillage && !cellVillage) {
+      this.inVillage = false;
+    }
 
     // DEBUG
     coords.innerText = `${this.col},${this.row}`;

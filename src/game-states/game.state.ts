@@ -27,7 +27,6 @@ class GameState implements State {
     this.actions = new Actions(this.map, this.cat);
     this.hud = new HUD(this.map, this.cat, this.actions, this.gameData);
     this.story = new GameStory();
-    // this.cat = new Player(statues.ear.x, statues.ear.y + 3, this.map);
     
     this.map.set(this.cat.col, this.cat.row, this.cat);
     new Obelisk(this.map);

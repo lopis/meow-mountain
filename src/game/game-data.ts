@@ -65,5 +65,3 @@ export class GameData {
     this.goals.forEach(goal => goal.time -= timeElapsed);
   }
 }
-
-export const gameData = new GameData();

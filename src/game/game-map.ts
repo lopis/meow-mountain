@@ -54,7 +54,7 @@ export class GameMap {
     this.villages = [
       new Village('Heart Peak', { x: 70, y: 90 }, 4, 1, 0),
       new Village('Moon Plains', { x: 129, y: 29 }, 8, 10, 20),
-      new Village('Paw\'s Ridge', { x: 103, y: 100 }, 4, 2, 3),
+      new Village('Paw\'s Ridge', { x: 99, y: 100 }, 8, 2, 3),
     ];
 
     // Clear paths with jitter
@@ -108,6 +108,19 @@ export class GameMap {
           this.grid[house.row][house.col].content = house;
         });
       village.generateVillagers(this);
+
+      // Set cell.village for each cell in the village radius
+      const { x: centerX, y: centerY } = village.center;
+      const radius = village.radius;
+      for (let y = Math.max(0, centerY - radius); y <= Math.min(this.rowCount - 1, centerY + radius); y++) {
+        for (let x = Math.max(0, centerX - radius); x <= Math.min(this.colCount - 1, centerX + radius); x++) {
+          const dx = x - centerX;
+          const dy = y - centerY;
+          if (dx * dx + dy * dy <= radius * radius) {
+            this.grid[y][x].village = village;
+          }
+        }
+      }
     }
 
     on(GameEvent.SPAWN_FIRST_SPIRIT, () => {
