@@ -1,4 +1,4 @@
-import {Terser} from "vite";
+import { Terser } from "vite";
 import { ECMA } from 'terser';
 
 export const defaultTerserOptions: Terser.MinifyOptions = {
@@ -80,7 +80,7 @@ export const defaultTerserOptions: Terser.MinifyOptions = {
 
     // discard calls to console.* functions.
     // If you wish to drop a specific function call such as console.info
-    drop_console: false,
+    drop_console: ['log', 'error'],
 
     // remove debugger; statements
     drop_debugger: false,

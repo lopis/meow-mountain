@@ -40,12 +40,6 @@ html, body {
     background: #13282b;
 }
 
-
 #c1 {
     background-size: 2px 2px;
-}
-
-.nighttime {
-    filter: brightness(0.7) contrast(1.6) hue-rotate(40deg);
-    transition: filter 10000ms;
 }
