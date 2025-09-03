@@ -6,11 +6,11 @@ import { drawEngine } from '@/core/draw-engine';
 /* eslint-disable quote-props */
 const pixelColors: Record<string, string> = {
   'oak': colors.green1,
-  'spruce': colors.green2,
+  'spruce': colors.blue2,
   'house': colors.blue4,
   'field': colors.yellow1,
-  'statue': colors.purple3,
-  'unseen': colors.green3,
+  'statue': colors.blue6,
+  'unseen': colors.blue5,
   'default': colors.yellow2,
 };
 /* eslint-enable quote-props */
