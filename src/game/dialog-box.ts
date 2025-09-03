@@ -26,24 +26,30 @@ export class DialogBox {
       drawEngine.ctx3.fillRect(x, y, boxWidth, boxHeight);
 
       this.dialog.split('\n').forEach((dialog, i) => {
-        drawEngine.drawText({
-          text: dialog,
-          x: x + margin * 2,
-          y: y + margin * 2 + i * 40,
-          color: dialog[0] === '>' ? colors.purple4 : colors.black,
-          size: 5,
-        }, drawEngine.ctx3);
+        drawEngine.drawText(
+          dialog,
+          x + margin * 2,
+          y + margin * 2 + i * 40,
+          dialog[0] === '>' ? colors.purple4 : colors.black,
+          0, // left
+          0, // top
+          5,
+          1,
+          drawEngine.ctx3
+        );
       });
 
-      drawEngine.drawText({
-          text: 'press (space) to continue',
-          x: x + boxWidth - margin,
-          y: y + boxHeight - margin,
-          color: colors.purple4,
-          size: 5,
-          textAlign: 'right',
-          textBaseline: 'bottom',
-        }, drawEngine.ctx3);
+      drawEngine.drawText(
+          'press (space) to continue',
+          x + boxWidth - margin,
+          y + boxHeight - margin,
+          colors.purple4,
+          2, // right
+          2, // bottom
+          5,
+          1,
+          drawEngine.ctx3
+        );
     }
   }
 }

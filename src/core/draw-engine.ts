@@ -1,5 +1,5 @@
 import { GameAssets } from '@/game/game-assets';
-import { drawText, DrawTextProps } from './font';
+import { drawText } from './font';
 import { colors } from './util/color';
 
 const makeCircle = (
@@ -101,8 +101,18 @@ class DrawEngine {
     ctx.restore();
   }
 
-  drawText(textProps: DrawTextProps, context?: CanvasRenderingContext2D) {
-    drawText(context || this.ctx1, textProps);
+  drawText(
+    text: string,
+    x: number,
+    y: number,
+    color?: string,
+    textAlign = 0,
+    textBaseline = 0,
+    size = 2,
+    space = 1,
+    context?: CanvasRenderingContext2D
+  ) {
+    drawText(context || this.ctx1, text, x, y, color, textAlign, textBaseline, size, space);
   }
 
   static drawImage(

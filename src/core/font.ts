@@ -98,18 +98,17 @@ const getCharacterCanvas = (character: string, size: number, color: string): HTM
 
 export const drawText = (
   c: CanvasRenderingContext2D,
-  {
-    text,
-    color = colors.white,
-    textAlign = 'left',
-    textBaseline = 'top',
-    size = 2,
-    space = 1,
-    ...rest
-  }: DrawTextProps
+  text: string,
+  x: number,
+  y: number,
+  color = colors.white,
+  textAlign = 0, // 0=left, 1=center, 2=right
+  textBaseline = 0, // 0=top, 1=middle, 2=bottom  
+  size = 2,
+  space = 1
 ) => {
-  const x = Math.round(rest.x);
-  const y = Math.round(rest.y);
+  x = Math.round(x);
+  y = Math.round(y);
   if (!text) text = ' ';
   
   // Calculate variable width for text
@@ -129,8 +128,8 @@ export const drawText = (
   });
   
   const letterHeight = 5 * size;
-  const offsetX = textAlign === 'left' ? 0 : textAlign === 'center' ? Math.round(totalWidth / 2) : totalWidth;
-  const offsetY = textBaseline === 'top' ? 0 : textBaseline === 'middle' ? Math.round(letterHeight / 2) : letterHeight;
+  const offsetX = textAlign === 0 ? 0 : textAlign === 1 ? Math.round(totalWidth / 2) : totalWidth;
+  const offsetY = textBaseline === 0 ? 0 : textBaseline === 1 ? Math.round(letterHeight / 2) : letterHeight;
   
   // Draw each character synchronously
   charPositions.forEach(({ char, x: charX, charWidth }) => {

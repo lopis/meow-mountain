@@ -26,30 +26,33 @@ class MenuState implements State {
 
     this.drawBackground();
     const xCenter = drawEngine.ctx2.canvas.width / 2;
-    drawEngine.drawText({
-      text: 'Meow Mountain',
-      x: xCenter,
-      y: 100,
-      color: colors.blue0,
-      size: 15,
-      textAlign: 'center',
-    });
-    drawEngine.drawText({
-      text: `${this.isStartSelected ? '>' : ' '} Start Game`,
-      x: xCenter,
-      y: 230,
-      color: this.isStartSelected ? colors.white : colors.blue4,
-      size: 4,
-      textAlign: 'center',
-    });
-    drawEngine.drawText({
-      text: `${!this.isStartSelected ? '>' : ' '} Toggle Fullscreen`,
-      x: xCenter,
-      y: 280,
-      color: this.isStartSelected ? colors.blue4 : colors.white,
-      size: 4,
-      textAlign: 'center',
-    });
+    drawEngine.drawText(
+      'Meow Mountain',
+      xCenter,
+      100,
+      colors.blue0,
+      1, // center
+      0, // top
+      15
+    );
+    drawEngine.drawText(
+      `${this.isStartSelected ? '>' : ' '} Start Game`,
+      xCenter,
+      230,
+      this.isStartSelected ? colors.white : colors.blue4,
+      1, // center
+      0, // top
+      4
+    );
+    drawEngine.drawText(
+      `${!this.isStartSelected ? '>' : ' '} Toggle Fullscreen`,
+      xCenter,
+      280,
+      this.isStartSelected ? colors.blue4 : colors.white,
+      1, // center
+      0, // top
+      4
+    );
     this.updateControls();
   }
 

@@ -76,37 +76,43 @@ export class HUD {
       }
 
       // Draw symbol (large font)
-      drawEngine.drawText({
-        text: symbol,
-        x: x + boxWidth / 2,
-        y: y + 30,
+      drawEngine.drawText(
+        symbol,
+        x + boxWidth / 2,
+        y + 30,
         color,
-        textAlign: 'center',
-        textBaseline: 'middle',
-        size: 7
-      }, drawEngine.ctx3);
+        1, // center
+        1, // middle
+        7,
+        1,
+        drawEngine.ctx3
+      );
 
       // Draw key binding
-      drawEngine.drawText({
-        text: `key: ${index + 1}`,
-        x: x + boxWidth / 2,
-        y: y + 70,
-        color: colors.black,
-        textAlign: 'center',
-        textBaseline: 'middle',
-        size: 3
-      }, drawEngine.ctx3);
+      drawEngine.drawText(
+        `key: ${index + 1}`,
+        x + boxWidth / 2,
+        y + 70,
+        colors.black,
+        1, // center
+        1, // middle
+        3,
+        1,
+        drawEngine.ctx3
+      );
 
       // Draw action name
-      drawEngine.drawText({
-        text: type,
-        x: x + boxWidth / 2,
-        y: y + 95,
-        color: colors.black,
-        textAlign: 'center',
-        textBaseline: 'middle',
-        size: 3
-      }, drawEngine.ctx3);
+      drawEngine.drawText(
+        type,
+        x + boxWidth / 2,
+        y + 95,
+        colors.black,
+        1, // center
+        1, // middle
+        3,
+        1,
+        drawEngine.ctx3
+      );
     });
   }
 
@@ -126,7 +132,7 @@ export class HUD {
     const boxH = 7 * size;
     drawEngine.ctx3.fillStyle = colors.purple0;
     drawEngine.ctx3.fillRect(x, y, boxW, boxH);
-    drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.purple4, size }, drawEngine.ctx3);
+    drawEngine.drawText(text, x + size, y + size, colors.purple4, 0, 0, size, 1, drawEngine.ctx3);
   }
 
   drawMagic() {
@@ -146,15 +152,15 @@ export class HUD {
 
     let text = MAGIC.repeat(fullMagic);
     x -= text.length * charWidth;
-    drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.blue1, size }, drawEngine.ctx3);
+    drawEngine.drawText(text, x + size, y + size, colors.blue1, 0, 0, size, 1, drawEngine.ctx3);
 
     text = MAGIC.repeat(emptyMagic);
     x -= text.length * charWidth;
-    drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.blue3, size }, drawEngine.ctx3);
+    drawEngine.drawText(text, x + size, y + size, colors.blue3, 0, 0, size, 1, drawEngine.ctx3);
 
     text = MAGIC.repeat(noMagic);
     x -= text.length * charWidth;
-    drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.yellow2, size }, drawEngine.ctx3);
+    drawEngine.drawText(text, x + size, y + size, colors.yellow2, 0, 0, size, 1, drawEngine.ctx3);
   }
 
   drawGoals() {
@@ -193,22 +199,26 @@ export class HUD {
       drawEngine.ctx3.fillStyle = colors.purple4;
       drawEngine.ctx3.fillRect(x, boxY, boxW, boxH);
       drawEngine.drawText(
-      {
-        text: 'NEW GOAL',
-        x: x + size + padding,
-        y: boxY + padding,
-        color: colors.white,
-        size: size + 1,
-      }, drawEngine.ctx3
-    );
+        'NEW GOAL',
+        x + size + padding,
+        boxY + padding,
+        colors.white,
+        0, // left
+        0, // top
+        size + 1,
+        1,
+        drawEngine.ctx3
+      );
       drawEngine.drawText(
-        {
-          text: label,
-          x: x + size + padding + 20,
-          y: 35 + boxY + padding,
-          color: colors.black,
-          size
-        }, drawEngine.ctx3
+        label,
+        x + size + padding + 20,
+        35 + boxY + padding,
+        colors.black,
+        0, // left
+        0, // top
+        size,
+        1,
+        drawEngine.ctx3
       );
     });
   }
@@ -234,7 +244,7 @@ export class HUD {
     const barSize = Math.round(this.gameData.superstition * (boxW - 2 * padding) / 3) * 3;
     drawEngine.ctx3.fillRect(x + padding, y + padding, barSize, boxH - 2 * padding);
 
-    drawEngine.drawText({ text, x: c3.width / 2, y: y + boxH + size, color: colors.blue5, size, textAlign: 'center' }, drawEngine.ctx3);
+    drawEngine.drawText(text, c3.width / 2, y + boxH + size, colors.blue5, 1, 0, size, 1, drawEngine.ctx3);
   }
 
   drawLookingAt() {
@@ -260,15 +270,17 @@ export class HUD {
         boxWidth,
         boxHeight,
       );
-      drawEngine.drawText({
-        text: `${cell.content.name}`,
-        x: c3.width / 2,
-        y: c3.height - 170,
-        textAlign: 'center',
-        textBaseline: 'middle',
-        color: colors.purple4,
-        size: 3,
-      }, drawEngine.ctx3);
+      drawEngine.drawText(
+        `${cell.content.name}`,
+        c3.width / 2,
+        c3.height - 170,
+        colors.purple4,
+        1, // center
+        1, // middle
+        3,
+        1,
+        drawEngine.ctx3
+      );
     }
   }
 }
