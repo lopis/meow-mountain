@@ -1,7 +1,8 @@
 import { drawEngine } from '@/core/draw-engine';
 import { emit, on } from '@/core/event';
-import { DialogState, Story } from '@/core/story-engine';
+import { DialogState, Story, StoryEngineEvent } from '@/core/story-engine';
 import { addTimeEvent } from '@/core/timer';
+import { GameEvent } from './event-manifest';
 
 export interface SceneProps extends DialogState {
   goals?: string[],
@@ -65,8 +66,8 @@ script[Scene.temple] = {
 };
 
 const postIntro = () => {
-  emit('wake-up');
-  emit('spawn-first-spirit');
+  emit(GameEvent.WAKE_UP);
+  emit(GameEvent.SPAWN_FIRST_SPIRIT);
   drawEngine.cameraLerpSpeed = 0.08;
 };
 
@@ -76,33 +77,33 @@ export class GameStory {
   constructor() {
     this.story = new Story(script);
 
-    on('story-state-exit', (label: Scene) => {
-      emit('cutscene-end', script[label]);
+    on(StoryEngineEvent.STORY_STATE_EXIT, (label: Scene) => {
+      emit(GameEvent.CUTSCENE_END, script[label]);
       if (label === Scene.intro) {
         postIntro();
         addTimeEvent(() => {
-          emit('story-state-enter', Scene.spirit);
+          emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.spirit);
         }, 3000);
       }
       if(label === Scene.spirit) {
-        emit('enable-scratch');
+        emit(GameEvent.ENABLE_SCRATCH);
       }
     });
 
-    on('story-state-enter', () => {
-      emit('cutscene-start');
+    on(StoryEngineEvent.STORY_STATE_ENTER, () => {
+      emit(GameEvent.CUTSCENE_START);
     });
 
-    on('not-enough-magic', () => {
+    on(GameEvent.NOT_ENOUGH_MAGIC, () => {
       if (script[Scene.barrier].isDone) {
-        emit('story-state-enter', Scene.noMagic);
+        emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.noMagic);
       } else {
-        emit('story-state-enter', Scene.barrier);
+        emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.barrier);
       }
     });
 
-    on('statue-restored', () => {
-      emit('story-state-enter', Scene.temple);
+    on(GameEvent.STATUE_RESTORED, () => {
+      emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.temple);
     });
 
     addTimeEvent(() => this.story.enterState(Scene.intro), 1000);

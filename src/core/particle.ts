@@ -1,3 +1,4 @@
+import { GameEvent } from '@/game/event-manifest';
 import { on } from './event';
 import { easeInExpo } from './util/util';
 
@@ -14,7 +15,7 @@ export class ParticleEngine {
   particles: Particle[] = [];
 
   constructor(public ctx: CanvasRenderingContext2D) {
-    on('particle', (particle: Particle) => {
+    on(GameEvent.PARTICLE, (particle: Particle) => {
       this.createParticle(particle.from, particle.to, particle.size, particle.color, particle.duration);
     });
   }

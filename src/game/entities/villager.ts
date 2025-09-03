@@ -6,6 +6,7 @@ import { House } from './house';
 import { emit } from '@/core/event';
 import { colors } from '@/core/util/color';
 import { drawEngine } from '@/core/draw-engine';
+import { GameEvent } from '../event-manifest';
 
 export class Villager extends GameObject<VillagerStates> {
   map: GameMap;
@@ -39,7 +40,7 @@ export class Villager extends GameObject<VillagerStates> {
         this.isScared = true;
       }
       if (this.moveTimer % (this.moveInterval / 5) < timeElapsed) {
-        emit('scared');
+        emit(GameEvent.SCARED);
         this.emitParticle();
       }
       this.animation = 'scared';
@@ -79,7 +80,7 @@ export class Villager extends GameObject<VillagerStates> {
       color: colors.blue4,
       duration: 500,
     };
-    emit('particle', particle);
+    emit(GameEvent.PARTICLE, particle);
   }
 
   // Looks around for an empty cell to move to.

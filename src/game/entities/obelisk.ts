@@ -5,6 +5,7 @@ import { GameMap } from '../game-map';
 import { drawHpBar } from './hp-bar';
 import { colors } from '@/core/util/color';
 import { emit } from '@/core/event';
+import { GameEvent } from '../event-manifest';
 
 export class Obelisk extends GameObject<Asset> {
   map: GameMap;
@@ -38,7 +39,7 @@ export class Obelisk extends GameObject<Asset> {
     if (this.repair < maxRepair) {
       this.repair ++;
     } else {
-      emit('not-enough-magic');
+      emit(GameEvent.NOT_ENOUGH_MAGIC);
     }
   }
 }

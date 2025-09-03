@@ -1,16 +1,17 @@
 import { drawEngine } from '@/core/draw-engine';
 import { on } from '@/core/event';
+import { StoryEngineEvent } from '@/core/story-engine';
 import { colors } from '@/core/util/color';
 
 export class DialogBox {
   dialog: string | null = null;
 
   constructor() {
-    on('story-dialog', (dialog) => {
+    on(StoryEngineEvent.STORY_DIALOG, (dialog) => {
       this.dialog = dialog;
     });
 
-    on('story-state-exit', () => {
+    on(StoryEngineEvent.STORY_STATE_EXIT, () => {
       this.dialog = null;
     });
   }

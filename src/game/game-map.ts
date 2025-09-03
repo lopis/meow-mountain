@@ -10,6 +10,7 @@ import { Coords } from './path-findind';
 import { drawEngine } from '@/core/draw-engine';
 import { GameAssets } from './game-assets';
 import { GameData } from './game-data';
+import { GameEvent } from './event-manifest';
 
 export class GameMap {
   grid: Cell[][];
@@ -109,7 +110,7 @@ export class GameMap {
       village.generateVillagers(this);
     }
 
-    on('spawn-first-spirit', () => {
+    on(GameEvent.SPAWN_FIRST_SPIRIT, () => {
       this.set(64, 89, new Spirit(64, 89, '🎈', this));
     });
   }

@@ -8,6 +8,7 @@ import { controls } from '@/core/controls';
 import { Statue } from './entities/statue';
 import { Obelisk } from './entities/obelisk';
 import { addTimeEvent } from '@/core/timer';
+import { GameEvent } from './event-manifest';
 
 type ActionType = 'teleport' | 'scratch' | 'restore';
 type Action = {
@@ -45,7 +46,7 @@ export class Actions {
     this.map = map;
     this.player = player;
 
-    on('enable-scratch', () => {
+    on(GameEvent.ENABLE_SCRATCH, () => {
       this.actions[0].enabled = true;
     });
   }
@@ -57,11 +58,11 @@ export class Actions {
     this.actions[1].enabled = this.canTeleport();
 
     if (controls.isAction2 && !controls.previousState.isAction2) {
-      emit('teleport');
+      emit(GameEvent.TELEPORT);
     }
 
     if (controls.isAction3 && !controls.previousState.isAction3) {
-      emit('restore');
+      emit(GameEvent.RESTORE);
       const cellInFront = this.map.getLookingAt();
       const object = cellInFront.content as Statue | Obelisk;
       if (object.repair < MAX_REPAIR) {
@@ -69,7 +70,7 @@ export class Actions {
           object.repair++;
           if (object.repair >= MAX_REPAIR) {
             addTimeEvent(() => {
-              emit('statue-restored');
+              emit(GameEvent.STATUE_RESTORED);
             }, 4000);
           }
         } else if (object instanceof Obelisk) {

@@ -8,6 +8,7 @@ import { Coords, findShortestPath } from '../path-findind';
 import { addTimeEvent } from '@/core/timer';
 import { emit } from '@/core/event';
 import { drawHpBar } from './hp-bar';
+import { GameEvent } from '../event-manifest';
 
 export type SpiritType = '🎈' | '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -130,7 +131,7 @@ export class Spirit extends Icon implements SmoothMovementState {
         // Only emit if player is still in the target cell
         const cell = this.map.grid[this.attackTarget.row][this.attackTarget.col];
         if (cell.content?.type === 'cat') {
-          emit('attack-player', this.species.level);
+          emit(GameEvent.ATTACK_PLAYER, this.species.level);
         }
       }
       const restProgress = (progress - 0.73) / 0.27;

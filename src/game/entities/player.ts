@@ -9,6 +9,7 @@ import { Spirit } from './spirit';
 import { GameData } from '../game-data';
 import { PentagramAnimation } from './pentagram-attack';
 import { drawEngine } from '@/core/draw-engine';
+import { GameEvent } from '../event-manifest';
 
 const ANIMATION_SLOW = 600;
 const ANIMATION_NORMAL = 150;
@@ -36,16 +37,16 @@ export class Player extends GameObject<CatStates> {
     // Initialize looking direction to the right
     this.map.playerLookingAt = { col: col + 1, row };
 
-    on('teleport', () => {
+    on(GameEvent.TELEPORT, () => {
       this.setPos(statues.heart.x, statues.heart.y + 1);
     });
 
-    on('wake-up', () => {
+    on(GameEvent.WAKE_UP, () => {
       this.sleeping = false;
       this.animationDuration = ANIMATION_NORMAL;
     });
 
-    on('attack-player', () => {
+    on(GameEvent.ATTACK_PLAYER, () => {
       this.confused = true;
       this.animationDuration = ANIMATION_FAST;
       addTimeEvent(() => {
@@ -54,7 +55,7 @@ export class Player extends GameObject<CatStates> {
       }, 600);
     });
 
-    on('game-over', () => {
+    on(GameEvent.GAME_OVER, () => {
       this.animation = 'die';
       this.animationLoop = false;
     });

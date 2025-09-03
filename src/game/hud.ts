@@ -10,6 +10,7 @@ import { MAX_LIVES, MAX_MAGIC, NOTIFICATION_DURATION } from './constants';
 import { DialogBox } from './dialog-box';
 import { MAGIC, EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from '@/core/font';
 import { on } from '@/core/event';
+import { GameEvent } from './event-manifest';
 
 export class HUD {
   miniMap: MiniMap;
@@ -27,11 +28,11 @@ export class HUD {
     this.miniMap = new MiniMap(map);
     this.dialogBox = new DialogBox();
 
-    on('enable-scratch', () => {
+    on(GameEvent.ENABLE_SCRATCH, () => {
       this.renderLives = true;
     });
 
-    on('not-enough-magic', () => {
+    on(GameEvent.NOT_ENOUGH_MAGIC, () => {
       this.renderMagic = true;
     });
   }

@@ -10,7 +10,12 @@ export interface Script {
   [stateKey: string]: DialogState;
 }
 
-type StoryEventName = 'story-state-enter' | 'story-dialog' | 'story-state-exit';
+export const enum StoryEngineEvent {
+  // Story events
+  STORY_STATE_ENTER = 1,
+  STORY_STATE_EXIT = 2,
+  STORY_DIALOG = 3,
+};
 
 export class Story<T extends Script> {
   private currentStateKey: keyof T | null = null;
@@ -23,11 +28,10 @@ export class Story<T extends Script> {
   visibleCharacters = 0;
   textAnimationTimer = 0;
   charactersPerSecond = 20;
-  textAnimationState: 'typing' | 'complete' | 'waiting' = 'waiting';
+  textAnimationState = 2; // 0=typing, 1=complete, 2=waiting
 
   constructor(private readonly script: T) {
-    // Listen for story-state-enter events
-    on('story-state-enter', (stateKey: keyof T) => {
+    on(StoryEngineEvent.STORY_STATE_ENTER, (stateKey: keyof T) => {
       this.enterState(stateKey);
     });
   }
@@ -56,14 +60,14 @@ export class Story<T extends Script> {
     this.previousSpacePressed = spacePressed || false;
 
     // Update typewriter animation
-    if (this.textAnimationState === 'typing') {
+    if (this.textAnimationState === 0) { // typing
       this.textAnimationTimer += timeElapsed;
       const targetCharacters = Math.floor((this.textAnimationTimer / 1000) * this.charactersPerSecond);
       
       if (targetCharacters >= this.fullText.length) {
         // Animation complete
         this.visibleCharacters = this.fullText.length;
-        this.textAnimationState = 'complete';
+        this.textAnimationState = 1; // complete
         this.emitCurrentVisibleText();
       } else if (targetCharacters > this.visibleCharacters) {
         // Show more characters
@@ -82,15 +86,15 @@ export class Story<T extends Script> {
       return;
     }
 
-    if (this.textAnimationState === 'typing') {
+    if (this.textAnimationState === 0) { // typing
       // Skip typing animation - show full text immediately
       this.visibleCharacters = this.fullText.length;
-      this.textAnimationState = 'complete';
+      this.textAnimationState = 1; // complete
       this.emitCurrentVisibleText();
       return;
     }
 
-    if (this.textAnimationState === 'complete') {
+    if (this.textAnimationState === 1) { // complete
       // Move to next dialog or exit
       const currentState = this.script[this.currentStateKey];
       
@@ -107,7 +111,7 @@ export class Story<T extends Script> {
 
   private emitCurrentVisibleText() {
     const visibleText = this.fullText.substring(0, this.visibleCharacters);
-    emit('story-dialog' satisfies StoryEventName, visibleText);
+    emit(StoryEngineEvent.STORY_DIALOG, visibleText);
   }
 
   private showCurrentDialog() {
@@ -122,7 +126,7 @@ export class Story<T extends Script> {
     // Reset typewriter animation
     this.visibleCharacters = 0;
     this.textAnimationTimer = 0;
-    this.textAnimationState = 'typing';
+    this.textAnimationState = 0; // typing
     
     // Start with empty text
     this.emitCurrentVisibleText();
@@ -139,6 +143,6 @@ export class Story<T extends Script> {
     this.currentState = null;
     this.currentDialogIndex = 0;
     
-    emit('story-state-exit' satisfies StoryEventName, stateKey);
+    emit(StoryEngineEvent.STORY_STATE_EXIT, stateKey);
   }
 }
