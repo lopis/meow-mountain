@@ -261,6 +261,8 @@ export class Player extends GameObject<CatStates> {
     if (cell.content && cell.content.type === 'spirit') {
       const spirit = cell.content as Spirit;
       spirit.takeDamage(1);
+    } else if (cell.content && cell.content.type === 'field') {
+      cell.content = null;
     }
   }
 }
