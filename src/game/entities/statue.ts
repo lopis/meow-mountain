@@ -10,6 +10,12 @@ import { colors } from '@/core/util/color';
 import { drawEngine } from '@/core/draw-engine';
 
 export class Statue extends GameObject<Asset> {
+  static readonly State = {
+    BROKEN: 0,
+    ANIMATING: 1,
+    REPAIRED: 2
+  } as const;
+
   spirits: Spirit[] = [];
   maxSpirits = 9;
   spawnTimer = 0;
@@ -17,7 +23,7 @@ export class Statue extends GameObject<Asset> {
   spawnChance = 0.10;
   spawnRadius = 10;
   repair = 0;
-  state: 'broken' | 'animating' | 'repaired' = 'broken';
+  state: number = Statue.State.BROKEN;
   repairAnimationDuration = 1500;
   repairAnimationTimer = 0;
 
@@ -40,12 +46,12 @@ export class Statue extends GameObject<Asset> {
   update(timeElapsed: number) {
     this.spawnTimer += timeElapsed;
 
-    if (this.state === 'broken' && this.repair >= MAX_REPAIR) {
-      this.state = 'animating';
-    } else if (this.state === 'animating') {
+    if (this.state === Statue.State.BROKEN && this.repair >= MAX_REPAIR) {
+      this.state = Statue.State.ANIMATING;
+    } else if (this.state === Statue.State.ANIMATING) {
       this.repairAnimationTimer += timeElapsed;
       if (this.repairAnimationTimer > this.repairAnimationDuration) {
-        this.state = 'repaired';
+        this.state = Statue.State.REPAIRED;
       }
     }
     
@@ -61,7 +67,7 @@ export class Statue extends GameObject<Asset> {
   }
 
   draw() {
-    if (this.state === 'animating') {
+    if (this.state === Statue.State.ANIMATING) {
       this.drawAnimation();
     }
     super.draw();

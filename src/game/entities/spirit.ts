@@ -25,9 +25,15 @@ export const spirits = ([
   return acc;
 }, {} as Record<SpiritType, SpiritSpecies>);
 
-type SpiritState = 'idle' | 'moving' | 'winding' | 'attacking' | 'resting';
-
 export class Spirit extends Icon implements SmoothMovementState {
+  static readonly State = {
+    IDLE: 0,
+    MOVING: 1,
+    WINDING: 2,
+    ATTACKING: 3,
+    RESTING: 4
+  } as const;
+
   animationDuration = 2000;
   animationTime = 0;
   opacity = 0;
@@ -45,7 +51,7 @@ export class Spirit extends Icon implements SmoothMovementState {
   recoil = false;
   
   // Simplified state system
-  state: SpiritState = 'idle';
+  state: number = Spirit.State.IDLE;
   attackTimer = 0;
   attackDuration = 1000;
   attackTarget: Coords | null = null;
@@ -78,8 +84,8 @@ export class Spirit extends Icon implements SmoothMovementState {
     }
 
     switch (this.state) {
-      case 'idle':
-      case 'moving':
+      case Spirit.State.IDLE:
+      case Spirit.State.MOVING:
         updatePositionSmoothly(this, timeElapsed);
         const playerCoords = this.lookAroundForPlayer();
         if (playerCoords) {
@@ -91,9 +97,9 @@ export class Spirit extends Icon implements SmoothMovementState {
         }
         break;
 
-      case 'winding':
-      case 'attacking':
-      case 'resting':
+      case Spirit.State.WINDING:
+      case Spirit.State.ATTACKING:
+      case Spirit.State.RESTING:
         this.updateAttack(timeElapsed);
         break;
     }
@@ -104,7 +110,7 @@ export class Spirit extends Icon implements SmoothMovementState {
     const progress = this.attackTimer / this.attackDuration;
     
     if (!this.attackTarget) {
-      this.state = 'idle';
+      this.state = Spirit.State.IDLE;
       return;
     }
 
@@ -113,20 +119,20 @@ export class Spirit extends Icon implements SmoothMovementState {
 
     if (progress < 0.7) {
       // Winding up
-      if (this.state !== 'winding') this.state = 'winding';
+      if (this.state !== Spirit.State.WINDING) this.state = Spirit.State.WINDING;
       const windProgress = progress / 0.7;
       this.attackOffsetX = -dirX * windProgress * 3;
       this.attackOffsetY = -dirY * windProgress * 3;
     } else if (progress < 0.73) {
       // Attacking
-      if (this.state !== 'attacking') this.state = 'attacking';
+      if (this.state !== Spirit.State.ATTACKING) this.state = Spirit.State.ATTACKING;
       const attackProgress = (progress - 0.7) / 0.03;
       this.attackOffsetX = dirX * (-3 + CELL_WIDTH * attackProgress);
       this.attackOffsetY = dirY * (-3 + CELL_WIDTH * attackProgress);
     } else if (progress < 1.0) {
       // Resting (returning)
-      if (this.state !== 'resting') {
-        this.state = 'resting';
+      if (this.state !== Spirit.State.RESTING) {
+        this.state = Spirit.State.RESTING;
         
         // Only emit if player is still in the target cell
         const cell = this.map.grid[this.attackTarget.row][this.attackTarget.col];
@@ -139,7 +145,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       this.attackOffsetY = dirY * 3 * (1 - restProgress);
     } else {
       // Attack complete
-      this.state = 'idle';
+      this.state = Spirit.State.IDLE;
       this.attackTimer = 0;
       this.attackTarget = null;
       this.attackOffsetX = 0;
@@ -176,7 +182,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       playerCoords,
     );
     if (path && path.length > 2) {
-      this.state = 'moving';
+      this.state = Spirit.State.MOVING;
       const nextStep = path[1];
       setTargetPosition(this, nextStep.col, nextStep.row);
       this.col = nextStep.col;
@@ -185,7 +191,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       this.targetPos.y = nextStep.row * CELL_HEIGHT;
     } else if (path?.length === 2) {
       // Start attack
-      this.state = 'winding';
+      this.state = Spirit.State.WINDING;
       this.attackTarget = path[1];
       this.attackTimer = 0;
     }
