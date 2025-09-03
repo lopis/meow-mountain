@@ -3,7 +3,7 @@ import { SeededRandom } from '@/core/util/rng';
 import { Village } from './entities/village';
 import { CELL_HEIGHT, CELL_WIDTH, clearings, paths, statues } from './constants';
 import { Statue } from './entities/statue';
-import { Cell, Drawable } from './types';
+import { Cell, Drawable, Path } from './types';
 import { on } from '@/core/event';
 import { Spirit } from './entities/spirit';
 import { Coords } from './path-findind';
@@ -135,6 +135,15 @@ export class GameMap {
     return this.grid[this.playerLookingAt.row][this.playerLookingAt.col];
   }
 
+  clearPlants(col: number, row: number) {
+    if(
+      this.grid[row][col].content instanceof Tree
+      || this.grid[row][col].content instanceof Farm
+    ) {
+      this.grid[row][col].content = null;
+    }
+  }
+
   // Fill the center area with fields to limit player movements
   // until they finish the onboarding.
   // Then clear out a path from where the player starts, to the obelisk,
@@ -154,6 +163,18 @@ export class GameMap {
       }
     }
     
+    const villagePath: Path = [
+      [60, 85, 2],
+      [69, 88, 0.9],
+      [75, 89, 0.9],
+      [76, 84, 0.9],
+    ];
+    for (let i = 0; i < villagePath.length - 1; i++) {
+      const from = { x: villagePath[i][0], y: villagePath[i][1] };
+      const to = { x: villagePath[i + 1][0], y: villagePath[i + 1][1] };
+      const pathWidth = villagePath[i][2];
+      this.clearPathWithJitter(from, to, pathWidth);
+    }
   }
 
   private clearPathWithJitter(
@@ -186,12 +207,12 @@ export class GameMap {
           const clearY = Math.ceil(y + oy + jitterY);
           if (clearY >= 0 && clearY < this.grid.length &&
             clearX >= 0 && clearX < this.grid[0].length) {
-            this.grid[clearY][clearX].content = null;
+            this.clearPlants(clearX, clearY);
             if (pathWidth < 1) {
-              this.grid[clearY][clearX + 1].content = null;
+            this.clearPlants(clearX + 1, clearY);
             } else if (this.rng.next() > 0.1) {
               // Add probability for partial clearing to create natural edges
-              this.grid[clearY][clearX].content = null;
+              this.clearPlants(clearX, clearY);
             }
           }
         }
