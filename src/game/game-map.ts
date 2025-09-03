@@ -11,6 +11,7 @@ import { drawEngine } from '@/core/draw-engine';
 import { GameAssets } from './game-assets';
 import { GameData } from './game-data';
 import { GameEvent } from './event-manifest';
+import { Farm } from './entities/farm';
 
 export class GameMap {
   grid: Cell[][];
@@ -123,6 +124,8 @@ export class GameMap {
       }
     }
 
+    this.fillCenterWithGrass();
+
     on(GameEvent.SPAWN_FIRST_SPIRIT, () => {
       this.set(64, 89, new Spirit(64, 89, '☁️', this));
     });
@@ -130,6 +133,27 @@ export class GameMap {
 
   getLookingAt() {
     return this.grid[this.playerLookingAt.row][this.playerLookingAt.col];
+  }
+
+  // Fill the center area with fields to limit player movements
+  // until they finish the onboarding.
+  // Then clear out a path from where the player starts, to the obelisk,
+  // and to the heart statue.
+  fillCenterWithGrass() {
+    const heartsPeak = this.villages[0];
+    const radius = 12;
+    const { x: centerX, y: centerY } = heartsPeak.center;
+    for (let y = centerY - radius; y <= centerY + radius; y++) {
+      if (y < 0 || y >= this.rowCount) continue;
+      for (let x = centerX - radius; x <= centerX + radius; x++) {
+        if (x < 0 || x >= this.colCount) continue;
+        const cell = this.grid[y][x];
+        if (!cell.content) {
+          cell.content = new Farm(cell.x, cell.y);
+        }
+      }
+    }
+    
   }
 
   private clearPathWithJitter(

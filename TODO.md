@@ -7,9 +7,6 @@
     - steps
     - scratch
 - Features
-  - Auto-select nearby object
-  - Make supersctition increase monsters level, size and speed
-  - Add story state for superstition
   - Heal when a statue is restored, or at home
   - Show different messages each time we restore a statue
   - Show different demons the futher we go
