@@ -18,6 +18,7 @@
   - When restoring a statue, mark a large circle as "seen"
   - Improve game description for better narrative flow
   - When surrounded by 3 or more, override stunning and to pentagram claw attack
+  - Save game progress
 - Design
   - Broken statue
   - More dynamic grass and trees

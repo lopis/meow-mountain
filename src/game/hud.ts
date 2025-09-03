@@ -8,7 +8,7 @@ import { Actions } from './actions';
 import { GameData } from './game-data';
 import { MAX_LIVES, MAX_MAGIC, NOTIFICATION_DURATION } from './constants';
 import { DialogBox } from './dialog-box';
-import { COLCHEIA, EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from '@/core/font';
+import { MAGIC, EMPTY_HEART, FULL_HEART, ONE_THIRD_HEART, TWO_THIRDS_HEART } from '@/core/font';
 import { on } from '@/core/event';
 
 export class HUD {
@@ -144,15 +144,15 @@ export class HUD {
     drawEngine.ctx3.fillStyle = colors.yellow1;
     drawEngine.ctx3.fillRect(x - boxW + size, y, boxW, boxH);
 
-    let text = COLCHEIA.repeat(fullMagic);
+    let text = MAGIC.repeat(fullMagic);
     x -= text.length * charWidth;
     drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.blue1, size }, drawEngine.ctx3);
 
-    text = COLCHEIA.repeat(emptyMagic);
+    text = MAGIC.repeat(emptyMagic);
     x -= text.length * charWidth;
     drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.blue3, size }, drawEngine.ctx3);
 
-    text = COLCHEIA.repeat(noMagic);
+    text = MAGIC.repeat(noMagic);
     x -= text.length * charWidth;
     drawEngine.drawText({ text, x: x + size, y: y + size, color: colors.yellow2, size }, drawEngine.ctx3);
   }

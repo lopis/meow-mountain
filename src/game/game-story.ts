@@ -100,10 +100,10 @@ export class GameStory {
       emit('story-state-enter', Scene.temple);
     });
 
-    // addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
-    setTimeout(() => {
-      postIntro();
-    }, 10);
+    addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
+    // setTimeout(() => {
+    //   postIntro();
+    // }, 10);
   }
 
   update (timeElapsed: number) {

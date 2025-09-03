@@ -45,7 +45,7 @@ export class PentagramAnimation {
     public radius: number = 12,
     public offset = 0,
     public elapsed = 0,
-    public speed = 3100,
+    public speed = 300,
     public trailLength = 16,
     public cycles = 0,
     public maxCycles = 1,
@@ -69,7 +69,6 @@ export class PentagramAnimation {
   update(timeElapsed: number): void {
     if (!this.active) return;
 
-    this.elapsed += timeElapsed;
     const totalPixelsAdvanced = (this.elapsed / 1000) * this.speed;
     const newOffset = Math.floor(totalPixelsAdvanced) % this.allPixels.length;
     
@@ -81,18 +80,17 @@ export class PentagramAnimation {
         this.animationDone();
         return;
       }
-    }
-1;
-    console.log(this.elapsed);
+    };
     
     this.offset = newOffset;
+    this.elapsed += timeElapsed;
   }
 
   draw(): void {
     if (!this.active) return;
 
     this.ctx.fillStyle = colors.white;
-    const effectiveTrailLength = Math.min(this.trailLength, this.offset + 1);
+    const effectiveTrailLength = Math.min(this.trailLength, this.offset);
     
     for (let i = 0; i < effectiveTrailLength; i++) {
       const idx = (this.offset - i + this.allPixels.length) % this.allPixels.length;
