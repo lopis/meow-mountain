@@ -17,6 +17,7 @@
   - More dynamic grass and trees
   - Draw floating fairies around restored cat altars
 - Bugs
-  - Statue waves are under the trees
   - Goal text doesn't fit the message
-  - Can teleport when not in front of statue
+  - Can teleport/restore when not in front of statue
+  - Move pentagram drawing to postDraw
+  - Clear out trees around cat altars

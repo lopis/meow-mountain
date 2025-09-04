@@ -85,7 +85,9 @@ export class Statue extends GameObject<Asset> {
     if (this.repair > 0 && this.repair < MAX_REPAIR) {
       drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
     }
-    this.drawFaries();
+    if (this.state === Statue.State.REPAIRED) {
+      this.drawFaries();
+    }
   }
 
   postDraw() {
@@ -125,15 +127,20 @@ export class Statue extends GameObject<Asset> {
     
     const maxWidth = c2.width / drawEngine.zoom;
     const maxHeight = c2.height / drawEngine.zoom;
+    const cx = this.x + CELL_WIDTH / 2;
+    const cy = this.y + CELL_HEIGHT / 2;
+    const rx = maxWidth * animationProgress;
+    const ry = maxHeight * animationProgress;
     drawEngine.drawCircumference(
       drawEngine.ctx1,
-      this.x + CELL_WIDTH / 2,
-      this.y + CELL_HEIGHT / 2,
-      maxWidth * animationProgress,
-      maxHeight * animationProgress,
+      cx,
+      cy,
+      rx,
+      ry,
       colors.white,
       8,
     );
+    this.map.clearCircleWithJitter(this.col, this.row, 15 * animationProgress, true, 0.01, 0.1);
   }
 
   private spawnSpirit() {

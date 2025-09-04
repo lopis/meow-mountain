@@ -130,11 +130,11 @@ export class GameMap {
       this.set(64, 89, new Spirit(64, 89, '☁️', this));
     });
 
-    on(GameEvent.STATUE_RESTORED, () => {
-      if(!this.gameData.hasClearedIntro) {
-        this.fillCenterWithGrass(0.1);
-      }
-    });
+    // on(GameEvent.STATUE_RESTORED, () => {
+    //   if(!this.gameData.hasClearedIntro) {
+    //     this.fillCenterWithGrass(0.1);
+    //   }
+    // });
   }
 
   getLookingAt() {
@@ -185,7 +185,7 @@ export class GameMap {
     }
   }
 
-  private clearPathWithJitter(
+  clearPathWithJitter(
     from: { x: number, y: number },
     to: { x: number, y: number },
     pathWidth: number,
@@ -245,7 +245,14 @@ export class GameMap {
     }
   }
 
-  private clearCircleWithJitter(centerX: number, centerY: number, radius: number) {
+  clearCircleWithJitter(
+    centerX: number,
+    centerY: number,
+    radius: number,
+    fieldsOnly = false,
+    borderRatio = 0,
+    probability = 1,
+  ) {
     for (let y = 0; y < this.rowCount; y++) {
       for (let x = 0; x < this.colCount; x++) {
         const dx = x - centerX;
@@ -256,13 +263,19 @@ export class GameMap {
         const jitterRadius = this.rng.range(-radius, radius) / 6;
         const adjustedRadius = radius + jitterRadius;
 
-        if (distance <= adjustedRadius) {
+        // Calculate inner radius based on borderRatio
+        const innerRadius = adjustedRadius * borderRatio;
+        
+        if (distance >= innerRadius && distance <= adjustedRadius) {
           // Add probability for partial clearing near edges
           const edgeDistance = adjustedRadius - distance;
-          const clearProbability = Math.min(1, edgeDistance / 2 + 0.7);
+          const clearProbability = Math.min(1, edgeDistance / 2 + 0.7) * probability;
 
           if (this.rng.next() < clearProbability) {
-            this.grid[y][x].content = null;
+            const isFarm = this.grid[y][x].content instanceof Farm;
+            if (!fieldsOnly || fieldsOnly && isFarm) {
+              this.grid[y][x].content = null;
+            }
           }
         }
       }
