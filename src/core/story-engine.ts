@@ -46,8 +46,6 @@ export class Story<T extends Script> {
     this.currentDialogIndex = 0;
     this.isActive = true;
     this.previousSpacePressed = false;
-    
-    this.showCurrentDialog();
   }
 
   update(timeElapsed: number) {

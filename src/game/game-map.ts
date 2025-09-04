@@ -108,7 +108,10 @@ export class GameMap {
         .forEach(house => {
           this.grid[house.row][house.col].content = house;
         });
-      village.generateVillagers(this);
+      village.generateVillagers(this.rng, this)
+        .forEach(villager => {
+          this.grid[villager.row][villager.col].content = villager;
+        });
 
       // Set cell.village for each cell in the village radius
       const { x: centerX, y: centerY } = village.center;
@@ -292,7 +295,6 @@ export class GameMap {
         }
       }
     }
-    this.villages.forEach((village) => village.update(timeElapsed));
   }
 
   draw(cx: number, cy: number) {

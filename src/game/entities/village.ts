@@ -20,17 +20,6 @@ export class Village {
     this.radius = radius;
   }
 
-  update(timeElapsed: number) {
-    // Update villagers that are not on the grid, but inside houses
-    this.houses.forEach((house) => {
-      house.residents.forEach((villager) => {
-        if (villager.atHome) {
-          villager.update(timeElapsed);
-        }
-      });
-    });
-  }
-
   private generatePosition(rng: SeededRandom, existing: { x: number; y: number }[]): { x: number; y: number } {
     let col: number;
     let row: number;
@@ -72,15 +61,11 @@ export class Village {
     return this.farms;
   }
 
-  generateVillagers(map: GameMap): Villager[] {
-    const residents = this.population / this.houseCount;
-    this.houses.forEach(house => {
-      while (house.residents.length < residents) {
-        const villager = new Villager(house.col, house.row, map, house);
-        house.residents.push(villager);
-        this.villagers.push(villager);
-      }
-    });
+  generateVillagers(rng: SeededRandom, map: GameMap): Villager[] {
+    for (let i = 0; i < this.population; i++) {
+      const pos = this.generatePosition(rng, this.farms);
+      this.villagers.push(new Villager(pos.x, pos.y, map));
+    }
     return this.villagers;
   }
 }

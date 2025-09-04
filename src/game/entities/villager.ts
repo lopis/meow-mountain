@@ -2,22 +2,18 @@ import { GameObject } from '@/core/game-object';
 import { GameAssets, VillagerStates } from '../game-assets';
 import { CELL_HEIGHT, CELL_WIDTH } from '../constants';
 import { GameMap } from '../game-map';
-import { House } from './house';
 import { emit } from '@/core/event';
 import { colors } from '@/core/util/color';
 import { drawEngine } from '@/core/draw-engine';
 import { GameEvent } from '../event-manifest';
 
 export class Villager extends GameObject<VillagerStates> {
-  map: GameMap;
-  home: House;
-  atHome = true;
   lastDirection: { x: number; y: number } | null = null;
   moveTimer: number = 0;
   moveInterval: number = 1000;
   isScared = false;
 
-  constructor(col: number, row: number, map: GameMap, home: House) {
+  constructor(col: number, row: number, private map: GameMap) {
     super(
       GameAssets.villager,
       col * CELL_WIDTH,
@@ -26,15 +22,13 @@ export class Villager extends GameObject<VillagerStates> {
       'idle',
       10,
     );
-    this.map = map;
-    this.home = home;
   }
 
   update(timeElapsed: number): void {
     super.update(timeElapsed);
 
     this.moveTimer += timeElapsed;
-    if (!this.atHome && this.seesCat()) {
+    if (this.seesCat()) {
       if (!this.isScared && this.moveTimer >= this.moveInterval) {
         this.moveTimer = 0;
         this.isScared = true;
@@ -87,10 +81,6 @@ export class Villager extends GameObject<VillagerStates> {
   // Has 50% chance of moving forward in the same direction as before.
   // Otherwise moves in a random direction, if that direction is free. 
   takeNextStep(): void {
-    if (this.atHome) {
-      this.tryToLeaveHome();
-      return;
-    }
 
     const directions = [
       { x: 0, y: -1 }, // north
@@ -146,17 +136,6 @@ export class Villager extends GameObject<VillagerStates> {
     } else {
       // No valid move found, stay idle
       this.animation = 'idle';
-    }
-  }
-
-  tryToLeaveHome() {
-    const frontOfHome = { col: this.home.col, row: this.home.row + 1 };
-    if (!this.map.grid[frontOfHome.row][frontOfHome.col].content) {
-      this.atHome = false;
-      this.animation = 'idle';
-      this.map.grid[frontOfHome.row][frontOfHome.col].content = this;
-      this.setPos(frontOfHome.col, frontOfHome.row);
-      this.y -= CELL_HEIGHT / 2;
     }
   }
 

@@ -39,8 +39,5 @@ export const generateImageData = (icon: string, iconPalette: string[]): HTMLImag
   ctx.putImageData(imgData, 0, 0);
   const img = new Image();
   img.src = canvas.toDataURL();
-  if (palette.length > 2) {
-    console.log(icon);
-  }
   return img;
 };

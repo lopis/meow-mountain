@@ -63,7 +63,6 @@ export class PentagramAnimation {
       this.allPixels.push(...linePixels(x0, y0, x1, y1));
     }
     this.totalDuration = this.allPixels.length * this.maxCycles * 1000 / this.speed;
-    console.log('this.totalDuration', this.totalDuration);
   }
 
   update(timeElapsed: number): void {

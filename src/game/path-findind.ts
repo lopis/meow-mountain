@@ -154,7 +154,5 @@ export const findShortestPath = (
       }
     });
   }
-
-  console.log('No path was found');
 };
 
