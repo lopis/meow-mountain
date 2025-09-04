@@ -1,5 +1,7 @@
 export const generateImageData = (icon: string, iconPalette: string[]): HTMLImageElement => {
-  const colorsPerByte = iconPalette.length > 4 ? 2 : iconPalette.length > 2 ? 3 : 6;
+  const palette = ['#000000', ...iconPalette];
+  
+  const colorsPerByte = palette.length > 4 ? 2 : palette.length > 2 ? 3 : 6;
   const bytesPerColor = 6 / colorsPerByte;
   const bitMask = (1 << bytesPerColor) - 1;
   const canvas = document.createElement('canvas');
@@ -9,7 +11,6 @@ export const generateImageData = (icon: string, iconPalette: string[]): HTMLImag
   const ctx = canvas.getContext('2d')!;
   const imgData = ctx.createImageData(size, size);
   const data = imgData.data;
-  const palette = ['#000000', ...iconPalette];
   
   let i = 0;
   [...icon].map(c => {

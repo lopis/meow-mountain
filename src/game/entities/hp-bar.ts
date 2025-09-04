@@ -14,7 +14,7 @@ export const drawHpBar = (
   const hpRatio = Math.max(0, Math.min(1, hp / maxHp));
   const barWidth = CELL_WIDTH;
   const barHeight = 1;
-  const hpWidth = Math.floor(barWidth * hpRatio);
+  const hpWidth = Math.ceil(barWidth * hpRatio);
   const barX = x;
   const barY = y - 5;
 

@@ -1,13 +1,13 @@
-import { GameObject } from '@/core/game-object';
-import { Asset, GameAssets } from '../game-assets';
+import { GameAssets } from '../game-assets';
 import { CELL_HEIGHT, CELL_WIDTH, MAX_MAGIC, MAX_REPAIR } from '../constants';
 import { GameMap } from '../game-map';
 import { drawHpBar } from './hp-bar';
 import { colors } from '@/core/util/color';
 import { emit } from '@/core/event';
 import { GameEvent } from '../event-manifest';
+import { GameStaticObject } from '@/core/game-static-object';
 
-export class Obelisk extends GameObject<Asset> {
+export class Obelisk extends GameStaticObject {
   map: GameMap;
   name = 'barrier obelisk';
   repair = 0;
@@ -16,10 +16,9 @@ export class Obelisk extends GameObject<Asset> {
     const col = 69;
     const row = 88; 
     super(
-      GameAssets.assets,
+      GameAssets.obelisk,
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
-      'obelisk',
       'obelisk',
     );
     this.map = map;
@@ -27,9 +26,10 @@ export class Obelisk extends GameObject<Asset> {
   }
 
   draw() {
+    debugger;
     super.draw();
     if (this.repair > 0) {
-      drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
+      drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue5, colors.blue6]);
     }
   }
 

@@ -106,7 +106,7 @@ export async function generateIconData(icons) {
       processedIcons[iconData.name] = {
         size: iconData.size,
         palette: iconData.palette,
-        image: iconData.image
+        data: iconData.image
       };
     } else {
       // Spritesheet
@@ -114,7 +114,7 @@ export async function generateIconData(icons) {
         size: iconData.size,
         frames: iconData.frames,
         palette: iconData.palette,
-        animations: iconData.animations
+        data: iconData.animations
       };
     }
   }

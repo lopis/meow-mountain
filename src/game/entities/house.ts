@@ -1,17 +1,16 @@
-import { GameObject } from '@/core/game-object';
-import { Asset, GameAssets } from '../game-assets';
+import { GameAssets } from '../game-assets';
 import { CELL_HEIGHT, CELL_WIDTH } from '../constants';
 import { Villager } from './villager';
+import { GameStaticObject } from '@/core/game-static-object';
 
-export class House extends GameObject<Asset> {
+export class House extends GameStaticObject {
   residents: Villager[] = [];
 
   constructor(col: number, row: number) {
     super(
-      GameAssets.assets,
+      GameAssets.house,
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
-      'house',
       'house',
     );
   }

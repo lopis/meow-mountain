@@ -1,10 +1,9 @@
-import { Asset, GameAssets } from '@/game/game-assets';
+import { GameAssets } from '@/game/game-assets';
 import { drawEngine } from '@/core/draw-engine';
 import { CELL_WIDTH, CELL_HEIGHT } from '@/game/constants';
-import { GameObject } from '@/core/game-object';
+import { GameStaticObject } from '@/core/game-static-object';
 
-export class Tree extends GameObject<Asset> {
-  private img: HTMLImageElement;
+export class Tree extends GameStaticObject {
   private neighbors: { top: boolean; bottom: boolean; left: boolean; right: boolean } = {
     top: false,
     bottom: false,
@@ -15,10 +14,14 @@ export class Tree extends GameObject<Asset> {
   constructor(
     public x: number,
     public y: number,
-    assetType: Asset,
+    treeType: 'oak' | 'spruce',
   ) {
-    super(GameAssets.assets, x, y, assetType, assetType);
-    this.img = GameAssets.assets.animations[assetType][0];
+    super(
+      GameAssets[treeType],
+      x,
+      y,
+      'field',
+    );
   }
 
   setNeighbors(neighbors: { top: boolean; bottom: boolean; left: boolean; right: boolean }) {
@@ -27,9 +30,8 @@ export class Tree extends GameObject<Asset> {
 
   draw() {
     if (this.neighbors.right) {
-      drawEngine.drawBackgroundImage(this.img, Math.round(this.x + CELL_WIDTH / 2), this.y - CELL_HEIGHT / 2);
+      drawEngine.drawBackgroundImage(this.img, Math.round(this.offsetX + CELL_WIDTH / 2), this.offsetY - CELL_HEIGHT / 2);
     }
-
-    drawEngine.drawBackgroundImage(this.img, this.x, this.y);
+    super.draw();
   }
 }

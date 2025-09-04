@@ -1,6 +1,6 @@
 import { Circle, Path } from './types';
 
-export const CELL_WIDTH = 11;
+export const CELL_WIDTH = 12;
 export const CELL_HEIGHT = 11;
 
 export const MAX_LIVES = 9;

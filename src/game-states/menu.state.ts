@@ -50,8 +50,8 @@ const drawBackground = () => {
   const iconInterval = 22;
   const cols = c2.width / iconInterval;
   const rows = (c2.height / 2) / iconInterval; // fill half the screen
-  const oak: HTMLImageElement[] = GameAssets.assets.animations['oak'];
-  const spruce: HTMLImageElement[] = GameAssets.assets.animations['spruce'];
+  const oak: HTMLImageElement = GameAssets.oak;
+  const spruce: HTMLImageElement = GameAssets.spruce;
 
   if (!oak) {
     return;
@@ -62,7 +62,7 @@ const drawBackground = () => {
     for(let row = mountainHeight; row > 0; row--) {
       const offsetX = 5 * Math.sin(12 * Math.PI * (row / rows));
       drawEngine.drawBackgroundImage(
-        0.2 + rng.next() > (row / (rows)) ? oak[0] : spruce[0],
+        0.2 + rng.next() > (row / (rows)) ? oak : spruce,
         col * iconInterval + offsetX - iconSize/2,
         c2.height - (row * iconInterval + rng.next() * 0.7) / 2,
         false,

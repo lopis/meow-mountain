@@ -2,9 +2,9 @@ import { imageToPalette } from "./image-to-palette.js";
 
 export function flatArrayToString(flatArray, paletteSize) {
   // nr of bytes to encode together
-  const inc = paletteSize === 2 ? 6
-    : paletteSize == 8 ? 2
-    : 3;
+  const inc = paletteSize > 4 ? 2
+    : paletteSize > 2 ? 3
+    : 6;
 
   let str = '';
   console.log(`Encoding ${flatArray.length} pixels, ${paletteSize} colors, ${inc} pixels per char`);

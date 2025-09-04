@@ -124,17 +124,11 @@ export class GameMap {
       }
     }
 
-    // this.fillCenterWithGrass(1.0);
+    this.fillCenterWithGrass(1.0);
 
     on(GameEvent.SPAWN_FIRST_SPIRIT, () => {
       this.set(64, 89, new Spirit(64, 89, '☁️', this));
     });
-
-    // on(GameEvent.STATUE_RESTORED, () => {
-    //   if(!this.gameData.hasClearedIntro) {
-    //     this.fillCenterWithGrass(0.1);
-    //   }
-    // });
   }
 
   getLookingAt() {

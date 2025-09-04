@@ -1,15 +1,14 @@
-import { GameObject } from '@/core/game-object';
-import { Asset, GameAssets } from '../game-assets';
 import { CELL_HEIGHT, CELL_WIDTH } from '../constants';
+import { GameStaticObject } from '@/core/game-static-object';
+import { GameAssets } from '../game-assets';
 
-export class Farm extends GameObject<Asset> {
+export class Farm extends GameStaticObject {
   constructor(col: number, row: number) {
     super(
-      GameAssets.assets,
+      GameAssets.grass,
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
       'field',
-      'field'
     );
   }
 }

@@ -1,5 +1,5 @@
 // Auto-generated icon data
-// Generated on 2025-09-04T16:43:08.843Z
+// Generated on 2025-09-04T22:06:23.568Z
 
 export const icons = {
   "cat": {
@@ -9,7 +9,7 @@ export const icons = {
       "transparent",
       "#000000"
     ],
-    "animations": {
+    "data": {
       "idle": [
         "@@@`@PJbcxpO|AQ@@",
         "@@@`@DJbcxpO|AQ@@",
@@ -62,7 +62,7 @@ export const icons = {
       "#414776",
       "#211729"
     ],
-    "animations": {
+    "data": {
       "walk": [
         "PUAUUQVVTUEUUajj`@B@`@",
         "@@@TUPUUdeEUUQUUhjJH`@",
@@ -89,10 +89,9 @@ export const icons = {
       "transparent",
       "#4f9ea8",
       "#366c73",
-      "#274e53",
-      "#679a6f"
+      "#274e53"
     ],
-    "image": "@@AA@@@XI@@@`j@@@@jB@@@pC@@@P_@@@@~B@@@xK@@@loC@~{{DT@@p@@@@@@@"
+    "data": "@@@@@@@DD@@@`e@@@@jB@@@hJ@@@@O@@@@}A@@@xK@@@`o@@@p~N@@T{{E@TmoWAPUUUE@WUUu@|C@C@"
   },
   "obelisk": {
     "size": 16,
@@ -102,7 +101,7 @@ export const icons = {
       "#366c73",
       "#274e53"
     ],
-    "image": "@TUA@@XUe@@`UUB@@~K@@|{@@pjjC@@{N@@|o@@pjjC@@{O@@|n@@p~C@@zO@@|@@@@@@@@@@@"
+    "data": "@PUE@@`UUB@@VUI@@xo@@poC@@kjN@@l{@@p~C@@kjN@@|o@@p{~C@@{O@@|k@@pC@@|C@@@@@@@"
   },
   "oak": {
     "size": 16,
@@ -112,7 +111,7 @@ export const icons = {
       "#679a6f",
       "#eedbb0"
     ],
-    "image": "@@@@@@@UU@@@yF@@yoA@i~oZ@djjjAPjjjF@ijjZ@TjjZAPfiYF@eYYV@PYZV@@PUE@@@UU@@@PU@@@@@@@@"
+    "data": "@@@@@@@UU@@@yF@@yoA@i~oZ@djjjAPjjjF@ijjZ@TjjZAPfiYF@eYYV@PYZV@@PUE@@@UU@@@PU@@@@@@@@"
   },
   "spruce": {
     "size": 16,
@@ -122,16 +121,17 @@ export const icons = {
       "#b4ecf3",
       "#4f9ea8"
     ],
-    "image": "@@T@@@@dF@@@djA@@tk_@@tG@P_@P}E@]]@Twu]APw}]G@u]]W@P]_W@@PUE@@@UU@@@PU@@@@@@@@"
+    "data": "@@T@@@@dF@@@djA@@tk_@@tG@P_@P}E@]]@Twu]APw}]G@u]]W@P]_W@@PUE@@@UU@@@PU@@@@@@@@"
   },
   "grass": {
     "size": 16,
     "palette": [
       "transparent",
-      "#417b61",
-      "#274e53"
+      "#6b9a71",
+      "#2f5753",
+      "#457a5f"
     ],
-    "image": "@UTU@PeeURaYeeeIYVfeUbeYYVBYIIfI`IIZDPdefI@YXVVXfeaYJaHfdhBhIZYBPZbYI@iIJF@Pd@P@@@@@@@"
+    "data": "@U@T@PyEUSqmu}uMn_wuW{w]_WK^}mwmh}m_gPwuwmB]_WWBwu}]Oxnww~c~m_]OX_{]mP}mow@Vvj\\B`bB`B@"
   },
   "house": {
     "size": 16,
@@ -141,6 +141,6 @@ export const icons = {
       "#4f9ea8",
       "#366c73"
     ],
-    "image": "PU@@@PjVUU@YyGdjWU]PkAm^UUGt_PWUUuA}GTUUUUpjjjjC[_ZUNlk}ypvgVgCkjZ_N|}}@"
+    "data": "PU@@@PjVUU@YyGdjWU]PkAm^UUGt_PWUUuA}GTUUUUpjjjjC[_ZUNlk}ypvgVgCkjZ_N|}}@"
   }
 };

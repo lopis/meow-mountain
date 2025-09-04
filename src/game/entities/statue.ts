@@ -1,6 +1,5 @@
 /* eslint-disable max-classes-per-file */
-import { GameObject } from '@/core/game-object';
-import { Asset, GameAssets } from '../game-assets';
+import { GameAssets } from '../game-assets';
 import { CELL_HEIGHT, CELL_WIDTH, MAX_REPAIR } from '../constants';
 import { Spirit, spirits } from './spirit';
 import { GameMap } from '../game-map';
@@ -8,8 +7,9 @@ import { GameData } from '../game-data';
 import { drawHpBar } from './hp-bar';
 import { colors } from '@/core/util/color';
 import { drawEngine } from '@/core/draw-engine';
+import { GameStaticObject } from '@/core/game-static-object';
 
-export class Statue extends GameObject<Asset> {
+export class Statue extends GameStaticObject {
   static readonly State = {
     BROKEN: 0,
     ANIMATING: 1,
@@ -24,6 +24,7 @@ export class Statue extends GameObject<Asset> {
   spawnRadius = 10;
   repair = 0;
   state: number = Statue.State.BROKEN;
+  animationTime = 0;
   repairAnimationDuration = 1500;
   repairAnimationTimer = 0;
   animationDuration = 800;
@@ -36,10 +37,9 @@ export class Statue extends GameObject<Asset> {
     public name: string,
   ) {
     super(
-      GameAssets.assets,
+      GameAssets.statue,
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
-      'statue',
       'statue',
     );
   }
@@ -83,7 +83,7 @@ export class Statue extends GameObject<Asset> {
   draw() {
     super.draw();
     if (this.repair > 0 && this.repair < MAX_REPAIR) {
-      drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
+      drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue5, colors.blue6]);
     }
     if (this.state === Statue.State.REPAIRED) {
       this.drawFaries();

@@ -1,13 +1,15 @@
 // Auto-generated icon data
 // Generated on 2025-09-04T14:10:07.197Z
 
+import { colors } from '@/core/util/color';
+
 
 export const encryptedIcons = {
   cat: {
     size: 10,
     frames: 4,
     palette: [
-      '#000000'
+      '#000000',
     ],
     data: {
       idle: [
@@ -58,9 +60,8 @@ export const encryptedIcons = {
     size: 8,
     frames: 4,
     palette: [
-      '#414776',
-      '#211729',
-      '#211729',
+      colors.purple3,
+      colors.blue6,
     ],
     data: {
       walk: [
@@ -70,71 +71,72 @@ export const encryptedIcons = {
         '@@@TUPUUdeEUUQUUhjJH`@'
       ],
       idle: [
-        '@@p~g|¢c{o}§¼~fH@',
-        '@@p~g|¢c{o}§¼~fH@',
-        '|Oyox~_{¹¾HPbH@',
-        '|Oyox~_{¹¾HPbH@'
+        '@@@TUPUUdeEUUQUUhjJH`@',
+        '@@@TUPUUdeEUUQUUhjJH`@',
+        'PUAUUQVVTUEUUajj`@BH`@',
+        'PUAUUQVVTUEUUajj`@BH`@'
       ],
       scared: [
-        '@@p~g|w¦d«µu}§¼~fH@',
-        '@@x_s~_qz~_³¾^RbD@',
-        '@@p~g|w¦d«µu}§¼~fH@',
-        '@@x_s~_qz~_³¾^RbD@'
-      ],
+        '@@@TUPUUTfEiiQUUhjJH`@',
+        '@@@UETUEeYQZZTUEjjBBH@',
+        '@@@TUPUUTfEiiQUUhjJH`@',
+        '@@@UETUEeYQZZTUEjjBBH@'
+      ]
     }
   },
   statue: {
     size: 16,
     palette: [
-      '#4f9ea8',
-      '#366c73',
-      '#274e53',
-      '#679a6f'
+      colors.blue2,
+      colors.blue3,
+      colors.blue4,
     ],
-    data: '@HIA@@pE@@¸N@@@°^B@@ dC@@`¬M@@@àdB@@ÀG@@°ÖiCĀĘøĔĸÜİôëĳ|Ĥļļļ¼üĶļļĜXĘĻļĜX ôýýU@@@@@@@'
+    data: '@@@@@@@DD@@@`e@@@@jB@@@hJ@@@@O@@@@}A@@@xK@@@`o@@@p~N@@T{{E@TmoWAPUUUE@WUUu@|C@C@'
   },
   obelisk: {
     size: 16,
     palette: [
-      '#4f9ea8',
-      '#366c73',
-      '#274e53'
+      colors.blue2,
+      colors.blue3,
+      colors.blue4,
     ],
-    data: 'p~OA@K@WB@àüG@ÐêûU@ ¼¾fC@ØûH@ÐÚùU@ ¼¾fC@èíI@ÐÒøU@ ôõlC@èåI@ÐúýU@@èýU@@@@@@@@'
+    data: '@PUE@@`UUB@@VUI@@xo@@poC@@kjN@@l{@@p~C@@kjN@@|o@@p{~C@@{O@@|k@@pC@@|C@@@@@@@'
   },
   oak: {
     size: 16,
     palette: [
-      '#274e53',
-      '#679a6f',
-      '#eedbb0'
+      colors.green3,
+      colors.green1,
+      colors.green0,
     ],
-    data: '@@@@@@xG@@ÈùuD@ÈùÝYA¨íÜ¡Jº¾¾Va´¾¾nD¨½¾Jp¶¾Ra¤´iDH`H@`|_C@@xG@@`|G@@@@@@@@'
+    data: '@@@@@@@UU@@@yF@@yoA@i~oZ@djjjAPjjjF@ijjZ@TjjZAPfiYF@eYYV@PYZV@@PUE@@@UU@@@PU@@@@@@@@'
   },
   spruce: {
     size: 16,
     palette: [
-      '#274e53',
-      '#b4ecf3',
-      '#4f9ea8'
+      colors.blue3,
+      colors.blue0,
+      colors.blue2
     ],
-    data: '@pF@@@jD@@ºVA@°Æ·M@°öý}E`ìý½M`ÜûýmCóý­KpÎÉ§SaÌé«sE¸§£I`³I@`|_C@@xG@@`|G@@@@@@@@'
+    data: '@@T@@@@dF@@@djA@@tk_@@tG@P_@P}E@]]@Twu]APw}]G@u]]W@P]_W@@PUE@@@UU@@@PU@@@@@@@@'
   },
   grass: {
     size: 16,
     palette: [
-      '#417b61',
-      '#274e53'
+      colors.green2,
+      colors.green3,
+      colors.green1,
     ],
-    data: 'x~`£w£s¤mtpb¢t¤¤ª¢YEuf`JD@@@'
+    data: '@U@T@PyEUSqmu}uMn_wuW{w]_WK^}mwmh}m_gPwuwmB]_WWBwu}]Oxnww~c~m_]OX_{]mP}mow@Vvj\\B`bB`B@'
   },
   house: {
     size: 16,
     palette: [
-      '#274e53',
-      '#4f9ea8',
-      '#366c73'
+      colors.blue4,
+      colors.blue2,
+      colors.blue3
     ],
-    data: '|G@@`´GÑùý}ºk¼÷ýý]¹¯oµöýý½m¿WÙûýý}u~§¼¾¾¾f³¸öÍçÛ±Ì¸°e»¿²ØúýíëS@'
+    data: 'PU@@@PjVUU@YyGdjWU]PkAm^UUGt_PWUUuA}GTUUUUpjjjjC[_ZUNlk}ypvgVgCkjZ_N|}}@'
   }
+
 };
