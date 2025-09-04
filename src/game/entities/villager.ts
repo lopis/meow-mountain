@@ -146,43 +146,17 @@ export class Villager extends GameObject<VillagerStates> {
   }
 
   /**
-   * Checks the 9 squares in front of it, in the direction it is moving.
-   * Also checks the 8 squares around it.
-   * If there's a cat in any of them, immediately return true.
-   * Otherwise return false.
+   * Checks 2 cells in front in the movement direction for a cat.
    */
   seesCat(): boolean {
-    // Get all cells to check
-    const cellsToCheck: Array<{ col: number; row: number }> = [];
+    if (!this.lastDirection) return false;
 
-    // 8 squares around the villager
-    for (let dx = -1; dx <= 1; dx++) {
-      for (let dy = -1; dy <= 1; dy++) {
-        if (dx === 0 && dy === 0) continue; // Skip own position
-        cellsToCheck.push({ col: this.col + dx, row: this.row + dy });
-      }
-    }
-
-    // 9 squares in front (if we have a movement direction)
-    if (this.lastDirection) {
-      const frontCol = this.col + this.lastDirection.x;
-      const frontRow = this.row + this.lastDirection.y;
-
-      // Add the 3x3 grid in front
-      for (let dx = -1; dx <= 1; dx++) {
-        for (let dy = -1; dy <= 1; dy++) {
-          cellsToCheck.push({
-            col: frontCol + dx,
-            row: frontRow + dy
-          });
-        }
-      }
-    }
-
-    // Check each cell for a cat
-    for (const { col, row } of cellsToCheck) {
-      const cell = this.map.grid[row][col];
-      if (cell.content?.type === 'cat') {
+    for (let i = 1; i <= 2; i++) {
+      const checkCol = this.col + this.lastDirection.x * i;
+      const checkRow = this.row + this.lastDirection.y * i;
+      
+      const cell = this.map.grid[checkRow]?.[checkCol];
+      if (cell?.content?.type === 'cat') {
         return true;
       }
     }
