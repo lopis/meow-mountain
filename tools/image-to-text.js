@@ -1,9 +1,6 @@
 import { imageToPalette } from "./image-to-palette.js";
 
-//#node
-function flatArrayToString(imageData) {
-  const { pixels: flatArray, palette } = imageData;
-  const paletteSize = palette.length;
+export function flatArrayToString(flatArray, paletteSize) {
   const inc = paletteSize == 3 ? 2 : paletteSize == 2 ? 3 : 6; // nr of bytes
 
   let str = '';
