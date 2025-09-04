@@ -37,6 +37,10 @@ class DrawEngine {
   ctx3: CanvasRenderingContext2D;
   ctx4: CanvasRenderingContext2D;
 
+  // Canvas dimensions (cached for performance)
+  canvasWidth = 0;
+  canvasHeight = 0;
+
   // Camera properties
   cameraX = 0;
   cameraY = 0;
@@ -61,6 +65,8 @@ class DrawEngine {
     const aspectRatio = 4 / 3;
     const gameWidth = 1200;
     const gameHeight = Math.round(gameWidth / aspectRatio);
+    this.canvasWidth = gameWidth;
+    this.canvasHeight = gameHeight;
     const ctxs: CanvasRenderingContext2D[] = [this.ctx1, this.ctx2, this.ctx3, this.ctx4];
     for (const ctx of ctxs) {
       // eslint-disable-next-line id-denylist
@@ -69,14 +75,6 @@ class DrawEngine {
       ctx.canvas.height = gameHeight;
       ctx.imageSmoothingEnabled = false;
     }
-  }
-
-  get canvasWidth() {
-    return this.ctx2.canvas.width;
-  }
-
-  get canvasHeight() {
-    return this.ctx2.canvas.height;
   }
 
   
