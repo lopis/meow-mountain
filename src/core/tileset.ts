@@ -34,7 +34,7 @@ export class Tileset<T extends string> {
    */
   private processSpriteSheet(img: HTMLImageElement) {
     // Split the image into tiles and animations
-    const [canvas, ctx] = createCanvasWithCtx(img.width, img.height);
+    const [_, ctx] = createCanvasWithCtx(img.width, img.height);
 
     // Draw the sprite sheet onto the canvas
     ctx.drawImage(img, 0, 0);

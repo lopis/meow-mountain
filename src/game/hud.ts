@@ -279,6 +279,7 @@ export class HUD {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   drawInfo(text: string, y: number) {
     const boxWidth = 350;
     const boxHeight = 35;

@@ -7,10 +7,7 @@ import { generateImageData } from './sprite-loader';
 export type CatStates = keyof typeof encryptedIcons.cat.data;
 export type VillagerStates = keyof typeof encryptedIcons.villager.data;
 
-const assets = ['spruce', 'oak', 'house', 'field', 'statue', 'obelisk'];
-export type Asset = typeof assets[number];
 const emoji = '🔥,🍀,🌼,🐓,🌷,🌹,👻,🥚,🍎'.split(',');
-
 export const icons = emoji.map(e => emojiToPixelArt(e));
 
 export class GameAssets {

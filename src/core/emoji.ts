@@ -29,7 +29,7 @@ export const emojiToPixelArt = (
   const padding = Math.floor(fontSize * spriteScale / 2);
 
   // Create temporary canvas
-  const [tmpCanvas, tmpCtx] = createCanvasWithCtx(spriteSize, spriteSize);
+  const [_, tmpCtx] = createCanvasWithCtx(spriteSize, spriteSize);
 
   // Draw emoji in chosen font size
   tmpCtx.font = `${fontSize}px sans-serif`;

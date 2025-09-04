@@ -11,6 +11,7 @@ import { defaultTerserOptions } from "./terser.config";
 import { execFileSync } from "child_process";
 import htmlMinify from "html-minifier";
 import { minify } from 'terser';
+import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig(({ command, mode }) => {
   const config = {
@@ -52,6 +53,12 @@ export default defineConfig(({ command, mode }) => {
       roadrollerPlugin(),
       workletPlugin(),
       ectPlugin(),
+      visualizer({
+        filename: 'dist/stats.html',
+        open: true,
+        gzipSize: true,
+        brotliSize: true,
+      }),
     ];
   }
 
