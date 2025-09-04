@@ -81,62 +81,43 @@ export class Villager extends GameObject<VillagerStates> {
   // Has 50% chance of moving forward in the same direction as before.
   // Otherwise moves in a random direction, if that direction is free. 
   takeNextStep(): void {
-
     const directions = [
-      { x: 0, y: -1 }, // north
-      { x: 0, y: 1 },  // south
-      { x: 1, y: 0 },  // east
-      { x: -1, y: 0 }  // west
+      { x: 0, y: -1 },
+      { x: 0, y: 1 }, 
+      { x: 1, y: 0 },
+      { x: -1, y: 0 }
     ];
 
-    let targetDirection: { x: number; y: number } | null = null;
-
-    // 80% chance to continue in the same direction if we have a last direction
+    // 80% chance to continue in same direction
     if (this.lastDirection && Math.random() < 0.8) {
       const newCol = this.col + this.lastDirection.x;
       const newRow = this.row + this.lastDirection.y;
-
-      // Check if continuing in the same direction is valid
       if (this.isValidMove(newCol, newRow)) {
-        targetDirection = this.lastDirection;
+        this.col = newCol;
+        this.row = newRow;
+        this.targetPos = { x: newCol * CELL_WIDTH, y: newRow * CELL_HEIGHT };
+        this.lastDirection = this.lastDirection;
+        this.animation = 'walk';
+        return;
       }
     }
 
-    // If we didn't choose to continue forward or it wasn't valid, try random directions
-    if (!targetDirection) {
-      // Shuffle directions for random selection
-      const shuffledDirections = [...directions].sort(() => Math.random() - 0.5);
-
-      for (const dir of shuffledDirections) {
-        const newCol = this.col + dir.x;
-        const newRow = this.row + dir.y;
-
-        if (this.isValidMove(newCol, newRow)) {
-          targetDirection = dir;
-          break;
-        }
+    // Try random directions without shuffling
+    for (let i = 0; i < 10; i++) {
+      const dir = directions[Math.floor(Math.random() * 4)];
+      const newCol = this.col + dir.x;
+      const newRow = this.row + dir.y;
+      if (this.isValidMove(newCol, newRow)) {
+        this.col = newCol;
+        this.row = newRow;
+        this.targetPos = { x: newCol * CELL_WIDTH, y: newRow * CELL_HEIGHT };
+        this.lastDirection = dir;
+        this.animation = 'walk';
+        return;
       }
     }
 
-    // Move if we found a valid direction
-    if (targetDirection) {
-      const newCol = this.col + targetDirection.x;
-      const newRow = this.row + targetDirection.y;
-
-      // Update position
-      this.col = newCol;
-      this.row = newRow;
-      this.targetPos = { x: newCol * CELL_WIDTH, y: newRow * CELL_HEIGHT };
-
-      // Update last direction
-      this.lastDirection = targetDirection;
-
-      // Update animation
-      this.animation = 'walk';
-    } else {
-      // No valid move found, stay idle
-      this.animation = 'idle';
-    }
+    this.animation = 'idle';
   }
 
   private isValidMove(col: number, row: number): boolean {
