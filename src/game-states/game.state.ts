@@ -9,6 +9,7 @@ import { ParticleEngine } from '@/core/particle';
 import { GameStory } from '@/game/game-story';
 import { updateTimeEvents } from '@/core/timer';
 import { Obelisk } from '@/game/entities/obelisk';
+import musicPlayer from '@/core/music-player';
 
 class GameState implements State {
   map!: GameMap;
@@ -18,8 +19,12 @@ class GameState implements State {
   gameData!: GameData;
   particles!: ParticleEngine;
   story!: GameStory;
+  playMusic = false;
 
   onEnter() {
+    if (this.playMusic) {
+      musicPlayer.start();
+    }
     this.particles = new ParticleEngine(drawEngine.ctx2);
     this.gameData = new GameData();
     this.map = new GameMap(160, 160, this.gameData);

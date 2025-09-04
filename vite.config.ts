@@ -10,6 +10,7 @@ import ect from 'ect-bin';
 import { defaultTerserOptions } from "./terser.config";
 import { execFileSync } from "child_process";
 import htmlMinify from "html-minifier";
+import { minify } from 'terser';
 
 export default defineConfig(({ command, mode }) => {
   const config = {
@@ -49,6 +50,7 @@ export default defineConfig(({ command, mode }) => {
     config.plugins = [
       typescriptPlugin(),
       roadrollerPlugin(),
+      workletPlugin(),
       ectPlugin(),
     ];
   }
@@ -151,6 +153,44 @@ function embedCss(html: string, asset: OutputAsset): string {
 }
 
 /**
+ * Creates the worklet plugin that minifies and copies the audio worklet file.
+ * @returns The worklet plugin.
+ */
+function workletPlugin(): Plugin {
+  return {
+    name: 'vite:worklet',
+    generateBundle: async (): Promise<void> => {
+      try {
+        // Read the worklet file
+        const workletPath = 'public/music-worklet.js';
+        const workletContent = await fs.readFile(workletPath, 'utf-8');
+        
+        // Minify the worklet using Terser
+        const minified = await minify(workletContent, defaultTerserOptions);
+        
+        if (minified.code) {
+          // Write the minified worklet to dist
+          await fs.writeFile('dist/music-worklet.js', minified.code);
+          console.log('✓ Audio worklet minified and copied to dist/');
+        } else {
+          throw new Error('Terser minification failed');
+        }
+      } catch (err) {
+        console.error('Worklet processing error:', err);
+        // Fallback: copy the original file
+        try {
+          const workletContent = await fs.readFile('public/music-worklet.js', 'utf-8');
+          await fs.writeFile('dist/music-worklet.js', workletContent);
+          console.log('⚠ Audio worklet copied without minification');
+        } catch (fallbackErr) {
+          console.error('Failed to copy worklet file:', fallbackErr);
+        }
+      }
+    },
+  };
+}
+
+/**
  * Creates the ECT plugin that uses Efficient-Compression-Tool to build a zip file.
  * @returns The ECT plugin.
  */
@@ -161,8 +201,18 @@ function ectPlugin(): Plugin {
       try {
         const files = await fs.readdir('dist/');
         const assetFiles = files.filter(file => {
-          return !file.includes('.js') && !file.includes('.css') && !file.includes('.html') && !file.includes('.zip') && file !== 'assets';
+          // Include the worklet file specifically
+          if (file === 'music-worklet.js') return true;
+          // Exclude source maps, temporary files, CSS, HTML, and zip files
+          return !file.includes('.js.map') && 
+                 !file.includes('.css') && 
+                 !file.includes('.html') && 
+                 !file.includes('.zip') && 
+                 !file.endsWith('.js') &&  // Exclude other JS files (but worklet is already included above)
+                 !file.startsWith('output.') && // Exclude temporary output files
+                 file !== 'assets';
         }).map(file => 'dist/' + file);
+        
         const args = ['-strip', '-zip', '-10009', 'dist/index.html', ...assetFiles];
         const result = execFileSync(ect, args);
         const stats = statSync('dist/index.zip');

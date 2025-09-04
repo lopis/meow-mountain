@@ -39,12 +39,7 @@ function update(currentTime: number) {
   const state = gameStateMachine.getState();
   controls.queryController();
   state.onUpdate(delta);
-  // state.postRender && state.postRender(delta);
   updateTimeEvents(delta);
-
-  // if (gameData.pause){
-  //   drawEngine.renderPause();
-  // }
 };
 
 

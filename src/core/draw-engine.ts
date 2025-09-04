@@ -4,32 +4,31 @@ import { colors } from './util/color';
 import { getCtx } from './util/canvas';
 
 const makeCircle = (
-    ctx: CanvasRenderingContext2D,
-    centerX: number,
-    centerY: number,
-    radiusX: number,
-    radiusY: number,
-    skew = 0,
-  ) => {
-
-    // Draw ellipse using scaled circle algorithm
-    for (let y = -radiusY; y <= radiusY; y++) {
-      // Calculate the half-width at this y position using ellipse equation
-      const normalizedY = y / radiusY;
-      const halfWidth = Math.round(radiusX * Math.sqrt(1 - normalizedY * normalizedY));
+  ctx: CanvasRenderingContext2D,
+  centerX: number,
+  centerY: number,
+  radiusX: number,
+  radiusY: number,
+  skew = 0,
+) => {
+  // Draw ellipse using scaled circle algorithm
+  for (let y = -radiusY; y <= radiusY; y++) {
+    // Calculate the half-width at this y position using ellipse equation
+    const normalizedY = y / radiusY;
+    const halfWidth = Math.round(radiusX * Math.sqrt(1 - normalizedY * normalizedY));
+    
+    if (halfWidth > 0) {
+      const offset = Math.round(skew * Math.abs(y));
+      const currentY = centerY + y;
       
-      if (halfWidth > 0) {
-        const offset = Math.round(skew * Math.abs(y));
-        const currentY = centerY + y;
-        
-        if (y >= 0) {
-          ctx.rect(centerX - halfWidth - offset, currentY, halfWidth * 2, 1);
-        } else {
-          ctx.rect(centerX - halfWidth + offset, currentY, halfWidth * 2, 1);
-        }
+      if (y >= 0) {
+        ctx.rect(centerX - halfWidth - offset, currentY, halfWidth * 2, 1);
+      } else {
+        ctx.rect(centerX - halfWidth + offset, currentY, halfWidth * 2, 1);
       }
     }
-  };
+  }
+};
 
 class DrawEngine {
   ctx1: CanvasRenderingContext2D;
