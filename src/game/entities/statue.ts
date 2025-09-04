@@ -26,6 +26,7 @@ export class Statue extends GameObject<Asset> {
   state: number = Statue.State.BROKEN;
   repairAnimationDuration = 1500;
   repairAnimationTimer = 0;
+  animationDuration = 800;
 
   constructor(
     col: number,
@@ -44,6 +45,7 @@ export class Statue extends GameObject<Asset> {
   }
 
   update(timeElapsed: number) {
+    this.animationTime += timeElapsed;
     this.spawnTimer += timeElapsed;
 
     if (this.state === Statue.State.BROKEN && this.repair >= MAX_REPAIR) {
@@ -83,11 +85,38 @@ export class Statue extends GameObject<Asset> {
     if (this.repair > 0 && this.repair < MAX_REPAIR) {
       drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
     }
+    this.drawFaries();
   }
 
   postDraw() {
     if (this.state === Statue.State.ANIMATING) {
       this.drawAnimation();
+    }
+  }
+
+  drawFaries() {
+    const radius = 3;
+    drawEngine.ctx1.fillStyle = colors.purple0;
+    
+    for (let i = 0; i < 5; i++) {
+      const t = (this.animationTime + this.animationDuration * 0.5 * i) / this.animationDuration;
+      const theta = (i * 2 * Math.PI) / 3; // 0, 120°, 240°
+      // Offset distance from statue center
+      const offsetDist = 3; // adjust as needed
+      const offsetX = Math.cos(theta) * offsetDist;
+      const offsetY = Math.sin(theta) * offsetDist;
+
+      // Infinity path at t, rotated by theta
+      const x0 = radius * 2 * Math.sin(t);
+      const y0 = radius * Math.sin(2 * t);
+      const x = x0 * Math.cos(theta) - y0 * Math.sin(theta);
+      const y = x0 * Math.sin(theta) + y0 * Math.cos(theta);
+
+      // Final position: statue center + offset + rotated path
+      const px = Math.round(this.x + CELL_WIDTH / 2 + offsetX + x);
+      const py = Math.round(this.y + CELL_HEIGHT / 3 + offsetY + y);
+
+      drawEngine.ctx1.fillRect(px, py, 1, 1);
     }
   }
 
