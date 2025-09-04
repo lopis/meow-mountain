@@ -18,6 +18,7 @@
   - Draw floating fairies around restored cat altars
 - Bugs
   - Goal text doesn't fit the message
-  - Can teleport/restore when not in front of statue
   - Move pentagram drawing to postDraw
   - Clear out trees around cat altars
+  - Improve villagers POV; let cat hide behind obstacles
+  - Don't update entities' coordinates before 50% of the movement is done

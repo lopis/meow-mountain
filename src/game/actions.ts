@@ -57,11 +57,11 @@ export class Actions {
     this.actions[2].enabled = this.canRestore();
     this.actions[1].enabled = this.canTeleport();
 
-    if (controls.isAction2 && !controls.previousState.isAction2) {
+    if (controls.isAction2 && !controls.previousState.isAction2 && this.actions[1].enabled) {
       emit(GameEvent.TELEPORT);
     }
 
-    if (controls.isAction3 && !controls.previousState.isAction3) {
+    if (controls.isAction3 && !controls.previousState.isAction3 && this.actions[2].enabled) {
       emit(GameEvent.RESTORE);
       const cellInFront = this.map.getLookingAt();
       const object = cellInFront.content as Statue | Obelisk;
