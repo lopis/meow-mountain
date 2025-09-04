@@ -303,6 +303,8 @@ export class GameMap {
     const seenRadius = 75;
     const seenRadiusSquared = seenRadius * seenRadius;
 
+    const postDrawDrawables: Drawable[] = [];
+
     for (const row of this.grid) {
       for (const cell of row) {
         const x = cell.x * CELL_WIDTH;
@@ -329,11 +331,17 @@ export class GameMap {
           );
         }
         
-        // Use rectangular bounds for rendering
+        // Draw within a rectangular draw distance
         if (Math.abs(dx) <= renderWidth && Math.abs(dy) <= renderHeight) {
           cell?.content?.draw();
+          if (cell?.content?.postDraw) {
+            postDrawDrawables.push(cell?.content);
+          }
         }
       }
     }
+
+    // @ts-expect-error -- postDraw is definitely defined
+    postDrawDrawables.forEach(drawable => drawable.postDraw());
   }
 }

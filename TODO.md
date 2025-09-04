@@ -10,7 +10,6 @@
   - Heal when a statue is restored, or at home
   - Show different messages each time we restore a statue
   - Show different demons the futher we go
-  - Add bushes to prevent player moving forward before finishing intro
   - When restoring a statue, mark a large circle as "seen"
   - Save game progress
 - Design

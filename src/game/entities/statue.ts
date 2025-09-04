@@ -79,20 +79,23 @@ export class Statue extends GameObject<Asset> {
   }
 
   draw() {
-    if (this.state === Statue.State.ANIMATING) {
-      this.drawAnimation();
-    }
     super.draw();
     if (this.repair > 0 && this.repair < MAX_REPAIR) {
       drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue4, colors.blue5]);
     }
   }
 
+  postDraw() {
+    if (this.state === Statue.State.ANIMATING) {
+      this.drawAnimation();
+    }
+  }
+
   drawAnimation() {
     const animationProgress = (3 * this.repairAnimationTimer / this.repairAnimationDuration) % 1;
     
-    const maxWidth = c1.width / drawEngine.zoom;
-    const maxHeight = c1.height / drawEngine.zoom;
+    const maxWidth = c2.width / drawEngine.zoom;
+    const maxHeight = c2.height / drawEngine.zoom;
     drawEngine.drawCircumference(
       drawEngine.ctx1,
       this.x + CELL_WIDTH / 2,
