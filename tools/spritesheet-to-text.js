@@ -39,7 +39,23 @@ async function processIcon(iconConfig) {
     console.log(`  Image: ${imageData.width}x${imageData.height}`);
     console.log(`  Palette: ${imageData.palette.length} colors`);
     
-    // Process each animation (row) and its frames
+    // Check if this is a single sprite or a spritesheet
+    if (!iconConfig.frames) {
+      // Single sprite - convert entire image to string
+      const imageString = flatArrayToString(
+        imageData.pixels,
+        imageData.palette.length,
+      );
+      
+      return {
+        name: iconConfig.name,
+        size: iconConfig.size,
+        palette: imageData.palette,
+        image: imageString
+      };
+    }
+    
+    // Spritesheet - process each animation (row) and its frames
     const animations = {};
     
     for (let rowIndex = 0; rowIndex < iconConfig.rows.length; rowIndex++) {
@@ -83,12 +99,24 @@ export async function generateIconData(icons) {
   
   for (const iconConfig of icons) {
     const iconData = await processIcon(iconConfig);
-    processedIcons[iconData.name] = {
-      size: iconData.size,
-      frames: iconData.frames,
-      palette: iconData.palette,
-      animations: iconData.animations
-    };
+    
+    // Build the output object based on whether it's a single sprite or spritesheet
+    if (iconData.image !== undefined) {
+      // Single sprite
+      processedIcons[iconData.name] = {
+        size: iconData.size,
+        palette: iconData.palette,
+        image: iconData.image
+      };
+    } else {
+      // Spritesheet
+      processedIcons[iconData.name] = {
+        size: iconData.size,
+        frames: iconData.frames,
+        palette: iconData.palette,
+        animations: iconData.animations
+      };
+    }
   }
   
   // Generate the output file content

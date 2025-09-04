@@ -1,7 +1,11 @@
 import { CELL_WIDTH, CELL_HEIGHT } from '@/game/constants';
 import { drawEngine } from './draw-engine';
-import { Tileset } from './tileset';
 import { updatePositionSmoothly, SmoothMovementState } from '../utils/smooth-movement';
+
+interface Tileset<T extends string> {
+  animations: Record<T, HTMLImageElement[]>;
+  tileSize: number;
+}
 
 export class GameObject<T extends string> implements SmoothMovementState {
   protected animationTime = 0;

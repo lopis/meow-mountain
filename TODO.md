@@ -24,3 +24,4 @@
   - Clear out trees around cat altars
   - Improve villagers POV; let cat hide behind obstacles
   - Don't update entities' coordinates before 50% of the movement is done
+  - Cat doesn't turn to the side when automatically selecting target

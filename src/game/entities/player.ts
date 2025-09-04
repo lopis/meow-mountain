@@ -19,7 +19,7 @@ export class Player extends GameObject<CatStates> {
   type = 'cat';
   sleeping = true;
   attacking = false;
-  confused = false;
+  scared = false;
   inVillage = false;
   pentagramAttack: PentagramAnimation | null = null;
 
@@ -48,11 +48,11 @@ export class Player extends GameObject<CatStates> {
     });
 
     on(GameEvent.ATTACK_PLAYER, () => {
-      this.confused = true;
+      this.scared = true;
       this.animationDuration = ANIMATION_FAST;
       addTimeEvent(() => {
         this.animationDuration = ANIMATION_NORMAL;
-        this.confused = false;
+        this.scared = false;
       }, 600);
     });
 
@@ -80,8 +80,8 @@ export class Player extends GameObject<CatStates> {
       return;
     }
     
-    if(this.confused && !this.isSurrounded()) {
-      this.animation = 'confused';
+    if(this.scared && !this.isSurrounded()) {
+      this.animation = 'scared';
     } else if (this.sleeping) {
       this.animation = 'sleep';
     } else if (this.attacking) {
