@@ -12,11 +12,13 @@
   - Show different demons the futher we go
   - When restoring a statue, mark a large circle as "seen"
   - Save game progress
+  - Restart when dead
 - Design
   - Broken statue
   - More dynamic grass and trees
   - Draw floating fairies around restored cat altars
 - Bugs
+  - Dying animation is broken
   - Goal text doesn't fit the message
   - Move pentagram drawing to postDraw
   - Clear out trees around cat altars

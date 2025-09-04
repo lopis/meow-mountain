@@ -42,7 +42,6 @@ export function findNearestMatch<T>(
   const colCount = grid[0]?.length || 0;
 
   if (colCount === 0 || rowCount === 0) return null;
-  if (start.y < 0 || start.y >= rowCount || start.x < 0 || start.x >= colCount) return null;
 
   // Check if starting position matches
   if (matchCondition(grid[start.y][start.x], start.x, start.y)) {
@@ -62,8 +61,8 @@ export function findNearestMatch<T>(
       const newY = current.pos.y + dir.y;
       const newDistance = current.distance + 1;
 
-      // Check bounds and max steps
-      if (newX < 0 || newX >= colCount || newY < 0 || newY >= rowCount || newDistance > maxSteps) {
+      // Check max steps only
+      if (newDistance > maxSteps) {
         continue;
       }
 

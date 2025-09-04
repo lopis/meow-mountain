@@ -160,14 +160,9 @@ export class Spirit extends Icon implements SmoothMovementState {
         const searchCol = this.col + dx;
         const searchRow = this.row + dy;
 
-        // Check bounds
-        if (searchCol >= 0 && searchCol < this.map.colCount && 
-            searchRow >= 0 && searchRow < this.map.rowCount) {
-          
-          const cell = this.map.grid[searchRow][searchCol];
-          if (cell.content?.type === 'cat') {
-            return { col: searchCol, row: searchRow };
-          }
+        const cell = this.map.grid[searchRow][searchCol];
+        if (cell.content?.type === 'cat') {
+          return { col: searchCol, row: searchRow };
         }
       }
     }

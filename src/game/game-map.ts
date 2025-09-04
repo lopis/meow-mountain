@@ -113,8 +113,8 @@ export class GameMap {
       // Set cell.village for each cell in the village radius
       const { x: centerX, y: centerY } = village.center;
       const radius = village.radius;
-      for (let y = Math.max(0, centerY - radius); y <= Math.min(this.rowCount - 1, centerY + radius); y++) {
-        for (let x = Math.max(0, centerX - radius); x <= Math.min(this.colCount - 1, centerX + radius); x++) {
+      for (let y = centerY - radius; y <= centerY + radius; y++) {
+      for (let x = centerX - radius; x <= centerX + radius; x++) {
           const dx = x - centerX;
           const dy = y - centerY;
           if (dx * dx + dy * dy <= radius * radius) {
@@ -159,9 +159,7 @@ export class GameMap {
     const radius = 12;
     const { x: centerX, y: centerY } = heartsPeak.center;
     for (let y = centerY - radius; y <= centerY + radius; y++) {
-      if (y < 0 || y >= this.rowCount) continue;
       for (let x = centerX - radius; x <= centerX + radius; x++) {
-        if (x < 0 || x >= this.colCount) continue;
         const cell = this.grid[y][x];
         if (!cell.content && this.rng.next() <= converage) {
           cell.content = new Farm(cell.x, cell.y);
@@ -213,18 +211,15 @@ export class GameMap {
         for (let oy = -halfWidth; oy <= halfWidth; oy++) {
           const clearX = Math.ceil(x + ox + jitterX);
           const clearY = Math.ceil(y + oy + jitterY);
-          if (clearY >= 0 && clearY < this.grid.length &&
-            clearX >= 0 && clearX < this.grid[0].length) {
-            this.clearPlants(clearX, clearY);
-            if (pathWidth < 1) {
+          this.clearPlants(clearX, clearY);
+          if (pathWidth < 1) {
             this.clearPlants(clearX + 1, clearY);
-            } else if (this.rng.next() > 0.1) {
-              if (this.rng.next() > 0.05) {
-                // Add probability for partial clearing to create natural edges
-                this.clearPlants(clearX, clearY);
-              } else {
-                this.grid[clearY][clearX].content = new Farm(clearX, clearY);
-              }
+          } else if (this.rng.next() > 0.1) {
+            if (this.rng.next() > 0.05) {
+              // Add probability for partial clearing to create natural edges
+              this.clearPlants(clearX, clearY);
+            } else {
+              this.grid[clearY][clearX].content = new Farm(clearX, clearY);
             }
           }
         }

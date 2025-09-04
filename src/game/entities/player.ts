@@ -92,7 +92,7 @@ export class Player extends GameObject<CatStates> {
       if (!this.moving.y && controls.inputDirection.y) {
         const newRow = this.row + controls.inputDirection.y;
         
-        if (newRow >= 0 && newRow < this.map.rowCount && !this.map.grid[newRow][this.col].content) {
+        if (!this.map.grid[newRow][this.col].content) {
           this.animation = 'run';
           this.moving.y = controls.inputDirection.y;
           this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;

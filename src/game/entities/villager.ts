@@ -34,7 +34,7 @@ export class Villager extends GameObject<VillagerStates> {
     super.update(timeElapsed);
 
     this.moveTimer += timeElapsed;
-    if (this.seesCat()) {
+    if (!this.atHome && this.seesCat()) {
       if (!this.isScared && this.moveTimer >= this.moveInterval) {
         this.moveTimer = 0;
         this.isScared = true;
@@ -202,11 +202,6 @@ export class Villager extends GameObject<VillagerStates> {
 
     // Check each cell for a cat
     for (const { col, row } of cellsToCheck) {
-      // Bounds check
-      if (row < 0 || row >= this.map.rowCount || col < 0 || col >= this.map.colCount) {
-        continue;
-      }
-
       const cell = this.map.grid[row][col];
       if (cell.content?.type === 'cat') {
         return true;
