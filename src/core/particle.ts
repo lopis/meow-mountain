@@ -1,5 +1,5 @@
 import { GameEvent } from '@/game/event-manifest';
-import { on } from './event';
+import { on } from '@/core/event';
 import { easeInExpo } from './util/util';
 
 export interface Particle {

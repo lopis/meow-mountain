@@ -26,7 +26,6 @@ export class Obelisk extends GameStaticObject {
   }
 
   draw() {
-    debugger;
     super.draw();
     if (this.repair > 0) {
       drawHpBar(this.repair, MAX_REPAIR, this.x, this.y, [colors.yellow1, colors.yellow2, colors.blue5, colors.blue6]);
