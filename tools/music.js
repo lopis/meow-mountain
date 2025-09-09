@@ -9,7 +9,7 @@ const notesText = fs.readFileSync('tools/notes_13.txt', 'utf-8');
 const notes = notesText.split(';').map((line, i) => {
   const [time, type, length, instrument] = line.split(' ');
   return {
-    time, type, length, instrument
+    time: Math.round(time).toString(), type, length, instrument
   };
 })
 .filter(note => !!note.type)
@@ -33,18 +33,37 @@ const frequencies = {
 const regex = /^([A-G]#?)(\d)$/;
 
 const justNotes = [];
+const octaveOffset = 3;
+let currentTime = 1; // Time is 1-indexed
 
-const octaveOffset = 2;
+notes
+  .filter(note => !note.time.startsWith('Online')) // skip header
+  .map(note => ({
+    ...note,
+    time: parseFloat(note.time),
+    length: parseInt(note.length, 10)
+  }))
+  .sort((a, b) => a.time - b.time)
+  .forEach(note => {
+    if (isNaN(note.time) || isNaN(note.length)) return;
 
-notes.forEach(note => {
-  if (!note.type) {
-    console.log(note);
-  }
-  const match = note.type.match(regex);
-  const noteName = match[1];
-  const octave = parseInt(match[2]) - octaveOffset;
-  const toneOffset = frequencies[noteName] + octave * 12;
-  justNotes.push(`${toneOffset}~${note.length}`);
-});
+    // Insert a rest if there's a gap
+    if (note.time > currentTime) {
+      justNotes.push(`~${note.time - currentTime}`);
+      currentTime = note.time;
+    }
 
-console.log(justNotes.slice(0, 80).join(','));
+    if (note.type && regex.test(note.type)) {
+      const match = note.type.match(regex);
+      const noteName = match[1];
+      const octave = parseInt(match[2]) - octaveOffset;
+      const toneOffset = frequencies[noteName] + octave * 12;
+      justNotes.push(`${toneOffset}~${note.length}`);
+    } else {
+      justNotes.push(`~${note.length}`);
+    }
+
+    currentTime += note.length;
+  });
+
+console.log(justNotes.join(','));
