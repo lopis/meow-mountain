@@ -35,6 +35,7 @@ const regex = /^([A-G]#?)(\d)$/;
 const justNotes = [];
 const octaveOffset = 3;
 let currentTime = 1; // Time is 1-indexed
+let lastBeat = -1;
 
 notes
   .filter(note => !note.time.startsWith('Online')) // skip header
@@ -52,6 +53,11 @@ notes
       justNotes.push(`~${note.time - currentTime}`);
       currentTime = note.time;
     }
+
+    // Quantize to beat (integer part)
+    const beat = Math.floor(note.time);
+    if (beat === lastBeat) return; // skip extra notes in same beat
+    lastBeat = beat;
 
     if (note.type && regex.test(note.type)) {
       const match = note.type.match(regex);
