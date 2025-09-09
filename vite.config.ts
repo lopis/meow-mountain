@@ -12,6 +12,7 @@ import { execFileSync } from "child_process";
 import htmlMinify from "html-minifier";
 import { minify } from 'terser';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { ModuleKind, ScriptTarget, transpile } from 'typescript';
 
 export default defineConfig(({ command, mode }) => {
   const config = {
@@ -166,25 +167,54 @@ function embedCss(html: string, asset: OutputAsset): string {
 function workletPlugin(): Plugin {
   return {
     name: 'vite:worklet',
+    configureServer(server) {
+      return () => {
+        server.middlewares.use('/music-worklet.js', async (req, res, next) => {
+          try {
+            const workletContent = await fs.readFile('public/music-worklet.ts', 'utf-8');
+            const jsCode = transpile(workletContent, {
+              target: ScriptTarget.ES2022,
+              module: ModuleKind.ES2022,
+              removeComments: false,
+              strict: true,
+            });
+            
+            res.setHeader('Content-Type', 'application/javascript');
+            res.setHeader('Cache-Control', 'no-cache');
+            res.end(jsCode);
+          } catch (err) {
+            res.statusCode = 500;
+            res.end(`console.error('Worklet compilation failed: ${err.message}');`);
+          }
+        });
+      };
+    },
     generateBundle: async (): Promise<void> => {
       try {
-        // Read the worklet file
-        const workletPath = 'public/music-worklet.js';
+        // Read the TypeScript worklet file
+        const workletPath = 'public/music-worklet.ts';
         const workletContent = await fs.readFile(workletPath, 'utf-8');
         
-        // Minify the worklet using Terser
-        const minified = await minify(workletContent, defaultTerserOptions);
+        // Transpile TypeScript to JavaScript
+        const jsCode = transpile(workletContent, {
+          target: ScriptTarget.ES2022,
+          module: ModuleKind.ES2022,
+          removeComments: true,
+          strict: true,
+        });
+        
+        // Minify the transpiled JavaScript
+        const minified = await minify(jsCode, defaultTerserOptions);
         
         if (minified.code) {
-          // Write the minified worklet to dist
           await fs.writeFile('dist/music-worklet.js', minified.code);
-          console.log('✓ Audio worklet minified and copied to dist/');
+          console.log('✓ Audio worklet transpiled, minified and copied to dist/');
         } else {
           throw new Error('Terser minification failed');
         }
       } catch (err) {
         console.error('Worklet processing error:', err);
-        // Fallback: copy the original file
+        // Fallback: try JS file
         try {
           const workletContent = await fs.readFile('public/music-worklet.js', 'utf-8');
           await fs.writeFile('dist/music-worklet.js', workletContent);

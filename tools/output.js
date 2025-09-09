@@ -1,5 +1,5 @@
 // Auto-generated icon data
-// Generated on 2025-09-04T22:06:23.568Z
+// Generated on 2025-09-06T13:24:44.228Z
 
 export const icons = {
   "cat": {

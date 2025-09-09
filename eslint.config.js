@@ -4,7 +4,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 
 export default [{
-    files: ["src/**/*.{ts,js,vue}"],
+    files: ["src/**/*.{ts,js,vue}", "tools/**/*.{ts,js,vue}", "public/**/*.{ts,js,vue}"],
     ignores: [".gitignore"],
     languageOptions: {
         globals: {

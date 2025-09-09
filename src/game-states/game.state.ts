@@ -19,7 +19,7 @@ class GameState implements State {
   gameData!: GameData;
   particles!: ParticleEngine;
   story!: GameStory;
-  playMusic = false;
+  playMusic = true;
 
   onEnter() {
     if (this.playMusic) {
