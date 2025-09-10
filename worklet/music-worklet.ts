@@ -3,45 +3,42 @@
 
 const SAMPLE_RATE = 32000;
 const NOTE_LENGTH = SAMPLE_RATE / 4;
-const volume = 0.8;
 
 type PitchLength = { pitch: number; length: number; } | undefined;
 
-function Base(value: PitchLength) {
+const BaseSound = (
+  pitchOffset: number,
+  sustainTime: number,
+  volume: number,
+  s: (t:number, p:number) => number,
+) => (value: PitchLength) => {
   const {pitch, length} = value || {pitch: 0, length: 1};
   let t = 0;
-  const pitchOffset = 12 * 2;
-  const p = 2 ** ((pitch - pitchOffset) / 12) * 1.24;
+  const p = 2 ** ((pitch - pitchOffset * 12) / 12) * 1.24;
   const decay = Math.pow(0.9999, 2 / (length));
   return function render() {
     if (pitch === 0) return 0;
-    let s = (((t * p) / 2) & 202) / 120 - 0.75;
+    // let s = (((t * p) / 2) & 202) / 120 - 0.75;
     ++t;
     if (t >= (length * NOTE_LENGTH)) {
       return undefined;
     };
-    const sustain = t <= length * NOTE_LENGTH * 0.4 ? 1 : Math.pow(decay, t - length * NOTE_LENGTH * 0.4);
-    return s * sustain * volume / 4;
+    const sustain = t <= length * NOTE_LENGTH * sustainTime ? 1 : Math.pow(decay, t - length * NOTE_LENGTH * sustainTime);
+    return s(t,p) * sustain * volume;
   };
 }
 
-function Tri(value: PitchLength) {
-  const {pitch, length} = value || {pitch: 0, length: 1};
-  let t = 0;
-  const pitchOffset = 12 * 2;
-  const p = 2 ** ((pitch - pitchOffset) / 12) / 1.24;  
-
-  const decay = Math.pow(0.9999, 2 / (length));
-  return function render() {
-    if (pitch === 0) return 0;
-    let s = Math.tan(Math.cbrt(Math.sin((t * p) / 30)));
-    ++t;
-    if (t >= NOTE_LENGTH * length) return undefined;
-    const sustain = t <= length * NOTE_LENGTH * 0.2 ? 1 : Math.pow(decay, t - length * NOTE_LENGTH * 0.2);
-    return s * sustain * volume / 2;
-  };
-}
-
+const MainSound = BaseSound(
+  0,
+  0.4,
+  0.5,
+  (t,p) => (((t * p) / 2) & 202) / 120 - 0.75
+);
+const BackgroundSound = BaseSound(4,
+  0.1,
+  0.7,
+  (t,p) => Math.tan(Math.cbrt(Math.sin((t * p) / 30))),
+);
 
 const genNotes = (str: string): {
     notes: PitchLength[];
@@ -101,14 +98,14 @@ type Voice = {
 }
 
 const boleroMain: Voice = {
-  gen: Tri,
+  gen: MainSound,
   ...genNotes(
     '27~6,26~1,27~1,29~1,27~1,26~1,24~1,27~2,27~1,24~1,27~6,26~1,27~1,24~1,22~1,19~1,20~1,22~9,20~1,19~1,17~1,19~1,20~1,22~1,24~1,22~9,24~1,26~1,24~1,22~1,20~1,19~1,17~1,19~1,17~1,15~4,15~1,17~1,19~1,~1,20~1,~1,17~4,22~17,~3,29~7,27~1,26~1,24~1,26~1,27~1,29~1,27~1,26~3,27~1,26~1,24~1,27~1,26~1,24~1,20~3,20~1,20~1,20~1,~1,24~1,~1,27~1,24~1,26~1,22~1,20~2,20~1,20~1,20~1,~1,24~1,~1,26~1,22~1,24~1,20~1,17~2,17~1,15~1,17~6,17~1,17~1,17~1,~1,20~1,~1,24~1,20~1,22~1,19~1,17~2,17~1,15~1,17~6,17~1,15~1,17~2,19~1,20~1,22~9,20~1,19~1,17~1,15~2,22~1,22~1,22~1,~1,22~1,22~1,22~1,~1,22~1,~1,22~1,~1,22~1,22~1,22~1,~1,22~1,22~1,22~1,22~1,22~1,22~1,22~1'
   )
 };
 
 const boleroBase: Voice = {
-  gen: Base,
+  gen: BackgroundSound,
   ...genNotes('10~4,22~4,10~4,10~4,22~4,10~2,10~2,'.repeat(8).slice(0, -1)),
 }
 

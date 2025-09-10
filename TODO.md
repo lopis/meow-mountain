@@ -1,7 +1,7 @@
 # TODO List
 
 - Audio
-  - Background music
+  ~ Background music
   - Play note in increasing pitch when restoring
   - Sound effects
     - steps
