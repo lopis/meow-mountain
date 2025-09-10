@@ -1,13 +1,13 @@
 /// <reference lib="webworker" />
 /// <reference lib="dom" />
 
-const SAMPLE_RATE = 44000;
+const SAMPLE_RATE = 32000;
 const NOTE_LENGTH = SAMPLE_RATE / 4;
 const volume = 0.8;
 
 type PitchLength = { pitch: number; length: number; } | undefined;
 
-function Square(value: PitchLength) {
+function Base(value: PitchLength) {
   const {pitch, length} = value || {pitch: 0, length: 1};
   let t = 0;
   const pitchOffset = 12 * 2;
@@ -15,13 +15,13 @@ function Square(value: PitchLength) {
   const decay = Math.pow(0.9999, 2 / (length));
   return function render() {
     if (pitch === 0) return 0;
-    let s = (((t * p) / 2) & 89) / 96 - 0.75;
+    let s = (((t * p) / 2) & 202) / 120 - 0.75;
     ++t;
     if (t >= (length * NOTE_LENGTH)) {
       return undefined;
     };
-    const sustain = t <= length * NOTE_LENGTH * 0.8 ? 1 : Math.pow(decay, t - length * NOTE_LENGTH * 0.8);
-    return s * sustain * volume / 2;
+    const sustain = t <= length * NOTE_LENGTH * 0.4 ? 1 : Math.pow(decay, t - length * NOTE_LENGTH * 0.4);
+    return s * sustain * volume / 4;
   };
 }
 
@@ -29,19 +29,24 @@ function Tri(value: PitchLength) {
   const {pitch, length} = value || {pitch: 0, length: 1};
   let t = 0;
   const pitchOffset = 12 * 2;
-  const p = 2 ** ((pitch - pitchOffset) / 12) / 1.24;
+  const p = 2 ** ((pitch - pitchOffset) / 12) / 1.24;  
+
   const decay = Math.pow(0.9999, 2 / (length));
   return function render() {
     if (pitch === 0) return 0;
     let s = Math.tan(Math.cbrt(Math.sin((t * p) / 30)));
     ++t;
-    if (t >= SAMPLE_RATE * length) return undefined;
-    return s * Math.pow(decay, 2 * t) * volume;
+    if (t >= NOTE_LENGTH * length) return undefined;
+    const sustain = t <= length * NOTE_LENGTH * 0.2 ? 1 : Math.pow(decay, t - length * NOTE_LENGTH * 0.2);
+    return s * sustain * volume / 2;
   };
 }
 
 
-const genNotes = (str: string): PitchLength[] => {
+const genNotes = (str: string): {
+    notes: PitchLength[];
+    totalLength: number;
+} => {
   const totalLength = str.split(',').reduce((prev: number, n: string): number => {
     const [_note, length] = n.split('~');
     return (parseInt(length) || 1) + prev;
@@ -59,7 +64,10 @@ const genNotes = (str: string): PitchLength[] => {
     index += noteLength; // Use the parsed length, not the array value
   });
 
-  return notesArray;
+  return {
+    notes: notesArray,
+    totalLength,
+  };
 };
 
 // const lowPart1 =
@@ -89,21 +97,24 @@ const genNotes = (str: string): PitchLength[] => {
 type Voice = {
   gen: (value: any) => () => number | undefined;
   notes: PitchLength[];
+  totalLength: number;
 }
 
 const boleroMain: Voice = {
   gen: Tri,
-  notes: genNotes(
+  ...genNotes(
     '27~6,26~1,27~1,29~1,27~1,26~1,24~1,27~2,27~1,24~1,27~6,26~1,27~1,24~1,22~1,19~1,20~1,22~9,20~1,19~1,17~1,19~1,20~1,22~1,24~1,22~9,24~1,26~1,24~1,22~1,20~1,19~1,17~1,19~1,17~1,15~4,15~1,17~1,19~1,~1,20~1,~1,17~4,22~17,~3,29~7,27~1,26~1,24~1,26~1,27~1,29~1,27~1,26~3,27~1,26~1,24~1,27~1,26~1,24~1,20~3,20~1,20~1,20~1,~1,24~1,~1,27~1,24~1,26~1,22~1,20~2,20~1,20~1,20~1,~1,24~1,~1,26~1,22~1,24~1,20~1,17~2,17~1,15~1,17~6,17~1,17~1,17~1,~1,20~1,~1,24~1,20~1,22~1,19~1,17~2,17~1,15~1,17~6,17~1,15~1,17~2,19~1,20~1,22~9,20~1,19~1,17~1,15~2,22~1,22~1,22~1,~1,22~1,22~1,22~1,~1,22~1,~1,22~1,~1,22~1,22~1,22~1,~1,22~1,22~1,22~1,22~1,22~1,22~1,22~1'
   )
 };
 
 const boleroBase: Voice = {
-  gen: Square,
-  notes: genNotes('10~4,22~4,10~4,10~4,22~4,10~2,10~2,10~4,22~4'),
+  gen: Base,
+  ...genNotes('10~4,22~4,10~4,10~4,22~4,10~2,10~2,'.repeat(8).slice(0, -1)),
 }
 
 let music: Voice[] = [boleroMain, boleroBase];
+console.log(music);
+
 
 let queue: (() => number | undefined)[] = [];
 
