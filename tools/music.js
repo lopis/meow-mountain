@@ -34,17 +34,15 @@ const regex = /^([A-G]#?)(\d)$/;
 
 const justNotes = [];
 const octaveOffset = 3;
-let currentTime = 1; // Time is 1-indexed
+let currentTime = 0; // Time is 1-indexed
 let lastBeat = -1;
 
 notes
-  .filter(note => !note.time.startsWith('Online')) // skip header
   .map(note => ({
     ...note,
     time: parseFloat(note.time),
     length: parseInt(note.length, 10)
   }))
-  .sort((a, b) => a.time - b.time)
   .forEach(note => {
     if (isNaN(note.time) || isNaN(note.length)) return;
 

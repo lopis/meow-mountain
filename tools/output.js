@@ -2,145 +2,145 @@
 // Generated on 2025-09-06T13:24:44.228Z
 
 export const icons = {
-  "cat": {
-    "size": 10,
-    "frames": 4,
-    "palette": [
-      "transparent",
-      "#000000"
+  cat: {
+    size: 10,
+    frames: 4,
+    palette: [
+      'transparent',
+      '#000000'
     ],
-    "data": {
-      "idle": [
-        "@@@`@PJbcxpO|AQ@@",
-        "@@@`@DJbcxpO|AQ@@",
-        "@@@@h@nag|pG|AQ@@",
-        "@@@@@@z`SxxO|AQ@@"
+    data: {
+      idle: [
+        '@@@`@PJbcxpO|AQ@@',
+        '@@@`@DJbcxpO|AQ@@',
+        '@@@@h@nag|pG|AQ@@',
+        '@@@@@@z`SxxO|AQ@@'
       ],
-      "walk": [
-        "@@@`@DJbcxpO|AR@@",
-        "@@@P@HJdCy`OpC`@@",
-        "@@@@@DJbCy`OxCR@@",
-        "@@@H@DJbcxpO|AA@@"
+      walk: [
+        '@@@`@DJbcxpO|AR@@',
+        '@@@P@HJdCy`OpC`@@',
+        '@@@@@DJbCy`OxCR@@',
+        '@@@H@DJbcxpO|AA@@'
       ],
-      "run": [
-        "@@@@@@@`ZxyO~@B@@",
-        "@@@@@@J`_|xG~@E@@",
-        "@@@@@@@`ZxyO~PB@@",
-        "@@@@@@J`CxG~@D@@"
+      run: [
+        '@@@@@@@`ZxyO~@B@@',
+        '@@@@@@J`_|xG~@E@@',
+        '@@@@@@@`ZxyO~PB@@',
+        '@@@@@@J`CxG~@D@@'
       ],
-      "die": [
-        "@@@@AHJdCy`OxCb@@",
-        "@@@@@@jcC`C@@@@@",
-        "@@@@@@@@@x|oxG@@@",
-        "@@@@@@@@@@@N~yC@"
+      die: [
+        '@@@@AHJdCy`OxCb@@',
+        '@@@@@@jcC`C@@@@@',
+        '@@@@@@@@@x|oxG@@@',
+        '@@@@@@@@@@@N~yC@'
       ],
-      "scratch": [
-        "@@@`@DJbcxpO|AQ@@",
-        "@@@@@BPhHN|Ka@@@",
-        "@@@D@BEqQ\\xG~`P@@",
-        "@@@P@DJbcxpO|AQ@@"
+      scratch: [
+        '@@@`@DJbcxpO|AQ@@',
+        '@@@@@BPhHN|Ka@@@',
+        '@@@D@BEqQ\\xG~`P@@',
+        '@@@P@DJbcxpO|AQ@@'
       ],
-      "scared": [
-        "@`@H@F`Wy_~GsPD@@",
-        "@`@H@B`Qy_~GwPD@@",
-        "@`@H@F`Wy_~GsPD@@",
-        "@`@H@B`Qy_~GwPD@@"
+      scared: [
+        '@`@H@F`Wy_~GsPD@@',
+        '@`@H@B`Qy_~GwPD@@',
+        '@`@H@F`Wy_~GsPD@@',
+        '@`@H@B`Qy_~GwPD@@'
       ],
-      "sleep": [
-        "@@@@@@@@@h~_~K@@@",
-        "@@@@@@@`Bx~_~E@@@",
-        "@@@@@@@`Bx}o~A@@@",
-        "@@@@@@@@@h|~C@@@"
+      sleep: [
+        '@@@@@@@@@h~_~K@@@',
+        '@@@@@@@`Bx~_~E@@@',
+        '@@@@@@@`Bx}o~A@@@',
+        '@@@@@@@@@h|~C@@@'
       ]
     }
   },
-  "villager": {
-    "size": 8,
-    "frames": 4,
-    "palette": [
-      "transparent",
-      "#414776",
-      "#211729"
+  villager: {
+    size: 8,
+    frames: 4,
+    palette: [
+      'transparent',
+      '#414776',
+      '#211729'
     ],
-    "data": {
-      "walk": [
-        "PUAUUQVVTUEUUajj`@B@`@",
-        "@@@TUPUUdeEUUQUUhjJH`@",
-        "PUAUUQVVTUEUUajj`@BH@@",
-        "@@@TUPUUdeEUUQUUhjJH`@"
+    data: {
+      walk: [
+        'PUAUUQVVTUEUUajj`@B@`@',
+        '@@@TUPUUdeEUUQUUhjJH`@',
+        'PUAUUQVVTUEUUajj`@BH@@',
+        '@@@TUPUUdeEUUQUUhjJH`@'
       ],
-      "idle": [
-        "@@@TUPUUdeEUUQUUhjJH`@",
-        "@@@TUPUUdeEUUQUUhjJH`@",
-        "PUAUUQVVTUEUUajj`@BH`@",
-        "PUAUUQVVTUEUUajj`@BH`@"
+      idle: [
+        '@@@TUPUUdeEUUQUUhjJH`@',
+        '@@@TUPUUdeEUUQUUhjJH`@',
+        'PUAUUQVVTUEUUajj`@BH`@',
+        'PUAUUQVVTUEUUajj`@BH`@'
       ],
-      "scared": [
-        "@@@TUPUUTfEiiQUUhjJH`@",
-        "@@@UETUEeYQZZTUEjjBBH@",
-        "@@@TUPUUTfEiiQUUhjJH`@",
-        "@@@UETUEeYQZZTUEjjBBH@"
+      scared: [
+        '@@@TUPUUTfEiiQUUhjJH`@',
+        '@@@UETUEeYQZZTUEjjBBH@',
+        '@@@TUPUUTfEiiQUUhjJH`@',
+        '@@@UETUEeYQZZTUEjjBBH@'
       ]
     }
   },
-  "statue": {
-    "size": 16,
-    "palette": [
-      "transparent",
-      "#4f9ea8",
-      "#366c73",
-      "#274e53"
+  statue: {
+    size: 16,
+    palette: [
+      'transparent',
+      '#4f9ea8',
+      '#366c73',
+      '#274e53'
     ],
-    "data": "@@@@@@@DD@@@`e@@@@jB@@@hJ@@@@O@@@@}A@@@xK@@@`o@@@p~N@@T{{E@TmoWAPUUUE@WUUu@|C@C@"
+    data: '@@@@@@@DD@@@`e@@@@jB@@@hJ@@@@O@@@@}A@@@xK@@@`o@@@p~N@@T{{E@TmoWAPUUUE@WUUu@|C@C@'
   },
-  "obelisk": {
-    "size": 16,
-    "palette": [
-      "transparent",
-      "#4f9ea8",
-      "#366c73",
-      "#274e53"
+  obelisk: {
+    size: 16,
+    palette: [
+      'transparent',
+      '#4f9ea8',
+      '#366c73',
+      '#274e53'
     ],
-    "data": "@PUE@@`UUB@@VUI@@xo@@poC@@kjN@@l{@@p~C@@kjN@@|o@@p{~C@@{O@@|k@@pC@@|C@@@@@@@"
+    data: '@PUE@@`UUB@@VUI@@xo@@poC@@kjN@@l{@@p~C@@kjN@@|o@@p{~C@@{O@@|k@@pC@@|C@@@@@@@'
   },
-  "oak": {
-    "size": 16,
-    "palette": [
-      "transparent",
-      "#274e53",
-      "#679a6f",
-      "#eedbb0"
+  oak: {
+    size: 16,
+    palette: [
+      'transparent',
+      '#274e53',
+      '#679a6f',
+      '#eedbb0'
     ],
-    "data": "@@@@@@@UU@@@yF@@yoA@i~oZ@djjjAPjjjF@ijjZ@TjjZAPfiYF@eYYV@PYZV@@PUE@@@UU@@@PU@@@@@@@@"
+    data: '@@@@@@@UU@@@yF@@yoA@i~oZ@djjjAPjjjF@ijjZ@TjjZAPfiYF@eYYV@PYZV@@PUE@@@UU@@@PU@@@@@@@@'
   },
-  "spruce": {
-    "size": 16,
-    "palette": [
-      "transparent",
-      "#274e53",
-      "#b4ecf3",
-      "#4f9ea8"
+  spruce: {
+    size: 16,
+    palette: [
+      'transparent',
+      '#274e53',
+      '#b4ecf3',
+      '#4f9ea8'
     ],
-    "data": "@@T@@@@dF@@@djA@@tk_@@tG@P_@P}E@]]@Twu]APw}]G@u]]W@P]_W@@PUE@@@UU@@@PU@@@@@@@@"
+    data: '@@T@@@@dF@@@djA@@tk_@@tG@P_@P}E@]]@Twu]APw}]G@u]]W@P]_W@@PUE@@@UU@@@PU@@@@@@@@'
   },
-  "grass": {
-    "size": 16,
-    "palette": [
-      "transparent",
-      "#6b9a71",
-      "#2f5753",
-      "#457a5f"
+  grass: {
+    size: 16,
+    palette: [
+      'transparent',
+      '#6b9a71',
+      '#2f5753',
+      '#457a5f'
     ],
-    "data": "@U@T@PyEUSqmu}uMn_wuW{w]_WK^}mwmh}m_gPwuwmB]_WWBwu}]Oxnww~c~m_]OX_{]mP}mow@Vvj\\B`bB`B@"
+    data: '@U@T@PyEUSqmu}uMn_wuW{w]_WK^}mwmh}m_gPwuwmB]_WWBwu}]Oxnww~c~m_]OX_{]mP}mow@Vvj\\B`bB`B@'
   },
-  "house": {
-    "size": 16,
-    "palette": [
-      "transparent",
-      "#274e53",
-      "#4f9ea8",
-      "#366c73"
+  house: {
+    size: 16,
+    palette: [
+      'transparent',
+      '#274e53',
+      '#4f9ea8',
+      '#366c73'
     ],
-    "data": "PU@@@PjVUU@YyGdjWU]PkAm^UUGt_PWUUuA}GTUUUUpjjjjC[_ZUNlk}ypvgVgCkjZ_N|}}@"
+    data: 'PU@@@PjVUU@YyGdjWU]PkAm^UUGt_PWUUuA}GTUUUUpjjjjC[_ZUNlk}ypvgVgCkjZ_N|}}@'
   }
 };
