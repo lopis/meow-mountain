@@ -10,6 +10,7 @@ import { GameData } from '../game-data';
 import { PentagramAnimation } from './pentagram-attack';
 import { drawEngine } from '@/core/draw-engine';
 import { GameEvent } from '../event-manifest';
+import { step } from '@/core/audio';
 
 const ANIMATION_SLOW = 600;
 const ANIMATION_NORMAL = 150;
@@ -63,7 +64,17 @@ export class Player extends GameObject<CatStates> {
   }
 
   update(timeElapsed: number) {
+    const previousAnimationFrame = this.animationFrame;
+    const previousAnimation = this.animation;
     super.update(timeElapsed);
+
+    if (previousAnimation != this.animation) {
+      this.animationFrame = 0;
+    }
+
+    if (this.animation === 'run' && this.animationFrame != previousAnimationFrame && this.animationFrame % 2) {
+      step();
+    }
 
     const cellVillage = this.map.grid[this.row][this.col].village;
     if (!this.inVillage && cellVillage) {
@@ -88,6 +99,7 @@ export class Player extends GameObject<CatStates> {
       this.animation = 'scratch';
     } else {
       super.updatePositionSmoothly(timeElapsed);
+
 
       if (!this.moving.y && controls.inputDirection.y) {
         const newRow = this.row + controls.inputDirection.y;
@@ -150,10 +162,10 @@ export class Player extends GameObject<CatStates> {
               this.attackAllEnemiesAround();
             },
           );
+        } else {
+          // Check if there is an enemy right in front
+          addTimeEvent(() => this.attackEnemyInFront(), 500);
         }
-
-        // Check if there is an enemy right in front
-        addTimeEvent(() => this.attackEnemyInFront(), 500);
 
         addTimeEvent(() => {
           this.attacking = false;

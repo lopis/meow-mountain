@@ -1,3 +1,4 @@
+
 const t = (i: number, n: number)=>(n-i)/n;
 
 // Sound player
@@ -22,4 +23,8 @@ export const ooof = (pitch: number) => playSound((i: number) => {
 
 export const doorSound = () => playSound((i: number) => {
   return 0.1 * Math.sin(i/50 + Math.random()*50) * (8000 - i%8000) / 5000 * Math.exp(-i/8000);
+});
+
+export const step = () => playSound((i: number) => {
+  return (Math.random() - 0.5) * 0.3 * Math.exp(-i/2000);
 });

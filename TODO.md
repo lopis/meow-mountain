@@ -1,8 +1,10 @@
 # TODO List
 
 - Audio
-  ~ Background music
-  - Play note in increasing pitch when restoring
+  - Background music
+    - Start with just the background music and then start the melody
+    - Speed up music as the game progresses
+    - Play note in increasing pitch when restoring (?)
   - Sound effects
     - steps
     - scratch

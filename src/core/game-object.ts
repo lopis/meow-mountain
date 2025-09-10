@@ -9,6 +9,7 @@ interface Tileset<T extends string> {
 
 export class GameObject<T extends string> implements SmoothMovementState {
   protected animationTime = 0;
+  protected animationFrame = 0;
   protected animationDuration = 150; // Duration for each animation frame in milliseconds
   animationLoop = true;
   public col: number;
@@ -44,6 +45,7 @@ export class GameObject<T extends string> implements SmoothMovementState {
     //   return;
     // }
     this.animationTime += timeElapsed;
+    this.animationFrame = Math.floor(this.animationTime / this.animationDuration) % this.tileset.animations[this.animation].length;
   }
 
   updatePositionSmoothly(timeElapsed: number) {
@@ -55,11 +57,9 @@ export class GameObject<T extends string> implements SmoothMovementState {
 
   draw() {
     const animation = this.tileset.animations[this.animation];
-    const animationFrame = Math.floor(this.animationTime / this.animationDuration) % animation.length;
-
-    if (animation[animationFrame]) {
+    if (animation[this.animationFrame]) {
       drawEngine.drawBackgroundImage(
-        animation[animationFrame],
+        animation[this.animationFrame],
         this.x - (this.tileset.tileSize - CELL_WIDTH) / 2,
         this.y - (this.tileset.tileSize - CELL_HEIGHT) / 2,
         this.mirrored,
