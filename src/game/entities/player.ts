@@ -23,6 +23,7 @@ export class Player extends GameObject<CatStates> {
   scared = false;
   inVillage = false;
   pentagramAttack: PentagramAnimation | null = null;
+  stepSoundTimer = 200;
 
   constructor(col: number, row: number, public map: GameMap, public gameData: GameData) {
     super(
@@ -64,16 +65,12 @@ export class Player extends GameObject<CatStates> {
   }
 
   update(timeElapsed: number) {
-    const previousAnimationFrame = this.animationFrame;
-    const previousAnimation = this.animation;
     super.update(timeElapsed);
 
-    if (previousAnimation != this.animation) {
-      this.animationFrame = 0;
-    }
-
-    if (this.animation === 'run' && this.animationFrame != previousAnimationFrame && this.animationFrame % 2) {
+    this.stepSoundTimer -= timeElapsed;
+    if (this.stepSoundTimer <= 0 && this.animation === 'run') {
       step();
+      this.stepSoundTimer = 200;
     }
 
     const cellVillage = this.map.grid[this.row][this.col].village;
@@ -136,8 +133,7 @@ export class Player extends GameObject<CatStates> {
 
       if (!this.moving.x && !this.moving.y) {
         this.animation = 'idle';
-        // Keep looking in the same direction as before (don't reset to horizontal)
-        // playerLookingAt is already set from the last movement, so no need to update it
+        this.stepSoundTimer = 200;
       }
 
       // When not attacking, check if playerLookingAt is empty;

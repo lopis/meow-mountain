@@ -26,5 +26,14 @@ export const doorSound = () => playSound((i: number) => {
 });
 
 export const step = () => playSound((i: number) => {
-  return (Math.random() - 0.5) * 0.3 * Math.exp(-i/2000);
+  // Soft noise burst, short, with gentle fade in/out
+  const n = 2000;
+  if (i > n) return 0;
+  // Fade in/out envelope
+  const env = Math.sin((Math.PI * i) / n);
+  // Simple lowpass: average with previous value
+  let prev = 0, out = 0;
+  out = ((Math.random() * 2 - 1) + prev) / 2;
+  prev = out;
+  return 0.15 * out * env;
 });
