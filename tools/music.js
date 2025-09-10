@@ -5,7 +5,7 @@
 import fs from 'fs';
 
 // Add after the existing imports
-const notesText = fs.readFileSync('tools/notes_13.txt', 'utf-8');
+const notesText = fs.readFileSync('tools/notes_back_1.txt', 'utf-8');
 const notes = notesText.split(';').map((line, i) => {
   const [time, type, length, instrument] = line.split(' ');
   return {

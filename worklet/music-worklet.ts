@@ -21,7 +21,7 @@ function Square(value: PitchLength) {
       return undefined;
     };
     const sustain = t <= length * NOTE_LENGTH * 0.8 ? 1 : Math.pow(decay, t - length * NOTE_LENGTH * 0.8);
-    return volume * s * sustain;
+    return s * sustain * volume / 2;
   };
 }
 
@@ -91,17 +91,19 @@ type Voice = {
   notes: PitchLength[];
 }
 
-const bolero32: Voice = {
-  gen: Square,
+const boleroMain: Voice = {
+  gen: Tri,
   notes: genNotes(
     '27~6,26~1,27~1,29~1,27~1,26~1,24~1,27~2,27~1,24~1,27~6,26~1,27~1,24~1,22~1,19~1,20~1,22~9,20~1,19~1,17~1,19~1,20~1,22~1,24~1,22~9,24~1,26~1,24~1,22~1,20~1,19~1,17~1,19~1,17~1,15~4,15~1,17~1,19~1,~1,20~1,~1,17~4,22~17,~3,29~7,27~1,26~1,24~1,26~1,27~1,29~1,27~1,26~3,27~1,26~1,24~1,27~1,26~1,24~1,20~3,20~1,20~1,20~1,~1,24~1,~1,27~1,24~1,26~1,22~1,20~2,20~1,20~1,20~1,~1,24~1,~1,26~1,22~1,24~1,20~1,17~2,17~1,15~1,17~6,17~1,17~1,17~1,~1,20~1,~1,24~1,20~1,22~1,19~1,17~2,17~1,15~1,17~6,17~1,15~1,17~2,19~1,20~1,22~9,20~1,19~1,17~1,15~2,22~1,22~1,22~1,~1,22~1,22~1,22~1,~1,22~1,~1,22~1,~1,22~1,22~1,22~1,~1,22~1,22~1,22~1,22~1,22~1,22~1,22~1'
   )
 };
 
-console.log(bolero32);
+const boleroBase: Voice = {
+  gen: Square,
+  notes: genNotes('10~4,22~4,10~4,10~4,22~4,10~2,10~2,10~4,22~4'),
+}
 
-
-let music: Voice[] = [bolero32];
+let music: Voice[] = [boleroMain, boleroBase];
 
 let queue: (() => number | undefined)[] = [];
 
