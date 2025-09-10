@@ -6,6 +6,7 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "^12.1.4",
     "@types/node": "^24.3.0",
+    "@types/web": "^0.0.266",
     "@typescript-eslint/eslint-plugin": "^8.39.1",
     "@typescript-eslint/parser": "^8.39.1",
     "canvas": "^3.2.0",

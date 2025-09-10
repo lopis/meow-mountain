@@ -1,9 +1,14 @@
+/// <reference lib="webworker" />
+/// <reference lib="dom" />
+
 const SAMPLE_RATE = 44000;
 const NOTE_LENGTH = SAMPLE_RATE / 4;
 const volume = 0.8;
 
-function Square(value) {
-  const {pitch, length} = value || {};
+type PitchLength = { pitch: number; length: number; } | undefined;
+
+function Square(value: PitchLength) {
+  const {pitch, length} = value || {pitch: 0, length: 1};
   let t = 0;
   const pitchOffset = 12 * 2;
   const p = 2 ** ((pitch - pitchOffset) / 12) * 1.24;
@@ -13,15 +18,15 @@ function Square(value) {
     let s = (((t * p) / 2) & 89) / 96 - 0.75;
     ++t;
     if (t >= (length * NOTE_LENGTH)) {
-      return undefined
+      return undefined;
     };
     const sustain = t <= length * NOTE_LENGTH * 0.8 ? 1 : Math.pow(decay, t - length * NOTE_LENGTH * 0.8);
     return volume * s * sustain;
   };
 }
 
-function Tri(value) {
-  const {pitch, length} = value || {};
+function Tri(value: PitchLength) {
+  const {pitch, length} = value || {pitch: 0, length: 1};
   let t = 0;
   const pitchOffset = 12 * 2;
   const p = 2 ** ((pitch - pitchOffset) / 12) / 1.24;
@@ -35,11 +40,10 @@ function Tri(value) {
   };
 }
 
-type PitchLength = { pitch: number; length: number; } | undefined;
 
 const genNotes = (str: string): PitchLength[] => {
   const totalLength = str.split(',').reduce((prev: number, n: string): number => {
-    const [note, length] = n.split('~');
+    const [_note, length] = n.split('~');
     return (parseInt(length) || 1) + prev;
   }, 0);
   const notesArray: PitchLength[] = Array.from({ length: totalLength });
@@ -53,7 +57,7 @@ const genNotes = (str: string): PitchLength[] => {
       length: noteLength,
     };
     index += noteLength; // Use the parsed length, not the array value
-  })
+  });
 
   return notesArray;
 };
@@ -95,7 +99,6 @@ const bolero32: Voice = {
 };
 
 console.log(bolero32);
-
 
 
 let music: Voice[] = [bolero32];
@@ -143,14 +146,12 @@ class MusicProcessor extends AudioWorkletProcessor {
 
   constructor() {
     super();
-    this.port.onmessage = this.handleMessage.bind(this);
+    this.port.onmessage = (event) => {
+      const data = event.data;
+    };
   }
 
-  handleMessage(event) {
-    const data = event.data;
-  }
-
-  process(_inputs, outputs, _parameters) {
+  process(inputs: Float32Array[][], outputs: Float32Array[][], _parameters: Map<string, Float32Array>) {
     const outputBuffer = outputs[0][0]; // Assuming mono output
     const startIndex = this.currentIndex;
     const endIndex = this.currentIndex + this.chunkSize;

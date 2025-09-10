@@ -24,7 +24,10 @@ export default defineConfig(({ command, mode }) => {
         '@': path.resolve(__dirname, './src'),
       }
     },
-    plugins: [typescriptPlugin()]
+    plugins: [
+      typescriptPlugin(),
+      workletPlugin(),
+    ],
   };
 
   if (command === 'build') {
@@ -51,12 +54,12 @@ export default defineConfig(({ command, mode }) => {
     };
     config.plugins = [
       typescriptPlugin(),
-      roadrollerPlugin(),
+      // roadrollerPlugin(),
       workletPlugin(),
-      ectPlugin(),
+      // ectPlugin(),
       visualizer({
         filename: 'dist/stats.html',
-        open: true,
+        open: false,
         gzipSize: true,
         brotliSize: true,
       }),
@@ -169,30 +172,54 @@ function workletPlugin(): Plugin {
     name: 'vite:worklet',
     configureServer(server) {
       return () => {
-        server.middlewares.use('/music-worklet.js', async (req, res, next) => {
-          try {
-            const workletContent = await fs.readFile('public/music-worklet.ts', 'utf-8');
-            const jsCode = transpile(workletContent, {
-              target: ScriptTarget.ES2022,
-              module: ModuleKind.ES2022,
-              removeComments: false,
-              strict: true,
-            });
-            
-            res.setHeader('Content-Type', 'application/javascript');
-            res.setHeader('Cache-Control', 'no-cache');
-            res.end(jsCode);
-          } catch (err) {
-            res.statusCode = 500;
-            res.end(`console.error('Worklet compilation failed: ${err.message}');`);
+        server.middlewares.use(async (req, res, next) => {
+          if (req.originalUrl !== '/music-worklet.js') {
+            next();
+          } else {
+            try {
+              const workletPath = path.resolve(__dirname, 'worklet/music-worklet.ts');
+              const workletContent = await fs.readFile(workletPath, 'utf-8');
+              const jsCode = transpile(workletContent, {
+                target: ScriptTarget.ES2022,
+                module: ModuleKind.ES2022,
+                removeComments: false,
+                strict: true,
+              });
+              
+              res.setHeader('Content-Type', 'application/javascript');
+              res.setHeader('Cache-Control', 'no-cache');
+              res.end(jsCode);
+            } catch (err) {
+              res.statusCode = 500;
+              res.end(`console.error('Worklet compilation failed: ${err.message}');`);
+            }
           }
         });
+        // server.middlewares.use('/music-worklet.js', async (req, res, next) => {
+        //   try {
+        //     const workletPath = path.resolve(__dirname, 'worklet/music-worklet.ts');
+        //     const workletContent = await fs.readFile(workletPath, 'utf-8');
+        //     const jsCode = transpile(workletContent, {
+        //       target: ScriptTarget.ES2022,
+        //       module: ModuleKind.ES2022,
+        //       removeComments: false,
+        //       strict: true,
+        //     });
+            
+        //     res.setHeader('Content-Type', 'application/javascript');
+        //     res.setHeader('Cache-Control', 'no-cache');
+        //     res.end(jsCode);
+        //   } catch (err) {
+        //     res.statusCode = 500;
+        //     res.end(`console.error('Worklet compilation failed: ${err.message}');`);
+        //   }
+        // });
       };
     },
     generateBundle: async (): Promise<void> => {
       try {
         // Read the TypeScript worklet file
-        const workletPath = 'public/music-worklet.ts';
+        const workletPath = 'worklet/music-worklet.ts';
         const workletContent = await fs.readFile(workletPath, 'utf-8');
         
         // Transpile TypeScript to JavaScript
@@ -214,14 +241,6 @@ function workletPlugin(): Plugin {
         }
       } catch (err) {
         console.error('Worklet processing error:', err);
-        // Fallback: try JS file
-        try {
-          const workletContent = await fs.readFile('public/music-worklet.js', 'utf-8');
-          await fs.writeFile('dist/music-worklet.js', workletContent);
-          console.log('⚠ Audio worklet copied without minification');
-        } catch (fallbackErr) {
-          console.error('Failed to copy worklet file:', fallbackErr);
-        }
       }
     },
   };
