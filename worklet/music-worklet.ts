@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 /// <reference lib="dom" />
 
-const SAMPLE_RATE = 44000;
+const SAMPLE_RATE = 40000;
 const NOTE_LENGTH = SAMPLE_RATE / 4;
 
 type PitchLength = { pitch: number; length: number; } | undefined;
