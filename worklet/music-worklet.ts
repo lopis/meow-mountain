@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 /// <reference lib="dom" />
 
-const SAMPLE_RATE = 32000;
+const SAMPLE_RATE = 44000;
 const NOTE_LENGTH = SAMPLE_RATE / 4;
 
 type PitchLength = { pitch: number; length: number; } | undefined;
@@ -31,12 +31,19 @@ const BaseSound = (
 const MainSound = BaseSound(
   0,
   0.4,
-  0.5,
+  0.3,
   (t,p) => (((t * p) / 2) & 202) / 120 - 0.75
 );
-const BackgroundSound = BaseSound(4,
+const MainHighSound = BaseSound(
+  -1,
+  0.4,
+  0.3,
+  (t,p) => (((t * p) / 2) & 512) / 120 - 0.75
+);
+const BackgroundSound = BaseSound(
+  4,
   0.1,
-  0.7,
+  2,
   (t,p) => Math.tan(Math.cbrt(Math.sin((t * p) / 30))),
 );
 
@@ -104,12 +111,17 @@ const boleroMain: Voice = {
   )
 };
 
+const boleroHigh: Voice = {
+  ...boleroMain,
+  gen: MainSound,
+}
+
 const boleroBase: Voice = {
   gen: BackgroundSound,
   ...genNotes('10~4,22~4,10~4,10~4,22~4,10~2,10~2,'.repeat(8).slice(0, -1)),
 }
 
-let music: Voice[] = [boleroMain, boleroBase];
+let music: Voice[] = [boleroHigh, boleroBase];
 console.log(music);
 
 

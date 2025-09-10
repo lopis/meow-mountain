@@ -20,7 +20,7 @@ export class Tree extends GameStaticObject {
       GameAssets[treeType],
       x,
       y,
-      'field',
+      treeType,
     );
   }
 
