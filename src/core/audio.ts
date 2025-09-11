@@ -61,9 +61,9 @@ export const meow = (pitch: number) => playSound((i: number) => {
   return Math.sin(i/(20 - pitch) + Math.sin(i/2000)*5) * Math.exp(-i/4000) * (i/96000) * 9;
 });
 
-export const heal = () => ((i: number) => {
+export const heal = () => playSound((i: number) => {
   const n = 6e3;
-  if (i > n) return null;
+  if (i > n) return 0;
   var q = (n - i) / n;
-  return Math.sin(i*0.01*Math.sin(0.007*i+Math.sin(i/1200))+Math.sin(i/800))*q*q;
+  return 0.5 * Math.sin(i*0.01*Math.sin(0.007*i+Math.sin(i/1200))+Math.sin(i/800))*q*q;
 });

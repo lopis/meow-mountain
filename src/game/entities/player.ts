@@ -2,7 +2,7 @@ import { CatStates, GameAssets } from '@/game/game-assets';
 import { GameObject } from '../../core/game-object';
 import { controls } from '../../core/controls';
 import { GameMap } from '../game-map';
-import { CELL_HEIGHT, CELL_WIDTH, MAX_LIVES, statues } from '../constants';
+import { CELL_HEIGHT, CELL_WIDTH, statues } from '../constants';
 import { emit, on } from '@/core/event';
 import { addTimeEvent } from '@/core/timer';
 import { Spirit } from './spirit';
@@ -63,14 +63,6 @@ export class Player extends GameObject<CatStates> {
     on(GameEvent.GAME_OVER, () => {
       this.animation = 'die';
       this.animationLoop = false;
-    });
-
-    on(GameEvent.SLEEP, () => {
-      for (let lives = Math.floor(this.gameData.lives) + 1; lives < MAX_LIVES; lives++) {
-        addTimeEvent(() => {
-          this.gameData.lives = lives;
-        }, 500);        
-      }
     });
   }
 

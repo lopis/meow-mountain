@@ -2,6 +2,8 @@ import { emit, on } from '@/core/event';
 import { MAX_LIVES, NOTIFICATION_DURATION } from './constants';
 import { SceneProps } from './game-story';
 import { GameEvent } from './event-manifest';
+import { addTimeEvent } from '@/core/timer';
+import { heal } from '@/core/audio';
 
 interface Goal {
   label: string,
@@ -10,7 +12,7 @@ interface Goal {
 
 export class GameData {
   cutscene = false;
-  lives = MAX_LIVES;
+  lives = MAX_LIVES / 2;
   maxMagic = 0;
   magic = 0;
   superstition = 0;
@@ -51,6 +53,16 @@ export class GameData {
     on(GameEvent.STATUE_RESTORED, () => {
       this.maxMagic++;
       this.magic = this.maxMagic;
+    });
+
+    on(GameEvent.SLEEP, () => {
+      let i = 0;
+      for (let lives = Math.floor(this.lives) + 1; lives <= MAX_LIVES; lives++) {
+        addTimeEvent(() => {
+          this.lives = lives;
+          heal();
+        }, 500 + 800 * (i++));
+      }
     });
   }
 
