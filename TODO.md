@@ -8,7 +8,6 @@
     - spirit attack
 - Features
   - Implement game ending
-  - Heal when a statue is restored, or at home
   - Show different messages each time we restore a statue
   - When restoring a statue, mark a large circle as "seen"
   - Save game progress
