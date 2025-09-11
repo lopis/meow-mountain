@@ -27,6 +27,7 @@ class Controls {
   isAction1 = false;
   isAction2 = false;
   isAction3 = false;
+  isAction4 = false;
   isMoving = false;
   inputDirection: DOMPoint;
 
@@ -39,6 +40,7 @@ class Controls {
     isAction1: this.isAction1,
     isAction2: this.isAction2,
     isAction3: this.isAction3,
+    isAction4: this.isAction4,
   };
 
   constructor() {
@@ -55,6 +57,7 @@ class Controls {
     this.previousState.isAction1 = this.isAction1;
     this.previousState.isAction2 = this.isAction2;
     this.previousState.isAction3 = this.isAction3;
+    this.previousState.isAction4 = this.isAction4;
     const gamepad = navigator.getGamepads()[0];
     const isButtonPressed = (button: XboxControllerButton) => gamepad?.buttons[button].pressed;
 
@@ -79,8 +82,9 @@ class Controls {
     this.isConfirm = Boolean(this.keyMap.get('Enter') || isButtonPressed(XboxControllerButton.A) || isButtonPressed(XboxControllerButton.Start));
     this.isEscape = Boolean(this.keyMap.get('Escape') || isButtonPressed(XboxControllerButton.Select));
     this.isAction1 = Boolean(this.keyMap.get('Digit1') || isButtonPressed(XboxControllerButton.X));
-    this.isAction2 = Boolean(this.keyMap.get('Digit2') || isButtonPressed(XboxControllerButton.X));
-    this.isAction3 = Boolean(this.keyMap.get('Digit3') || isButtonPressed(XboxControllerButton.X));
+    this.isAction2 = Boolean(this.keyMap.get('Digit2') || isButtonPressed(XboxControllerButton.Y));
+    this.isAction3 = Boolean(this.keyMap.get('Digit3') || isButtonPressed(XboxControllerButton.A));
+    this.isAction4 = Boolean(this.keyMap.get('Digit4') || isButtonPressed(XboxControllerButton.B));
   }
 
   private toggleKey(event: KeyboardEvent, isPressed: boolean) {
