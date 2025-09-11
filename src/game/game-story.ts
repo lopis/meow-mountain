@@ -15,6 +15,7 @@ const enum Scene {
   temple,
   noMagic,
   villagers,
+  end,
 }
 
 const script = {} as Record<Scene, SceneProps>;
@@ -73,6 +74,12 @@ script[Scene.villagers] = {
   ],
 };
 
+script[Scene.end] = {
+  dialogs: [
+    'The barrier is restored.\nTime for a well deserved nap...',
+  ],
+};
+
 const postIntro = () => {
   emit(GameEvent.WAKE_UP);
   emit(GameEvent.SPAWN_FIRST_SPIRIT);
@@ -96,6 +103,9 @@ export class GameStory {
       if(label === Scene.spirit) {
         emit(GameEvent.ENABLE_SCRATCH);
       }
+      if (label === Scene.end) {
+        emit(GameEvent.FADE_OUT);
+      }
     });
 
     on(StoryEngineEvent.STORY_STATE_ENTER, () => {
@@ -118,6 +128,10 @@ export class GameStory {
       if (!script[Scene.villagers].isDone) {
         emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.villagers);
       }
+    });
+
+    on(GameEvent.GAME_END, () => {
+      emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.end);
     });
 
     addTimeEvent(() => this.story.enterState(Scene.intro), 1000);

@@ -2,7 +2,7 @@ import { State } from '@/core/state';
 import { drawEngine } from '@/core/draw-engine';
 import { controls } from '@/core/controls';
 import { gameStateMachine } from '@/game-state-machine';
-import { gameState } from './game.state';
+import { GameState } from './game.state';
 import { colors } from '@/core/util/color';
 import { GameAssets } from '@/game/game-assets';
 import { SeededRandom } from '@/core/util/rng';
@@ -116,7 +116,7 @@ class MenuState implements State {
 
   updateControls() {
     if (controls.isConfirm && !controls.previousState.isConfirm) {
-      gameStateMachine.setState(gameState);
+      gameStateMachine.setState(new GameState());
     }
 
     const fPressed = Boolean(controls.keyMap.get('KeyF'));

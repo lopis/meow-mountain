@@ -43,5 +43,9 @@ export class Obelisk extends GameStaticObject {
       meow(-10);
       emit(GameEvent.NOT_ENOUGH_MAGIC);
     }
+
+    if (this.repair === MAX_REPAIR) {
+      emit(GameEvent.GAME_END);
+    }
   }
 }

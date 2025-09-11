@@ -11,8 +11,10 @@ import { Obelisk } from '@/game/entities/obelisk';
 import musicPlayer from '@/core/music-player';
 import { on } from '@/core/event';
 import { GameEvent } from '@/game/event-manifest';
+import { gameStateMachine } from '@/game-state-machine';
+import { menuState } from './menu.state';
 
-class GameState implements State {
+export class GameState implements State {
   map!: GameMap;
   cat!: Player;
   hud!: HUD;
@@ -20,6 +22,10 @@ class GameState implements State {
   gameData!: GameData;
   story!: GameStory;
   playMusic = true;
+
+  onLeave() {
+    musicPlayer.stop();
+  }
 
   onEnter() {
     if (this.playMusic) {
@@ -34,6 +40,10 @@ class GameState implements State {
     });
     on(GameEvent.UNPAUSE, () => {
       musicPlayer.unpause();
+    });
+
+    on(GameEvent.FADE_OUT, () => {
+      gameStateMachine.setState(menuState);
     });
 
     this.gameData = new GameData();
@@ -65,14 +75,16 @@ class GameState implements State {
     this.story.update(timeElapsed);
     updateTimeEvents(timeElapsed);
 
-    if (this.gameData.lives == 0) {
-      this.cat.draw();
-    } else {
+    if (this.gameData.lives > 0 && !this.gameData.win) {
       this.map.draw(this.cat.x, this.cat.y);
       this.hud.draw();
+    } else {
+      if (this.gameData.lives > 0) {
+        this.hud.draw();
+      }
+      this.cat.update(timeElapsed);
+      this.cat.draw();
     }
     drawEngine.resetCamera();
   }
 }
-
-export const gameState = new GameState();

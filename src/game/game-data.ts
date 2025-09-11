@@ -18,6 +18,7 @@ export class GameData {
   superstition = 0;
   goals: Goal[] = [];
   hasClearedIntro = false;
+  win = false;
 
   constructor() {
     on(GameEvent.SCARED, () => {
