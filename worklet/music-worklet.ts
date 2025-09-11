@@ -111,19 +111,22 @@ const boleroMain: Voice = {
   )
 };
 
-const boleroHigh: Voice = {
-  ...boleroMain,
-  gen: MainSound,
-}
+// const boleroHigh: Voice = {
+//   ...boleroMain,
+//   gen: MainSound,
+// }
 
 const boleroBase: Voice = {
   gen: BackgroundSound,
   ...genNotes('10~4,22~4,10~4,10~4,22~4,10~2,10~2,'.repeat(8).slice(0, -1)),
 }
 
-let music: Voice[] = [boleroHigh, boleroBase];
-console.log(music);
+const boleroShort: Voice = {
+  gen: BackgroundSound,
+  ...genNotes('10~4,22~4,10~4,10~4,22~4,10~2,10~2'),
+}
 
+let music: Voice[] = [boleroShort];
 
 let queue: (() => number | undefined)[] = [];
 
@@ -159,21 +162,41 @@ const processNote = (t: number, playbackRate: number, voices: Voice[]) => {
 };
 
 class MusicProcessor extends AudioWorkletProcessor {
+  playMelody = false;
+  paused = false;
   playbackRate = 1;
   currentIndex = 0;
   chunkSize = 128; // Adjust chunk size as needed
-  sampleCount = music[0].notes.reduce((total, note) => {
-    return total + ((note?.length || 0) * SAMPLE_RATE / 4);
-  }, 0);
+  sampleCount = music[0].totalLength * NOTE_LENGTH;
 
   constructor() {
     super();
     this.port.onmessage = (event) => {
-      const data = event.data;
+      const { name } = event.data;
+      switch (name) {
+        case 'start':
+          this.playMelody = true;
+          break;
+        case 'pause':
+          this.paused = true;          
+          break;
+        case 'unpause':
+          this.paused = false;
+          break;
+        default:
+          break;
+      }
     };
   }
 
   process(inputs: Float32Array[][], outputs: Float32Array[][], _parameters: Map<string, Float32Array>) {
+    if (this.paused) {
+      // Fill output with silence
+      const output = outputs[0][0];
+      output.fill(0);
+      return true;
+    }
+
     const outputBuffer = outputs[0][0]; // Assuming mono output
     const startIndex = this.currentIndex;
     const endIndex = this.currentIndex + this.chunkSize;
@@ -187,6 +210,10 @@ class MusicProcessor extends AudioWorkletProcessor {
     const end = (this.sampleCount / this.playbackRate);
     if (this.currentIndex > end) {
       this.currentIndex = 0;
+      if (this.playMelody) {
+        music = [boleroMain, boleroBase];
+        this.sampleCount = music[0].totalLength * NOTE_LENGTH;
+      }
     }
 
     return true; // Continue processing

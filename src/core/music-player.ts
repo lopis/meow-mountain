@@ -18,6 +18,14 @@ class MusicPlayer {
     this.isPlaying = true;
   }
 
+  pause() {
+    this.musicProcessorNode?.port.postMessage({ name: 'pause' });
+  }
+
+  unpause() {
+    this.musicProcessorNode?.port.postMessage({ name: 'unpause' });
+  }
+
   stop() {
     if (this.isPlaying) {
       this.musicProcessorNode?.disconnect();
@@ -25,8 +33,8 @@ class MusicPlayer {
     }
   }
 
-  speedUp() {
-    this.musicProcessorNode?.port.postMessage({ name: 'speed-up' });
+  startMelody() {
+    this.musicProcessorNode?.port.postMessage({ name: 'start' });
   }
 }
 

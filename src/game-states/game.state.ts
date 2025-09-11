@@ -10,6 +10,8 @@ import { GameStory } from '@/game/game-story';
 import { updateTimeEvents } from '@/core/timer';
 import { Obelisk } from '@/game/entities/obelisk';
 import musicPlayer from '@/core/music-player';
+import { on } from '@/core/event';
+import { GameEvent } from '@/game/event-manifest';
 
 class GameState implements State {
   map!: GameMap;
@@ -19,12 +21,23 @@ class GameState implements State {
   gameData!: GameData;
   particles!: ParticleEngine;
   story!: GameStory;
-  playMusic = false;
+  playMusic = true;
 
   onEnter() {
     if (this.playMusic) {
       musicPlayer.start();
     }
+    
+    on(GameEvent.ENABLE_SCRATCH, () => {
+      musicPlayer.startMelody();
+    });
+    on(GameEvent.PAUSE, () => {
+      musicPlayer.pause();
+    });
+    on(GameEvent.UNPAUSE, () => {
+      musicPlayer.unpause();
+    });
+
     this.particles = new ParticleEngine(drawEngine.ctx2);
     this.gameData = new GameData();
     this.map = new GameMap(160, 160, this.gameData);
