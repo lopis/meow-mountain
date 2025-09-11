@@ -16,6 +16,8 @@ const ANIMATION_SLOW = 600;
 const ANIMATION_NORMAL = 150;
 const ANIMATION_FAST = 75;
 
+const STEP_SOUND_TIME = 200;
+
 export class Player extends GameObject<CatStates> {
   type = 'cat';
   sleeping = true;
@@ -23,7 +25,7 @@ export class Player extends GameObject<CatStates> {
   scared = false;
   inVillage = false;
   pentagramAttack: PentagramAnimation | null = null;
-  stepSoundTimer = 200;
+  stepSoundTimer = 0;
 
   constructor(col: number, row: number, public map: GameMap, public gameData: GameData) {
     super(
@@ -67,10 +69,14 @@ export class Player extends GameObject<CatStates> {
   update(timeElapsed: number) {
     super.update(timeElapsed);
 
-    this.stepSoundTimer -= timeElapsed;
-    if (this.stepSoundTimer <= 0 && this.animation === 'run') {
-      step();
-      this.stepSoundTimer = 200;
+    if (this.animation == 'run') {
+      this.stepSoundTimer -= timeElapsed;
+      if (this.stepSoundTimer <= 0) {
+        step();
+        this.stepSoundTimer = STEP_SOUND_TIME;
+      }
+    } else {
+      this.stepSoundTimer = 0;
     }
 
     const cellVillage = this.map.grid[this.row][this.col].village;
@@ -133,7 +139,6 @@ export class Player extends GameObject<CatStates> {
 
       if (!this.moving.x && !this.moving.y) {
         this.animation = 'idle';
-        this.stepSoundTimer = 200;
       }
 
       // When not attacking, check if playerLookingAt is empty;
