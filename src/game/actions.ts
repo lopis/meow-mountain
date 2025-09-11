@@ -11,7 +11,7 @@ import { addTimeEvent } from '@/core/timer';
 import { GameEvent } from './event-manifest';
 import { meow } from '@/core/audio';
 
-type ActionType = 'teleport' | 'scratch' | 'restore';
+type ActionType = 'teleport' | 'scratch' | 'restore' | 'sleep';
 type Action = {
   type: ActionType,
   color: string,
@@ -41,6 +41,12 @@ export class Actions {
       enabled: false,
       symbol: MAGIC,
     },
+    {
+      type: 'sleep',
+      color: colors.yellow2,
+      enabled: true,
+      symbol: 'z',
+    },
   ];
 
   constructor(map: GameMap, player: Player) {
@@ -55,8 +61,9 @@ export class Actions {
   // Update available actions based on player's current position
   update(): void {
     // Check if player is near a statue
-    this.actions[2].enabled = this.canRestore();
     this.actions[1].enabled = this.canTeleport();
+    this.actions[2].enabled = this.canRestore();
+    this.actions[3].enabled = this.canSleep();
 
     if (controls.isAction2 && !controls.previousState.isAction2 && this.actions[1].enabled) {
       emit(GameEvent.TELEPORT);
@@ -80,6 +87,10 @@ export class Actions {
         }
       }
     }
+
+    if (controls.isAction4 && !controls.previousState.isAction4 && this.actions[3].enabled) {
+      emit(GameEvent.SLEEP);
+    }
   }
 
   private canRestore(): boolean {
@@ -96,5 +107,10 @@ export class Actions {
     return cellInFront.content instanceof Statue
       && this.player.col != statues.heart.x
       && cellInFront.content.state === Statue.State.REPAIRED;
+  }
+
+  private canSleep() {
+    const cellInFront = this.map.getLookingAt();
+    return cellInFront.content == this.map.villages[0].houses[0];
   }
 }
