@@ -140,15 +140,15 @@ class MusicProcessor extends AudioWorkletProcessor {
   constructor() {
     super();
     this.port.onmessage = (event) => {
-      const { name } = event.data;
-      switch (name) {
-        case 'start':
+      const eventID = event.data;
+      switch (eventID) {
+        case 0: // 'start':
           this.playMelody = true;
           break;
-        case 'pause':
+        case 1: // 'pause':
           this.paused = true;          
           break;
-        case 'unpause':
+        case 2: // 'unpause':
           this.paused = false;
           break;
         default:
@@ -188,4 +188,4 @@ class MusicProcessor extends AudioWorkletProcessor {
   }
 }
 
-registerProcessor('music-processor', MusicProcessor);
+registerProcessor('mp', MusicProcessor);

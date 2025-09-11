@@ -12,18 +12,18 @@ class MusicPlayer {
     await this.audioContext.resume();
     await this.audioContext.audioWorklet.addModule('/music-worklet.js');
 
-    this.musicProcessorNode = new AudioWorkletNode(this.audioContext, 'music-processor');
+    this.musicProcessorNode = new AudioWorkletNode(this.audioContext, 'mp');
     
     this.musicProcessorNode.connect(this.audioContext.destination);
     this.isPlaying = true;
   }
 
   pause() {
-    this.musicProcessorNode?.port.postMessage({ name: 'pause' });
+    this.musicProcessorNode?.port.postMessage(1);
   }
 
   unpause() {
-    this.musicProcessorNode?.port.postMessage({ name: 'unpause' });
+    this.musicProcessorNode?.port.postMessage(2);
   }
 
   stop() {
@@ -34,7 +34,7 @@ class MusicPlayer {
   }
 
   startMelody() {
-    this.musicProcessorNode?.port.postMessage({ name: 'start' });
+    this.musicProcessorNode?.port.postMessage(3);
   }
 }
 
