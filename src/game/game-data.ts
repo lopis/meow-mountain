@@ -12,7 +12,7 @@ interface Goal {
 
 export class GameData {
   cutscene = false;
-  lives = MAX_LIVES / 2;
+  lives = MAX_LIVES;
   maxMagic = 0;
   magic = 0;
   superstition = 0;
@@ -53,17 +53,22 @@ export class GameData {
     on(GameEvent.STATUE_RESTORED, () => {
       this.maxMagic++;
       this.magic = this.maxMagic;
+      this.heal();
     });
 
     on(GameEvent.SLEEP, () => {
-      let i = 0;
-      for (let lives = Math.floor(this.lives) + 1; lives <= MAX_LIVES; lives++) {
-        addTimeEvent(() => {
-          this.lives = lives;
-          heal();
-        }, 500 + 800 * (i++));
-      }
+      this.heal();
     });
+  }
+
+  heal() {
+    let i = 0;
+    for (let lives = Math.floor(this.lives) + 1; lives <= MAX_LIVES; lives++) {
+      addTimeEvent(() => {
+        this.lives = lives;
+        heal();
+      }, 500 + 800 * (i++));
+    }
   }
 
   update(timeElapsed: number) {
