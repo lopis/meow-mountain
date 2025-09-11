@@ -33,7 +33,7 @@ export class Player extends GameObject<CatStates> {
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
       'cat',
-      'sleep',
+      CatStates.sleep,
       80,
     );
 
@@ -61,7 +61,7 @@ export class Player extends GameObject<CatStates> {
     });
 
     on(GameEvent.GAME_OVER, () => {
-      this.animation = 'die';
+      this.animation = CatStates.die;
       this.animationLoop = false;
     });
   }
@@ -69,7 +69,7 @@ export class Player extends GameObject<CatStates> {
   update(timeElapsed: number) {
     super.update(timeElapsed);
 
-    if (this.animation == 'run') {
+    if (this.animation == CatStates.run) {
       this.stepSoundTimer -= timeElapsed;
       if (this.stepSoundTimer <= 0) {
         step();
@@ -95,11 +95,11 @@ export class Player extends GameObject<CatStates> {
     }
     
     if(this.scared && !this.isSurrounded()) {
-      this.animation = 'scared';
+      this.animation = CatStates.scared;
     } else if (this.sleeping) {
-      this.animation = 'sleep';
+      this.animation = CatStates.sleep;
     } else if (this.attacking) {
-      this.animation = 'scratch';
+      this.animation = CatStates.scratch;
     } else {
       super.updatePositionSmoothly(timeElapsed);
 
@@ -108,7 +108,7 @@ export class Player extends GameObject<CatStates> {
         const newRow = this.row + controls.inputDirection.y;
         
         if (!this.map.grid[newRow][this.col].content) {
-          this.animation = 'run';
+          this.animation = CatStates.run;
           this.moving.y = controls.inputDirection.y;
           this.targetPos.y += controls.inputDirection.y * CELL_HEIGHT;
           this.row = newRow;
@@ -125,7 +125,7 @@ export class Player extends GameObject<CatStates> {
         const newCol = this.col + controls.inputDirection.x;
         
         if (!this.map.grid[this.row][newCol].content) {
-          this.animation = 'run';
+          this.animation = CatStates.run;
           this.moving.x = controls.inputDirection.x;
           this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;
           this.col = newCol;
@@ -138,7 +138,7 @@ export class Player extends GameObject<CatStates> {
       }
 
       if (!this.moving.x && !this.moving.y) {
-        this.animation = 'idle';
+        this.animation = CatStates.idle;
       }
 
       // When not attacking, check if playerLookingAt is empty;

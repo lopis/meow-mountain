@@ -25,14 +25,15 @@ export const spirits = ([
   return acc;
 }, {} as Record<SpiritType, SpiritSpecies>);
 
+const enum SpiritState {
+  IDLE,
+  MOVING,
+  WINDING,
+  ATTACKING,
+  RESTING
+}
+
 export class Spirit extends Icon implements SmoothMovementState {
-  static readonly State = {
-    IDLE: 0,
-    MOVING: 1,
-    WINDING: 2,
-    ATTACKING: 3,
-    RESTING: 4
-  } as const;
 
   aD = 2000;
   animationTime = 0;
@@ -51,7 +52,7 @@ export class Spirit extends Icon implements SmoothMovementState {
   recoil = false;
   
   // Simplified state system
-  state: number = Spirit.State.IDLE;
+  state: number = SpiritState.IDLE;
   attackTimer = 0;
   attackDuration = 1000;
   attackTarget: Coords | null = null;
@@ -84,8 +85,8 @@ export class Spirit extends Icon implements SmoothMovementState {
     }
 
     switch (this.state) {
-      case Spirit.State.IDLE:
-      case Spirit.State.MOVING:
+      case SpiritState.IDLE:
+      case SpiritState.MOVING:
         updatePositionSmoothly(this, timeElapsed);
         const playerCoords = this.lookAroundForPlayer();
         if (playerCoords) {
@@ -97,9 +98,9 @@ export class Spirit extends Icon implements SmoothMovementState {
         }
         break;
 
-      case Spirit.State.WINDING:
-      case Spirit.State.ATTACKING:
-      case Spirit.State.RESTING:
+      case SpiritState.WINDING:
+      case SpiritState.ATTACKING:
+      case SpiritState.RESTING:
         this.updateAttack(timeElapsed);
         break;
     }
@@ -110,7 +111,7 @@ export class Spirit extends Icon implements SmoothMovementState {
     const progress = this.attackTimer / this.attackDuration;
     
     if (!this.attackTarget) {
-      this.state = Spirit.State.IDLE;
+      this.state = SpiritState.IDLE;
       return;
     }
 
@@ -119,20 +120,20 @@ export class Spirit extends Icon implements SmoothMovementState {
 
     if (progress < 0.7) {
       // Winding up
-      if (this.state !== Spirit.State.WINDING) this.state = Spirit.State.WINDING;
+      if (this.state !== SpiritState.WINDING) this.state = SpiritState.WINDING;
       const windProgress = progress / 0.7;
       this.attackOffsetX = -dirX * windProgress * 3;
       this.attackOffsetY = -dirY * windProgress * 3;
     } else if (progress < 0.73) {
       // Attacking
-      if (this.state !== Spirit.State.ATTACKING) this.state = Spirit.State.ATTACKING;
+      if (this.state !== SpiritState.ATTACKING) this.state = SpiritState.ATTACKING;
       const attackProgress = (progress - 0.7) / 0.03;
       this.attackOffsetX = dirX * (-3 + CELL_WIDTH * attackProgress);
       this.attackOffsetY = dirY * (-3 + CELL_WIDTH * attackProgress);
     } else if (progress < 1.0) {
       // Resting (returning)
-      if (this.state !== Spirit.State.RESTING) {
-        this.state = Spirit.State.RESTING;
+      if (this.state !== SpiritState.RESTING) {
+        this.state = SpiritState.RESTING;
         
         // Only emit if player is still in the target cell
         const cell = this.map.grid[this.attackTarget.row][this.attackTarget.col];
@@ -145,7 +146,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       this.attackOffsetY = dirY * 3 * (1 - restProgress);
     } else {
       // Attack complete
-      this.state = Spirit.State.IDLE;
+      this.state = SpiritState.IDLE;
       this.attackTimer = 0;
       this.attackTarget = null;
       this.attackOffsetX = 0;
@@ -177,7 +178,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       playerCoords,
     );
     if (path && path.length > 2) {
-      this.state = Spirit.State.MOVING;
+      this.state = SpiritState.MOVING;
       const nextStep = path[1];
       setTargetPosition(this, nextStep.col, nextStep.row);
       this.col = nextStep.col;
@@ -186,7 +187,7 @@ export class Spirit extends Icon implements SmoothMovementState {
       this.targetPos.y = nextStep.row * CELL_HEIGHT;
     } else if (path?.length === 2) {
       // Start attack
-      this.state = Spirit.State.WINDING;
+      this.state = SpiritState.WINDING;
       this.attackTarget = path[1];
       this.attackTimer = 0;
     }

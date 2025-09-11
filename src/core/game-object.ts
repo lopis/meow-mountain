@@ -2,12 +2,12 @@ import { CELL_WIDTH, CELL_HEIGHT } from '@/game/constants';
 import { drawEngine } from './draw-engine';
 import { updatePositionSmoothly, SmoothMovementState } from '../utils/smooth-movement';
 
-interface Tileset<T extends string> {
+interface Tileset<T extends (string | number)> {
   animations: Record<T, HTMLImageElement[]>;
   tileSize: number;
 }
 
-export class GameObject<T extends string> implements SmoothMovementState {
+export class GameObject<T extends (string | number)> implements SmoothMovementState {
   animationTime = 0;
   animationFrame = 0;
   aD = 150; // Duration for each animation frame in milliseconds

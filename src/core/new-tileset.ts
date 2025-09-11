@@ -1,6 +1,6 @@
 import { generateImageData } from '@/game/sprite-loader';
 
-export class NewTileset<T extends string> {
+export class NewTileset<T extends string | number> {
   public animations: Record<T, HTMLImageElement[]> = {} as Record<T, HTMLImageElement[]>;
   public tileSize = 16;
 

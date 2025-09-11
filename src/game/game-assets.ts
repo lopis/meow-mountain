@@ -4,7 +4,15 @@ import { createCornerImage } from '@/core/util/image-generator';
 import { generateImageData } from './sprite-loader';
 import { cat, grass, house, oak, obelisk, spruce, statue, villager } from './sprites';
 
-export type CatStates = keyof typeof cat.data;
+export const enum CatStates {
+  idle,
+  walk, 
+  run,
+  die,
+  scratch,
+  scared,
+  sleep
+}
 export type VillagerStates = keyof typeof villager.data;
 
 const emoji = '🔥,🍀,🌼,🐓,🌷,🌹,👻,🥚,🍎'.split(',');

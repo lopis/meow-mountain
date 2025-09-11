@@ -2,6 +2,7 @@
 // Generated on 2025-09-04T14:10:07.197Z
 
 import { colors } from '@/core/util/color';
+import { CatStates } from './game-assets';
 
 export const cat = {
   size: 10,
@@ -10,43 +11,43 @@ export const cat = {
     '#000000',
   ],
   data: {
-    ['idle']: [
+    [CatStates.idle]: [
       '@@@`@PJbcxpO|AQ@@',
       '@@@`@DJbcxpO|AQ@@',
       '@@@@h@nag|pG|AQ@@',
       '@@@@@@z`SxxO|AQ@@'
     ],
-    ['walk']: [
+    [CatStates.walk]: [
       '@@@`@DJbcxpO|AR@@',
       '@@@P@HJdCy`OpC`@@',
       '@@@@@DJbCy`OxCR@@',
       '@@@H@DJbcxpO|AA@@'
     ],
-    ['run']: [
+    [CatStates.run]: [
       '@@@@@@@`ZxyO~@B@@',
       '@@@@@@J`_|xG~@E@@',
       '@@@@@@@`ZxyO~PB@@',
       '@@@@@@J`CxG~@D@@'
     ],
-    ['die']: [
+    [CatStates.die]: [
       '@@@@AHJdCy`OxCb@@',
       '@@@@@@jcC`C@@@@@',
       '@@@@@@@@@x|oxG@@@',
       '@@@@@@@@@@@N~yC@'
     ],
-    ['scratch']: [
+    [CatStates.scratch]: [
       '@@@`@DJbcxpO|AQ@@',
       '@@@@@BPhHN|Ka@@@',
       '@@@D@BEqQ\\xG~`P@@',
       '@@@P@DJbcxpO|AQ@@'
     ],
-    ['scared']: [
+    [CatStates.scared]: [
       '@`@H@F`Wy_~GsPD@@',
       '@`@H@B`Qy_~GwPD@@',
       '@`@H@F`Wy_~GsPD@@',
       '@`@H@B`Qy_~GwPD@@'
     ],
-    ['sleep']: [
+    [CatStates.sleep]: [
       '@@@@@@@@@h~_~K@@@',
       '@@@@@@@`Bx~_~E@@@',
       '@@@@@@@`Bx}o~A@@@',
