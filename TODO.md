@@ -2,29 +2,24 @@
 
 - Audio
   - Background music
-    - Start with just the background music and then start the melody
     - Speed up music as the game progresses
     - Play note in increasing pitch when restoring (?)
   - Sound effects
     - spirit attack
 - Features
+  - Implement game ending
   - Heal when a statue is restored, or at home
   - Show different messages each time we restore a statue
-  - Show different demons the futher we go
   - When restoring a statue, mark a large circle as "seen"
   - Save game progress
   - Restart when dead
 - Design
-  - Broken statue
   - More dynamic grass and trees
-  - Draw floating fairies around restored cat altars
 - Bugs
+  - Shouldn't be possible to teleport on a broken statue
   - Dying animation is broken
   - Goal text doesn't fit the message
-  - Move pentagram drawing to postDraw
-  - Clear out trees around cat altars
   - Improve villagers POV; let cat hide behind obstacles
   - Don't update entities' coordinates before 50% of the movement is done
   - Cat doesn't turn to the side when automatically selecting target
-  - Shouldn't be possible to teleport on a broken statue
   - Sound plays during cut scenes

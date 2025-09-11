@@ -93,7 +93,8 @@ export class Actions {
 
   private canTeleport() {
     const cellInFront = this.map.getLookingAt();
-    return cellInFront.content?.type === 'statue'
-      && this.player.col != statues.heart.x;
+    return cellInFront.content instanceof Statue
+      && this.player.col != statues.heart.x
+      && cellInFront.content.state === Statue.State.REPAIRED;
   }
 }

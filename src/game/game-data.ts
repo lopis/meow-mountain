@@ -14,14 +14,12 @@ export class GameData {
   maxMagic = 0;
   magic = 0;
   superstition = 0;
-  superstitionCooldown = 0;
   goals: Goal[] = [];
   hasClearedIntro = false;
 
   constructor() {
     on(GameEvent.SCARED, () => {
       this.superstition = Math.min(1, this.superstition + 0.01);
-      this.superstitionCooldown = 5000;
     });
 
     on(GameEvent.CUTSCENE_START, () => {
@@ -57,11 +55,6 @@ export class GameData {
   }
 
   update(timeElapsed: number) {
-    this.superstitionCooldown -= timeElapsed;
-    if (this.superstition > 0 && this.superstitionCooldown <= 0) {
-      this.superstition -= (1 / timeElapsed) * 0.001;
-    }
-
     this.goals.forEach(goal => goal.time -= timeElapsed);
   }
 
