@@ -69,17 +69,9 @@ export const villager = {
       'PUAUUQVVTUEUUajj`@BH@@',
       '@@@TUPUUdeEUUQUUhjJH`@'
     ],
-    idle: [
-      '@@@TUPUUdeEUUQUUhjJH`@',
-      '@@@TUPUUdeEUUQUUhjJH`@',
-      'PUAUUQVVTUEUUajj`@BH`@',
-      'PUAUUQVVTUEUUajj`@BH`@'
-    ],
     scared: [
       '@@@TUPUUTfEiiQUUhjJH`@',
       '@@@UETUEeYQZZTUEjjBBH@',
-      '@@@TUPUUTfEiiQUUhjJH`@',
-      '@@@UETUEeYQZZTUEjjBBH@'
     ]
   }
 };

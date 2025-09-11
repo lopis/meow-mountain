@@ -19,7 +19,7 @@ export class Villager extends GameObject<VillagerStates> {
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
       'villager',
-      'idle',
+      'walk',
       10,
     );
   }
@@ -116,8 +116,6 @@ export class Villager extends GameObject<VillagerStates> {
         return;
       }
     }
-
-    this.animation = 'idle';
   }
 
   private isValidMove(col: number, row: number): boolean {
