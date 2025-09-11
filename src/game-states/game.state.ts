@@ -11,7 +11,6 @@ import { Obelisk } from '@/game/entities/obelisk';
 import musicPlayer from '@/core/music-player';
 import { on } from '@/core/event';
 import { GameEvent } from '@/game/event-manifest';
-import { statues } from '@/game/constants';
 
 class GameState implements State {
   map!: GameMap;
@@ -39,7 +38,7 @@ class GameState implements State {
 
     this.gameData = new GameData();
     this.map = new GameMap(160, 160, this.gameData);
-    this.cat = new Player(statues.foot.x, statues.foot.y + 3, this.map, this.gameData);
+    this.cat = new Player(60, 85, this.map, this.gameData);
     this.actions = new Actions(this.map, this.cat);
     this.hud = new HUD(this.map, this.cat, this.actions, this.gameData);
     this.story = new GameStory();
