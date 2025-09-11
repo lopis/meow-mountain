@@ -5,7 +5,7 @@
 import fs from 'fs';
 
 // Add after the existing imports
-const notesText = fs.readFileSync('tools/notes_back_1.txt', 'utf-8');
+const notesText = fs.readFileSync('tools/notes_main.txt', 'utf-8');
 const notes = notesText.split(';').map((line, i) => {
   const [time, type, length, instrument] = line.split(' ');
   return {
@@ -62,7 +62,9 @@ notes
       const noteName = match[1];
       const octave = parseInt(match[2]) - octaveOffset;
       const toneOffset = frequencies[noteName] + octave * 12;
-      justNotes.push(`${toneOffset}~${note.length}`);
+      const toneOffsetBase32 = toneOffset.toString(32);
+      const lengthBase32 = note.length.toString(32);
+      justNotes.push(`${toneOffsetBase32}${lengthBase32}`);
     } else {
       justNotes.push(`~${note.length}`);
     }

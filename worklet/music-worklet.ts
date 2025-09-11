@@ -52,17 +52,18 @@ const genNotes = (str: string): {
     totalLength: number;
 } => {
   const totalLength = str.split(',').reduce((prev: number, n: string): number => {
-    const [_note, length] = n.split('~');
+    const [_note, length] = n.split('');
     return (parseInt(length) || 1) + prev;
   }, 0);
   const notesArray: PitchLength[] = Array.from({ length: totalLength });
   let index = 0;
   str.split(',')
   .forEach(n => {
-    const [note, length] = n.split('~');
+    const [note32, length] = n.split('');
+    const note = parseInt(note32, 32);
     const noteLength = (isNaN(parseInt(length)) ? 1 : parseInt(length));
     notesArray[index] = {
-      pitch: (isNaN(parseInt(note)) ? 0 : parseInt(note)),
+      pitch: (isNaN(note) ? 0 : note),
       length: noteLength,
     };
     index += noteLength; // Use the parsed length, not the array value
@@ -107,7 +108,7 @@ type Voice = {
 const boleroMain: Voice = {
   gen: MainSound,
   ...genNotes(
-    '27~6,26~1,27~1,29~1,27~1,26~1,24~1,27~2,27~1,24~1,27~6,26~1,27~1,24~1,22~1,19~1,20~1,22~9,20~1,19~1,17~1,19~1,20~1,22~1,24~1,22~9,24~1,26~1,24~1,22~1,20~1,19~1,17~1,19~1,17~1,15~4,15~1,17~1,19~1,~1,20~1,~1,17~4,22~17,~3,29~7,27~1,26~1,24~1,26~1,27~1,29~1,27~1,26~3,27~1,26~1,24~1,27~1,26~1,24~1,20~3,20~1,20~1,20~1,~1,24~1,~1,27~1,24~1,26~1,22~1,20~2,20~1,20~1,20~1,~1,24~1,~1,26~1,22~1,24~1,20~1,17~2,17~1,15~1,17~6,17~1,17~1,17~1,~1,20~1,~1,24~1,20~1,22~1,19~1,17~2,17~1,15~1,17~6,17~1,15~1,17~2,19~1,20~1,22~9,20~1,19~1,17~1,15~2,22~1,22~1,22~1,~1,22~1,22~1,22~1,~1,22~1,~1,22~1,~1,22~1,22~1,22~1,~1,22~1,22~1,22~1,22~1,22~1,22~1,22~1'
+    'r6,q1,r1,t1,r1,q1,o1,r2,r1,o1,r6,q1,r1,o1,m1,j1,k1,m9,k1,j1,h1,j1,k1,m1,o1,m9,o1,q1,o1,m1,k1,j1,h1,j1,h1,f4,f1,h1,j1,~1,k1,~1,h4,mh,~3,t7,r1,q1,o1,q1,r1,t1,r1,q3,r1,q1,o1,r1,q1,o1,k3,k1,k1,k1,~1,o1,~1,r1,o1,q1,m1,k2,k1,k1,k1,~1,o1,~1,q1,m1,o1,k1,h2,h1,f1,h6,h1,h1,h1,~1,k1,~1,o1,k1,m1,j1,h2,h1,f1,h6,h1,f1,h2,j1,k1,m9,k1,j1,h1,f2,m1,m1,m1,~1,m1,m1,m1,~1,m1,~1,m1,~1,m1,m1,m1,~1,m1,m1,m1,m1,m1,m1,m1'
   )
 };
 
@@ -118,12 +119,12 @@ const boleroMain: Voice = {
 
 const boleroBase: Voice = {
   gen: BackgroundSound,
-  ...genNotes('10~4,22~4,10~4,10~4,22~4,10~2,10~2,'.repeat(8).slice(0, -1)),
+  ...genNotes('a4,m4,a4,a4,m4,a2,a2,'.repeat(8).slice(0, -1)),
 }
 
 const boleroShort: Voice = {
   gen: BackgroundSound,
-  ...genNotes('10~4,22~4,10~4,10~4,22~4,10~2,10~2'),
+  ...genNotes('a4,m4,a4,a4,m4,a2,a2'),
 }
 
 let music: Voice[] = [boleroShort];
