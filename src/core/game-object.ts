@@ -41,9 +41,9 @@ export class GameObject<T extends (string | number)> implements SmoothMovementSt
   }
 
   update(timeElapsed: number) {
-    // if (!this.animationLoop && this.animationTime > this.aD * this.tileset.animations[this.animation].length) {
-    //   return;
-    // }
+    if (!this.animationLoop && this.animationFrame === (this.tileset.animations[this.animation].length - 1)) {
+      return;
+    }
     this.animationTime += timeElapsed;
     this.animationFrame = Math.floor(this.animationTime / this.aD) % this.tileset.animations[this.animation].length;
   }

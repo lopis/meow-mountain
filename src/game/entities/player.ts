@@ -63,12 +63,16 @@ export class Player extends GameObject<CatStates> {
 
     on(GameEvent.GAME_OVER, () => {
       this.animation = CatStates.die;
+      this.animationTime = 0;
+      this.aD = ANIMATION_SLOW;
       this.animationLoop = false;
     });
   }
 
   update(timeElapsed: number) {
     super.update(timeElapsed);
+
+    if (this.animation === CatStates.die) return;
 
     if (this.animation == CatStates.run) {
       this.stepSoundTimer -= timeElapsed;

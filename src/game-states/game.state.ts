@@ -6,7 +6,7 @@ import { HUD } from '@/game/hud';
 import { Actions } from '@/game/actions';
 import { GameData } from '@/game/game-data';
 import { GameStory } from '@/game/game-story';
-import { updateTimeEvents } from '@/core/timer';
+import { addTimeEvent, updateTimeEvents } from '@/core/timer';
 import { Obelisk } from '@/game/entities/obelisk';
 import musicPlayer from '@/core/music-player';
 import { on } from '@/core/event';
@@ -40,6 +40,10 @@ export class GameState implements State {
     });
     on(GameEvent.UNPAUSE, () => {
       musicPlayer.unpause();
+    });
+
+    on(GameEvent.GAME_OVER, () => {
+      addTimeEvent(() => gameStateMachine.setState(menuState), 2000);
     });
 
     on(GameEvent.FADE_OUT, () => {
