@@ -37,7 +37,7 @@ export class Player extends GameObject<CatStates> {
       80,
     );
 
-    this.animationDuration = ANIMATION_SLOW;
+    this.aD = ANIMATION_SLOW;
     
     // Initialize looking direction to the right
     this.map.playerLookingAt = { col: col + 1, row };
@@ -48,14 +48,14 @@ export class Player extends GameObject<CatStates> {
 
     on(GameEvent.WAKE_UP, () => {
       this.sleeping = false;
-      this.animationDuration = ANIMATION_NORMAL;
+      this.aD = ANIMATION_NORMAL;
     });
 
     on(GameEvent.ATTACK_PLAYER, () => {
       this.scared = true;
-      this.animationDuration = ANIMATION_FAST;
+      this.aD = ANIMATION_FAST;
       addTimeEvent(() => {
-        this.animationDuration = ANIMATION_NORMAL;
+        this.aD = ANIMATION_NORMAL;
         this.scared = false;
       }, 600);
     });
@@ -124,7 +124,7 @@ export class Player extends GameObject<CatStates> {
         this.mirrored = controls.isLeft;
         const newCol = this.col + controls.inputDirection.x;
         
-        if (newCol >= 0 && newCol < this.map.colCount && !this.map.grid[this.row][newCol].content) {
+        if (!this.map.grid[this.row][newCol].content) {
           this.animation = 'run';
           this.moving.x = controls.inputDirection.x;
           this.targetPos.x += controls.inputDirection.x * CELL_WIDTH;
@@ -171,7 +171,7 @@ export class Player extends GameObject<CatStates> {
 
         addTimeEvent(() => {
           this.attacking = false;
-        }, this.animationDuration * 5);
+        }, this.aD * 5);
       }
       this.pentagramAttack?.update(timeElapsed);
     }

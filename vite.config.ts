@@ -54,14 +54,15 @@ export default defineConfig(({ command, mode }) => {
     };
     config.plugins = [
       typescriptPlugin(),
-      // roadrollerPlugin(),
+      roadrollerPlugin(),
       workletPlugin(),
-      // ectPlugin(),
+      ectPlugin(),
       visualizer({
         filename: 'dist/stats.html',
-        open: false,
+        open: true,
         gzipSize: true,
         brotliSize: true,
+        sourcemap: true,
       }),
     ];
   }

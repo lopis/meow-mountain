@@ -25,9 +25,9 @@ export class Statue extends GameStaticObject {
   repair = 0;
   state: number = Statue.State.BROKEN;
   animationTime = 0;
-  repairAnimationDuration = 1500;
+  repairaD = 1500;
   repairAnimationTimer = 0;
-  animationDuration = 800;
+  aD = 800;
 
   constructor(
     col: number,
@@ -52,7 +52,7 @@ export class Statue extends GameStaticObject {
       this.state = Statue.State.ANIMATING;
     } else if (this.state === Statue.State.ANIMATING) {
       this.repairAnimationTimer += timeElapsed;
-      if (this.repairAnimationTimer > this.repairAnimationDuration) {
+      if (this.repairAnimationTimer > this.repairaD) {
         this.state = Statue.State.REPAIRED;
       }
     }
@@ -101,7 +101,7 @@ export class Statue extends GameStaticObject {
     drawEngine.ctx1.fillStyle = colors.purple0;
     
     for (let i = 0; i < 5; i++) {
-      const t = (this.animationTime + this.animationDuration * 0.5 * i) / this.animationDuration;
+      const t = (this.animationTime + this.aD * 0.5 * i) / this.aD;
       const theta = (i * 2 * Math.PI) / 3; // 0, 120°, 240°
       // Offset distance from statue center
       const offsetDist = 3; // adjust as needed
@@ -123,7 +123,7 @@ export class Statue extends GameStaticObject {
   }
 
   drawAnimation() {
-    const animationProgress = (3 * this.repairAnimationTimer / this.repairAnimationDuration) % 1;
+    const animationProgress = (3 * this.repairAnimationTimer / this.repairaD) % 1;
     
     const maxWidth = c2.width / drawEngine.zoom;
     const maxHeight = c2.height / drawEngine.zoom;

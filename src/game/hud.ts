@@ -186,7 +186,7 @@ export class HUD {
     const boxH = 5 * 7 + 30;
     const size = 3;
     const padding = 5;
-    const animationDuration = 200; // 100ms slide animation
+    const aD = 200; // 100ms slide animation
     
     goals.filter(goal => goal.time > 0)
     .forEach((goal, i) => {
@@ -196,14 +196,14 @@ export class HUD {
       // Calculate animation offset based on remaining time
       let offsetX = 0;
       const distanceX = boxW + baseX;
-      if (time > NOTIFICATION_DURATION - animationDuration) {
+      if (time > NOTIFICATION_DURATION - aD) {
         // Sliding in from left (appearing)
-        const progress = (NOTIFICATION_DURATION - time) / animationDuration;
+        const progress = (NOTIFICATION_DURATION - time) / aD;
         const easedProgress = easeInOutSine(progress, 0, 1);
         offsetX = -distanceX * (1 - easedProgress);
-      } else if (time < animationDuration) {
+      } else if (time < aD) {
         // Sliding out to left (disappearing)
-        const progress = time / animationDuration;
+        const progress = time / aD;
         const easedProgress = easeInOutSine(progress, 0, 1);
         offsetX = -distanceX * (1 - easedProgress);
       }

@@ -38,10 +38,10 @@ export class Villager extends GameObject<VillagerStates> {
         this.emitParticle();
       }
       this.animation = 'scared';
-      this.animationDuration = 50;
+      this.aD = 50;
     } else {
       this.isScared = false;
-      this.animationDuration = 150;
+      this.aD = 150;
       if (this.moveTimer >= this.moveInterval) {
         this.takeNextStep();
         this.moveTimer = 0;

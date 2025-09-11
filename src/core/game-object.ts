@@ -8,12 +8,12 @@ interface Tileset<T extends string> {
 }
 
 export class GameObject<T extends string> implements SmoothMovementState {
-  protected animationTime = 0;
-  protected animationFrame = 0;
-  protected animationDuration = 150; // Duration for each animation frame in milliseconds
+  animationTime = 0;
+  animationFrame = 0;
+  aD = 150; // Duration for each animation frame in milliseconds
   animationLoop = true;
-  public col: number;
-  public row: number;
+  col: number;
+  row: number;
   moving = { x: 0, y: 0 };
   targetPos: { x: number; y: number };
 
@@ -22,13 +22,13 @@ export class GameObject<T extends string> implements SmoothMovementState {
     public x: number,
     public y: number,
     public type: string,
-    protected animation: T,
+    public animation: T,
     public speed: number = 0,
-    protected mirrored: boolean = false,
+    public mirrored: boolean = false,
   ) {
     this.col = Math.ceil(x / CELL_WIDTH);
     this.row = Math.ceil(y / CELL_HEIGHT);
-    this.animationTime = Math.random() * this.animationDuration;
+    this.animationTime = Math.random() * this.aD;
     this.targetPos = { x: this.x, y: this.y };
   }
 
@@ -41,11 +41,11 @@ export class GameObject<T extends string> implements SmoothMovementState {
   }
 
   update(timeElapsed: number) {
-    // if (!this.animationLoop && this.animationTime > this.animationDuration * this.tileset.animations[this.animation].length) {
+    // if (!this.animationLoop && this.animationTime > this.aD * this.tileset.animations[this.animation].length) {
     //   return;
     // }
     this.animationTime += timeElapsed;
-    this.animationFrame = Math.floor(this.animationTime / this.animationDuration) % this.tileset.animations[this.animation].length;
+    this.animationFrame = Math.floor(this.animationTime / this.aD) % this.tileset.animations[this.animation].length;
   }
 
   updatePositionSmoothly(timeElapsed: number) {

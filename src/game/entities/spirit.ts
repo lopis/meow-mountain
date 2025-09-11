@@ -34,7 +34,7 @@ export class Spirit extends Icon implements SmoothMovementState {
     RESTING: 4
   } as const;
 
-  animationDuration = 2000;
+  aD = 2000;
   animationTime = 0;
   opacity = 0;
   species: SpiritSpecies;
@@ -77,10 +77,10 @@ export class Spirit extends Icon implements SmoothMovementState {
 
     this.animationTime += timeElapsed * Math.pow(this.species.level + 0.5, 2);
     if (this.opacity < 1) {
-      this.opacity += timeElapsed / this.animationDuration;
+      this.opacity += timeElapsed / this.aD;
     }
-    if (this.animationTime >= this.animationDuration) {
-      this.animationTime -= this.animationDuration;
+    if (this.animationTime >= this.aD) {
+      this.animationTime -= this.aD;
     }
 
     switch (this.state) {
@@ -193,7 +193,7 @@ export class Spirit extends Icon implements SmoothMovementState {
   }
 
   draw() {
-    const phase = Math.sin((this.animationTime / this.animationDuration) * 2 * Math.PI);
+    const phase = Math.sin((this.animationTime / this.aD) * 2 * Math.PI);
     drawEngine.ctx1.save();
     drawEngine.ctx1.globalAlpha = this.opacity;
 
