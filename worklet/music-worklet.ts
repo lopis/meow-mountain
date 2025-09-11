@@ -6,6 +6,12 @@ const NOTE_LENGTH = SAMPLE_RATE / 4;
 
 type PitchLength = { pitch: number; length: number; } | undefined;
 
+type Voice = {
+  gen: (value: any) => () => number | undefined;
+  notes: PitchLength[];
+  totalLength: number;
+}
+
 const BaseSound = (
   pitchOffset: number,
   sustainTime: number,
@@ -27,25 +33,6 @@ const BaseSound = (
     return s(t,p) * sustain * volume;
   };
 }
-
-const MainSound = BaseSound(
-  0,
-  0.4,
-  0.3,
-  (t,p) => (((t * p) / 2) & 202) / 120 - 0.75
-);
-const MainHighSound = BaseSound(
-  -1,
-  0.4,
-  0.3,
-  (t,p) => (((t * p) / 2) & 512) / 120 - 0.75
-);
-const BackgroundSound = BaseSound(
-  4,
-  0.1,
-  2,
-  (t,p) => Math.tan(Math.cbrt(Math.sin((t * p) / 30))),
-);
 
 const genNotes = (str: string): {
     notes: PitchLength[];
@@ -75,38 +62,13 @@ const genNotes = (str: string): {
   };
 };
 
-// const lowPart1 =
-//   '11 -1 11,,11 15 18,,-9 3,,11 15 18,,-2 10,,18 13 10 10,,3 -9,,18 13 10 10,,';
-// const lowPart2 =
-//   '10 -2 10,,13 9 4,,3 -9,,9 13 4,,3 -9,,10 13 6,,4 -8,,-6 6 10 13,';
-// const low = `${lowPart1}${lowPart1}${lowPart1}${lowPart2},11 -1,,11 15 18,,-9 3,,11 15 18,,-2 10,,18 13 10 10,,3 -9,,18 13 10 10,,${lowPart1}${lowPart1}${lowPart2}`;
-// const lowNotes = {
-//   gen: Square,
-//   notes: genNotes(
-//     `${low},${low},,,`
-//   )
-// };
-
-// const highPart1 =
-//   "17,18 6,19 7,20 8,21 9,,22 10,,23 11,,24 12,,25 13,,26 14,,27 15 26,,27 15 26,,27 15 26,,";
-// const highPart2 = "27 15 26,,27 15 26,,26 14,,25 13,,24 12,,5";
-// const highPart3 =
-//   "5 17 22 29,,5 17 20 29,,,,5 17 21 29,,0 12 21 29,,4 21 16 28,,3 21 15 27,,2 21 14 26,,4 12 24,,2 14 26,,1 13 25,,0 12 24,,3 -1 11 23,,0 12 24,,-2 10 22,,-2 10 22,,29 24 21 19 14,,29 21 19 14 24,,,,29 21 19 14,,29 14 19 21,,28 21 17 12,,27 21 16 11,,26 21 14,,-6 18,29 17,16 28,27 15,26 14,25 13,24 12,23 11,22 10,21 9,20 8,19 7,18 6,17 5,16 4,15 3,17 28 29,,17 29,,17 29,,17 29,,17 29,,28 15,,27 14,,26 13,,25 12,,24 11,,23 10,,22 9,,21 8,,22 10,,23 11,,24 12,,12 17 28 29 5,,28 17 12 5 29 24,,28 26 17 12 5 29,,28 17 12 5 29,,28 17 12 5 29,,4 16 28,,27 15,,26 14,,25 13,,,,19 8,,6,,5 17,,,,14";
-// const highNotes = {
-//   gen: Tri,
-//   notes: genNotes(
-//     `5 9 ${highPart1} ${highPart2} ${highPart1} 26 15,,27 26 15,,27 26 15,,28 16,,28 16,,5 ${highPart1} ${highPart2} 17,18 6,19 7,20 8,21 9,,22 10,22 10,23 11,,24 12,,25 13,,26 14,,27 15 26,,27 15 26,,27 15 26,,27 26 15,,28 16,,28 16,,28 16,,28 16,,${highPart3},,,`
-//   )
-// };
-
-type Voice = {
-  gen: (value: any) => () => number | undefined;
-  notes: PitchLength[];
-  totalLength: number;
-}
-
 const boleroMain: Voice = {
-  gen: MainSound,
+  gen: BaseSound(
+    0,
+    0.4,
+    0.3,
+    (t,p) => (((t * p) / 2) & 202) / 120 - 0.75
+  ),
   ...genNotes(
     'r6,q1,r1,t1,r1,q1,o1,r2,r1,o1,r6,q1,r1,o1,m1,j1,k1,m9,k1,j1,h1,j1,k1,m1,o1,m9,o1,q1,o1,m1,k1,j1,h1,j1,h1,f4,f1,h1,j1,~1,k1,~1,h4,mh,~3,t7,r1,q1,o1,q1,r1,t1,r1,q3,r1,q1,o1,r1,q1,o1,k3,k1,k1,k1,~1,o1,~1,r1,o1,q1,m1,k2,k1,k1,k1,~1,o1,~1,q1,m1,o1,k1,h2,h1,f1,h6,h1,h1,h1,~1,k1,~1,o1,k1,m1,j1,h2,h1,f1,h6,h1,f1,h2,j1,k1,m9,k1,j1,h1,f2,m1,m1,m1,~1,m1,m1,m1,~1,m1,~1,m1,~1,m1,m1,m1,~1,m1,m1,m1,m1,m1,m1,m1'
   )
@@ -118,12 +80,17 @@ const boleroMain: Voice = {
 // }
 
 const boleroBase: Voice = {
-  gen: BackgroundSound,
+  gen: BaseSound(
+    4,
+    0.1,
+    2,
+    (t,p) => Math.tan(Math.cbrt(Math.sin((t * p) / 30))),
+  ),
   ...genNotes('a4,m4,a4,a4,m4,a2,a2,'.repeat(8).slice(0, -1)),
 }
 
 const boleroShort: Voice = {
-  gen: BackgroundSound,
+  ...boleroBase,
   ...genNotes('a4,m4,a4,a4,m4,a2,a2'),
 }
 
