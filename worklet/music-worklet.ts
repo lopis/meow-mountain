@@ -4,7 +4,7 @@
 const SAMPLE_RATE = 40000;
 const NOTE_LENGTH = SAMPLE_RATE / 4;
 
-type PitchLength = { pitch: number; length: number; } | undefined;
+type PitchLength = [ number, number ] | undefined;
 
 type Voice = {
   gen: (value: any) => () => number | undefined;
@@ -18,7 +18,7 @@ const BaseSound = (
   volume: number,
   s: (t:number, p:number) => number,
 ) => (value: PitchLength) => {
-  const {pitch, length} = value || {pitch: 0, length: 1};
+  const [pitch, length] = value || [0, 1];
   let t = 0;
   const p = 2 ** ((pitch - pitchOffset * 12) / 12) * 1.24;
   const decay = Math.pow(0.9999, 2 / (length));
@@ -49,10 +49,10 @@ const genNotes = (str: string): {
     const [note32, length] = n.split('');
     const note = parseInt(note32, 32);
     const noteLength = (isNaN(parseInt(length)) ? 1 : parseInt(length));
-    notesArray[index] = {
-      pitch: (isNaN(note) ? 0 : note),
-      length: noteLength,
-    };
+    notesArray[index] = [
+      (isNaN(note) ? 0 : note),
+      noteLength,
+    ];
     index += noteLength; // Use the parsed length, not the array value
   });
 
@@ -109,7 +109,7 @@ const processNote = (t: number, playbackRate: number, voices: Voice[]) => {
       const note = voice.notes[noteIndex];
       if (!note) continue;
       
-      const noteDuration = note.length * NOTE_LENGTH;
+      const noteDuration = note[1] * NOTE_LENGTH;
       
       if (t === currentTime) {
         const genFn = voice.gen(note);
