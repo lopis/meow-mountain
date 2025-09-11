@@ -69,7 +69,7 @@ script[Scene.temple] = {
 script[Scene.villagers] = {
   dialogs: [
     'Villagers are very supersticious.',
-    'I should not let them see me,\n that will empower the evil spirits.',
+    'I should not let them see me,\nthat will empower the evil spirits.',
   ],
 };
 

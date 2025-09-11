@@ -11,7 +11,7 @@ import { addTimeEvent } from '@/core/timer';
 import { GameEvent } from './event-manifest';
 import { meow } from '@/core/audio';
 
-type ActionType = 'teleport' | 'scratch' | 'restore' | 'sleep';
+type ActionType = 'teleport' | 'scratch' | 'repair' | 'sleep';
 type Action = {
   type: ActionType,
   color: string,
@@ -36,7 +36,7 @@ export class Actions {
       symbol: TELEPORT,
     },
     {
-      type: 'restore',
+      type: 'repair',
       color: colors.green1,
       enabled: false,
       symbol: MAGIC,
@@ -44,7 +44,7 @@ export class Actions {
     {
       type: 'sleep',
       color: colors.yellow2,
-      enabled: true,
+      enabled: false,
       symbol: 'z',
     },
   ];

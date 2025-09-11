@@ -182,7 +182,7 @@ export class HUD {
 
     const baseX = 16;
     const y = 16 + 7 * 5 + 10; // lives y  + lives box height + margin
-    const boxW = 420;
+    const boxW = 510;
     const boxH = 5 * 7 + 30;
     const size = 3;
     const padding = 5;

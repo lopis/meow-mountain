@@ -3,8 +3,6 @@ import { GameAssets, VillagerStates } from '../game-assets';
 import { CELL_HEIGHT, CELL_WIDTH } from '../constants';
 import { GameMap } from '../game-map';
 import { emit } from '@/core/event';
-import { colors } from '@/core/util/color';
-import { drawEngine } from '@/core/draw-engine';
 import { GameEvent } from '../event-manifest';
 
 export class Villager extends GameObject<VillagerStates> {
@@ -35,7 +33,6 @@ export class Villager extends GameObject<VillagerStates> {
       }
       if (this.moveTimer % (this.moveInterval / 5) < timeElapsed) {
         emit(GameEvent.SCARED);
-        this.emitParticle();
       }
       this.animation = VillagerStates.scared;
       this.aD = 50;
@@ -48,33 +45,6 @@ export class Villager extends GameObject<VillagerStates> {
       }
       this.updatePositionSmoothly(timeElapsed);
     }
-  }
-
-  emitParticle() {
-    // Convert world coordinates to screen coordinates for the particle
-    const screenPos = drawEngine.worldToScreen(
-      this.x + CELL_WIDTH / 2,
-      this.y
-    );
-
-    // Target the center of the superstition bar in the HUD
-    const superstitionBarX = drawEngine.canvasWidth / 2;
-    const superstitionBarY = 30;
-
-    const particle = {
-      from: {
-        x: screenPos.x - 10 + Math.round(Math.random() * 20),
-        y: screenPos.y - 50 + Math.round(Math.random() * 100),
-      },
-      to: {
-        x: superstitionBarX,
-        y: superstitionBarY,
-      },
-      size: 5 + Math.round(Math.random() * 5),
-      color: colors.blue4,
-      duration: 500,
-    };
-    emit(GameEvent.PARTICLE, particle);
   }
 
   // Looks around for an empty cell to move to.

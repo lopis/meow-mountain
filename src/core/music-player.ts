@@ -10,12 +10,16 @@ class MusicPlayer {
 
     this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     await this.audioContext.resume();
-    await this.audioContext.audioWorklet.addModule('/music-worklet.js');
+    await this.audioContext.audioWorklet.addModule('music-worklet.js');
 
     this.musicProcessorNode = new AudioWorkletNode(this.audioContext, 'mp');
     
     this.musicProcessorNode.connect(this.audioContext.destination);
     this.isPlaying = true;
+  }
+
+  startMelody() {
+    this.musicProcessorNode?.port.postMessage(0);
   }
 
   pause() {
@@ -31,10 +35,6 @@ class MusicPlayer {
       this.musicProcessorNode?.disconnect();
       this.isPlaying = false;
     }
-  }
-
-  startMelody() {
-    this.musicProcessorNode?.port.postMessage(3);
   }
 }
 

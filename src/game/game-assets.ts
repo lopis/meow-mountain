@@ -1,5 +1,5 @@
 import { emojiToPixelArt } from '@/core/emoji';
-import { NewTileset as NewTileset } from '@/core/new-tileset';
+import { NewTileset as NewTileset } from '@/core/tileset';
 import { createCornerImage } from '@/core/util/image-generator';
 import { generateImageData } from './sprite-loader';
 import { cat, grass, house, oak, obelisk, spruce, statue, villager } from './sprites';

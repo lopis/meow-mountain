@@ -8,7 +8,7 @@ export const cat = {
   size: 10,
   frames: 4,
   palette: [
-    '#000000',
+    colors.black,
   ],
   data: {
     [CatStates.idle]: [
@@ -60,7 +60,7 @@ export const villager = {
   size: 8,
   frames: 4,
   palette: [
-    colors.purple3,
+    colors.purple0,
     colors.blue6,
   ],
   data: {

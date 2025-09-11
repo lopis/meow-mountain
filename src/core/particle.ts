@@ -2,6 +2,9 @@ import { GameEvent } from '@/game/event-manifest';
 import { on } from '@/core/event';
 import { easeInExpo } from './util/util';
 
+/**
+ * Not being used.
+ */
 export interface Particle {
   from: { x: number, y: number },
   to: { x: number, y: number },

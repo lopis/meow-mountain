@@ -1,5 +1,9 @@
 # TODO List
 
+- Game test feedback
+  - "restore" is confusing wording
+  - it's not clear that the cat temples increase magic for the purpose of fixing the obelisk
+
 - Audio
   - Background music
     - Speed up music as the game progresses
@@ -7,9 +11,9 @@
   - Sound effects
     - spirit attack
 - Features
-  - Implement game ending
-  - Show different messages each time we restore a statue
-  - When restoring a statue, mark a large circle as "seen"
+  - Implement game endingrestore a statue
+  - When restoring a statue, mark a l
+  - Show different messages each time we arge circle as "seen"
   - Save game progress
   - Restart when dead
 - Design

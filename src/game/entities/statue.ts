@@ -22,11 +22,15 @@ export class Statue extends GameStaticObject {
   spawnInterval = 1000;
   spawnChance = 0.10;
   spawnRadius = 10;
-  repair = 0;
+  repair = 19;
   state: number = Statue.State.BROKEN;
   animationTime = 0;
   repairaD = 1500;
   repairAnimationTimer = 0;
+
+  /**
+   * Animation duration
+   */
   aD = 800;
 
   constructor(
@@ -140,7 +144,8 @@ export class Statue extends GameStaticObject {
       colors.white,
       8,
     );
-    this.map.clearCircleWithJitter(this.col, this.row, 15 * animationProgress, true, 0.01, 0.1);
+    this.map.clearCircleWithJitter(this.col, this.row, 20 * animationProgress, true, 0.01, 0.05);
+    this.spirits.forEach(spirit => spirit.takeDamage(spirit.hp));
   }
 
   private spawnSpirit() {

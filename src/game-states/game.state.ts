@@ -5,7 +5,6 @@ import { GameMap } from '@/game/game-map';
 import { HUD } from '@/game/hud';
 import { Actions } from '@/game/actions';
 import { GameData } from '@/game/game-data';
-import { ParticleEngine } from '@/core/particle';
 import { GameStory } from '@/game/game-story';
 import { updateTimeEvents } from '@/core/timer';
 import { Obelisk } from '@/game/entities/obelisk';
@@ -19,7 +18,6 @@ class GameState implements State {
   hud!: HUD;
   actions!: Actions;
   gameData!: GameData;
-  particles!: ParticleEngine;
   story!: GameStory;
   playMusic = true;
 
@@ -38,7 +36,6 @@ class GameState implements State {
       musicPlayer.unpause();
     });
 
-    this.particles = new ParticleEngine(drawEngine.ctx2);
     this.gameData = new GameData();
     this.map = new GameMap(160, 160, this.gameData);
     this.cat = new Player(60, 85, this.map, this.gameData);
@@ -61,7 +58,6 @@ class GameState implements State {
       this.actions.update();
       this.map.update(timeElapsed);
       this.hud.update(timeElapsed);
-      this.particles.update(timeElapsed);
       this.gameData.update(timeElapsed);
     } else if (this.gameData.cutscene) {
       this.cat.update(timeElapsed);
