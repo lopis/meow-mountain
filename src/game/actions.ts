@@ -9,6 +9,7 @@ import { Statue } from './entities/statue';
 import { Obelisk } from './entities/obelisk';
 import { addTimeEvent } from '@/core/timer';
 import { GameEvent } from './event-manifest';
+import { meow } from '@/core/audio';
 
 type ActionType = 'teleport' | 'scratch' | 'restore';
 type Action = {
@@ -68,6 +69,7 @@ export class Actions {
       if (object.repair < MAX_REPAIR) {
         if (object instanceof Statue) {
           object.repair++;
+          meow(object.repair);
           if (object.repair >= MAX_REPAIR) {
             addTimeEvent(() => {
               emit(GameEvent.STATUE_RESTORED);

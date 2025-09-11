@@ -10,7 +10,7 @@ import { GameData } from '../game-data';
 import { PentagramAnimation } from './pentagram-attack';
 import { drawEngine } from '@/core/draw-engine';
 import { GameEvent } from '../event-manifest';
-import { step } from '@/core/audio';
+import { attack, attack5, step } from '@/core/audio';
 
 const ANIMATION_SLOW = 600;
 const ANIMATION_NORMAL = 150;
@@ -161,6 +161,7 @@ export class Player extends GameObject<CatStates> {
             () => {
               this.pentagramAttack = null;
               this.attackAllEnemiesAround();
+              attack5();
             },
           );
         } else {
@@ -274,6 +275,7 @@ export class Player extends GameObject<CatStates> {
     if (cell.content && cell.content.type === 'spirit') {
       const spirit = cell.content as Spirit;
       spirit.takeDamage(1);
+      attack();
     } else if (cell.content && cell.content.type === 'field') {
       cell.content = null;
     }

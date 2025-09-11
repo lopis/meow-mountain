@@ -6,8 +6,7 @@
     - Speed up music as the game progresses
     - Play note in increasing pitch when restoring (?)
   - Sound effects
-    - steps
-    - scratch
+    - spirit attack
 - Features
   - Heal when a statue is restored, or at home
   - Show different messages each time we restore a statue
@@ -27,3 +26,5 @@
   - Improve villagers POV; let cat hide behind obstacles
   - Don't update entities' coordinates before 50% of the movement is done
   - Cat doesn't turn to the side when automatically selecting target
+  - Shouldn't be possible to teleport on a broken statue
+  - Sound plays during cut scenes
