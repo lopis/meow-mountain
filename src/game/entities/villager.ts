@@ -19,7 +19,7 @@ export class Villager extends GameObject<VillagerStates> {
       col * CELL_WIDTH,
       row * CELL_HEIGHT,
       'villager',
-      'walk',
+      VillagerStates.walk,
       10,
     );
   }
@@ -37,7 +37,7 @@ export class Villager extends GameObject<VillagerStates> {
         emit(GameEvent.SCARED);
         this.emitParticle();
       }
-      this.animation = 'scared';
+      this.animation = VillagerStates.scared;
       this.aD = 50;
     } else {
       this.isScared = false;
@@ -97,7 +97,7 @@ export class Villager extends GameObject<VillagerStates> {
         this.row = newRow;
         this.targetPos = { x: newCol * CELL_WIDTH, y: newRow * CELL_HEIGHT };
         this.lastDirection = this.lastDirection;
-        this.animation = 'walk';
+        this.animation = VillagerStates.walk;
         return;
       }
     }
@@ -112,7 +112,7 @@ export class Villager extends GameObject<VillagerStates> {
         this.row = newRow;
         this.targetPos = { x: newCol * CELL_WIDTH, y: newRow * CELL_HEIGHT };
         this.lastDirection = dir;
-        this.animation = 'walk';
+        this.animation = VillagerStates.walk;
         return;
       }
     }

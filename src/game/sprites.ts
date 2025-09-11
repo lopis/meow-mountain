@@ -2,7 +2,7 @@
 // Generated on 2025-09-04T14:10:07.197Z
 
 import { colors } from '@/core/util/color';
-import { CatStates } from './game-assets';
+import { CatStates, VillagerStates } from './game-assets';
 
 export const cat = {
   size: 10,
@@ -64,16 +64,16 @@ export const villager = {
     colors.blue6,
   ],
   data: {
-    walk: [
+    [VillagerStates.walk]: [
       'PUAUUQVVTUEUUajj`@B@`@',
       '@@@TUPUUdeEUUQUUhjJH`@',
       'PUAUUQVVTUEUUajj`@BH@@',
       '@@@TUPUUdeEUUQUUhjJH`@'
     ],
-    scared: [
+    [VillagerStates.scared]: [
       '@@@TUPUUTfEiiQUUhjJH`@',
       '@@@UETUEeYQZZTUEjjBBH@',
-    ]
+    ],
   }
 };
 

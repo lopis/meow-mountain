@@ -13,7 +13,10 @@ export const enum CatStates {
   scared,
   sleep
 }
-export type VillagerStates = keyof typeof villager.data;
+export const enum VillagerStates {
+  walk,
+  scared,
+} ;
 
 const emoji = '🔥,🍀,🌼,🐓,🌷,🌹,👻,🥚,🍎'.split(',');
 export const icons = emoji.map(e => emojiToPixelArt(e));
