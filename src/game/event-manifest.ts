@@ -10,6 +10,7 @@ export const enum GameEvent {
   RESTORE,
   ENABLE_SCRATCH,
   ENTER_VILLAGE,
+  SLEEP,
   
   // Combat events
   ATTACK_PLAYER,
