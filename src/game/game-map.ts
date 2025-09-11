@@ -12,6 +12,7 @@ import { GameAssets } from './game-assets';
 import { GameData } from './game-data';
 import { GameEvent } from './event-manifest';
 import { Farm } from './entities/farm';
+import { forEachSurroundingCell } from './grid-utils';
 
 export class GameMap {
   grid: Cell[][];
@@ -53,9 +54,9 @@ export class GameMap {
     );
 
     this.villages = [
-      new Village('Heart Peak', { x: 70, y: 90 }, 10, 1, 0),
-      new Village('Moon Plains', { x: 129, y: 29 }, 8, 10, 20),
-      new Village('Paw\'s Ridge', { x: 99, y: 100 }, 8, 2, 3),
+      new Village('Heart Peak', { x: 70, y: 90 }, 12, 1, 0),
+      new Village('Moon Town', { x: 129, y: 29 }, 8, 10, 20),
+      new Village('Ridge Village', { x: 99, y: 100 }, 8, 2, 3),
     ];
 
     // Clear paths with jitter
@@ -71,16 +72,6 @@ export class GameMap {
     // Clear circular areas with jitter
     for (const clearing of clearings) {
       this.clearCircleWithJitter(clearing.x, clearing.y, clearing.r);
-    }
-
-    for (const statueProps of Object.values(statues)) {
-      const { x, y, name } = statueProps;
-      const fullName = `cat ${name} altar`;
-      const statue = new Statue(x, y, this, this.gameData, fullName);
-      if (x === statues.heart.x) {
-        statue.maxSpirits = 0;
-      }
-      this.grid[y][x].content = statue;
     }
 
     // Calculate neighbor information for each tree
@@ -128,6 +119,21 @@ export class GameMap {
     }
 
     this.fillCenterWithGrass(1.0);
+
+    for (const statueProps of Object.values(statues)) {
+      const { x, y, name } = statueProps;
+      const fullName = `cat ${name} altar`;
+      const statue = new Statue(x, y, this, this.gameData, fullName);
+      if (x === statues.heart.x) {
+        statue.maxSpirits = 0;
+      }
+      // Place farms in the 8 squares around the statue
+      forEachSurroundingCell(x, y, (farmCol, farmRow) => {
+        const cell = this.grid[farmRow][farmCol];
+        cell.content = new Farm(farmCol, farmRow);
+      });
+      this.grid[y][x].content = statue;
+    }
 
     on(GameEvent.SPAWN_FIRST_SPIRIT, () => {
       this.set(64, 89, new Spirit(64, 89, '☁️', this));

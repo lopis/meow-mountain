@@ -59,7 +59,7 @@ export default defineConfig(({ command, mode }) => {
       ectPlugin(),
       visualizer({
         filename: 'dist/stats.html',
-        open: true,
+        open: false,
         gzipSize: true,
         brotliSize: true,
         sourcemap: true,

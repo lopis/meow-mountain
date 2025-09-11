@@ -8,6 +8,7 @@ import { addTimeEvent } from '@/core/timer';
 import { Spirit } from './spirit';
 import { GameData } from '../game-data';
 import { PentagramAnimation } from './pentagram-attack';
+import { forEachSurroundingCell } from '../grid-utils';
 import { drawEngine } from '@/core/draw-engine';
 import { GameEvent } from '../event-manifest';
 import { attack, attack5, step } from '@/core/audio';
@@ -183,43 +184,25 @@ export class Player extends GameObject<CatStates> {
   // Deals 5 damage to all spirits
   // in the 9 cells around the cat.
   attackAllEnemiesAround() {
-    // Check 3x3 grid around player
-    for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
-      for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
-        // Skip the center cell (player's position)
-        if (deltaRow === 0 && deltaCol === 0) continue;
-        
-        const checkCol = this.col + deltaCol;
-        const checkRow = this.row + deltaRow;
-        const cell = this.map.grid[checkRow][checkCol];
-        if (cell.content?.type === 'spirit') {
-          const spirit = cell.content as Spirit;
-          spirit.takeDamage(5);
-        }
+    forEachSurroundingCell(this.col, this.row, (col, row) => {
+      const cell = this.map.grid[row][col];
+      if (cell.content?.type === 'spirit') {
+        const spirit = cell.content as Spirit;
+        spirit.takeDamage(5);
       }
-    }
+    });
   }
 
   // Returns true if there are 3 or more spirits
   // in the 9 cells around the cat.
   isSurrounded() {
     let spiritCount = 0;
-    
-    // Check 3x3 grid around player
-    for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
-      for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
-        // Skip the center cell (player's position)
-        if (deltaRow === 0 && deltaCol === 0) continue;
-        
-        const checkCol = this.col + deltaCol;
-        const checkRow = this.row + deltaRow;
-        const cell = this.map.grid[checkRow][checkCol];
-          if (cell.content?.type === 'spirit') {
-            spiritCount++;
-          }
+    forEachSurroundingCell(this.col, this.row, (col, row) => {
+      const cell = this.map.grid[row][col];
+      if (cell.content?.type === 'spirit') {
+        spiritCount++;
       }
-    }
-    
+    });
     return spiritCount >= 3;
   }
 
