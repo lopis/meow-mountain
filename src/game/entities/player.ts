@@ -154,27 +154,30 @@ export class Player extends GameObject<CatStates> {
         this.animationTime = 0;
 
         if (!this.pentagramAttack && this.isSurrounded()) {
+          console.log('pentagram start');
+          
           this.pentagramAttack = new PentagramAnimation(
             drawEngine.ctx1,
             this.x,
             this.y,
             () => {
+              console.log('pentagram end');
               this.pentagramAttack = null;
               this.attackAllEnemiesAround();
+              this.attacking = false;
               attack5();
             },
           );
         } else {
           // Check if there is an enemy right in front
           addTimeEvent(() => this.attackEnemyInFront(), 500);
+          addTimeEvent(() => {
+            this.attacking = false;
+          }, this.aD * 5);
         }
-
-        addTimeEvent(() => {
-          this.attacking = false;
-        }, this.aD * 5);
       }
-      this.pentagramAttack?.update(timeElapsed);
     }
+    this.pentagramAttack?.update(timeElapsed);
   }
 
   // Deals 5 damage to all spirits
