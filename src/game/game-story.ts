@@ -35,7 +35,7 @@ script[Scene.spirit] = {
     'Has the magic barrier failed\nwhile I slept??',
     'This one seems weak.',
     "I'll exorcise it and then\ngo check the barrier",
-    '> Press (1) to attack',
+    '> Use (space) to attack',
   ],
   goals: ['find magic barrier obelisk'],
 };

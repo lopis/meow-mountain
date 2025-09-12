@@ -67,7 +67,7 @@ export class HUD {
 
   drawActions() {
     const actions = this.actions.actions;
-    if (!actions.some(action => action.enabled)) {
+    if (!actions || !actions[0].enabled) {
       return;
     }
 
@@ -78,16 +78,12 @@ export class HUD {
     const startX = Math.round((drawEngine.ctx3.canvas.width - totalWidth) / 2);
     const y = drawEngine.ctx3.canvas.height - boxHeight - 10;
 
-    actions.forEach(({ type, color, symbol, enabled }, index) => {
+    actions.forEach(({ type, color, symbol }, index) => {
       const x = startX + index * (boxWidth + spacing);
 
       // Draw background box
       drawEngine.ctx3.fillStyle = colors.purple0;
       drawEngine.ctx3.fillRect(x, y, boxWidth, boxHeight);
-
-      if (!enabled) {
-        return;
-      }
 
       // Draw symbol (large font)
       drawEngine.drawText(
@@ -98,19 +94,6 @@ export class HUD {
         1, // center
         1, // middle
         7,
-        1,
-        drawEngine.ctx3
-      );
-
-      // Draw key binding
-      drawEngine.drawText(
-        `key: ${index + 1}`,
-        x + boxWidth / 2,
-        y + 70,
-        colors.black,
-        1, // center
-        1, // middle
-        3,
         1,
         drawEngine.ctx3
       );

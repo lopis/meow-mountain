@@ -10,6 +10,9 @@ import { Obelisk } from './entities/obelisk';
 import { addTimeEvent } from '@/core/timer';
 import { GameEvent } from './event-manifest';
 import { meow } from '@/core/audio';
+import { Cell } from './types';
+import { Spirit } from './entities/spirit';
+import { Farm } from './entities/farm';
 
 type ActionType = 'teleport' | 'scratch' | 'repair' | 'sleep';
 type Action = {
@@ -19,35 +22,37 @@ type Action = {
   symbol: string,
 }
 
+const actions: Action[] = [
+  {
+    type: 'scratch',
+    color: colors.purple4,
+    enabled: false,
+    symbol: SCRATCH,
+  },
+  {
+    type: 'teleport',
+    color: colors.blue2,
+    enabled: true,
+    symbol: TELEPORT,
+  },
+  {
+    type: 'repair',
+    color: colors.green1,
+    enabled: true,
+    symbol: MAGIC,
+  },
+  {
+    type: 'sleep',
+    color: colors.yellow2,
+    enabled: true,
+    symbol: 'z',
+  },
+];
+
 export class Actions {
   map: GameMap;
   player: Player;
-  actions: Action[] = [
-    {
-      type: 'scratch',
-      color: colors.purple4,
-      enabled: false,
-      symbol: SCRATCH,
-    },
-    {
-      type: 'teleport',
-      color: colors.blue2,
-      enabled: false,
-      symbol: TELEPORT,
-    },
-    {
-      type: 'repair',
-      color: colors.green1,
-      enabled: false,
-      symbol: MAGIC,
-    },
-    {
-      type: 'sleep',
-      color: colors.yellow2,
-      enabled: false,
-      symbol: 'z',
-    },
-  ];
+  actions: Action[] = [];
 
   constructor(map: GameMap, player: Player) {
     this.map = map;
@@ -60,41 +65,66 @@ export class Actions {
 
   // Update available actions based on player's current position
   update(): void {
-    // Check if player is near a statue
-    this.actions[1].enabled = this.canTeleport();
-    this.actions[2].enabled = this.canRestore();
-    this.actions[3].enabled = this.canSleep();
+    const cellInFront = this.map.getLookingAt();
 
-    if (controls.isAction2 && !controls.previousState.isAction2 && this.actions[1].enabled) {
-      emit(GameEvent.TELEPORT);
-    }
+    const canTeleport  = this.canTeleport(cellInFront);
+    const canRestore = this.canRestore(cellInFront);
+    const canSleep = this.canSleep(cellInFront);
+    const canAttack = this.canAttack(cellInFront);
 
-    if (controls.isAction3 && !controls.previousState.isAction3 && this.actions[2].enabled) {
-      emit(GameEvent.RESTORE);
-      const cellInFront = this.map.getLookingAt();
-      const object = cellInFront.content as Statue | Obelisk;
-      if (object.repair < MAX_REPAIR) {
-        if (object instanceof Statue) {
-          object.repair++;
-          meow(object.repair);
-          if (object.repair >= MAX_REPAIR) {
-            addTimeEvent(() => {
-              emit(GameEvent.STATUE_RESTORED);
-            }, 4000);
-          }
-        } else if (object instanceof Obelisk) {
-          object.attemptRepair();
-        }
+    this.actions = [
+      canAttack ? actions[0]
+      : canTeleport ? actions[1]
+      : canRestore ? actions[2]
+      : canSleep ? actions[3]
+      : actions[0]
+    ];
+
+    if (controls.isAction1 && !controls.previousState.isAction1) {
+      switch (true) {
+        case canAttack:
+          // Attack happens somewhere else
+          break;
+        
+        case canTeleport:
+          emit(GameEvent.TELEPORT);
+          break;
+        
+        case canRestore:
+          this.doRestore(cellInFront);
+          break;
+
+        case canSleep:
+          emit(GameEvent.SLEEP);
+
+      
+        default:
+          break;
       }
-    }
-
-    if (controls.isAction4 && !controls.previousState.isAction4 && this.actions[3].enabled) {
-      emit(GameEvent.SLEEP);
     }
   }
 
-  private canRestore(): boolean {
-    const cellInFront = this.map.getLookingAt();
+  // eslint-disable-next-line class-methods-use-this
+  doRestore(cellInFront: Cell) {
+    emit(GameEvent.RESTORE);
+    const object = cellInFront.content as Statue | Obelisk;
+    if (object.repair < MAX_REPAIR) {
+      if (object instanceof Statue) {
+        object.repair++;
+        meow(object.repair);
+        if (object.repair >= MAX_REPAIR) {
+          addTimeEvent(() => {
+            emit(GameEvent.STATUE_RESTORED);
+          }, 4000);
+        }
+      } else if (object instanceof Obelisk) {
+        object.attemptRepair();
+      }
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  private canRestore(cellInFront: Cell): boolean {
     const object = cellInFront.content as Statue | Obelisk;
     const type = object?.type;
     return (
@@ -102,15 +132,18 @@ export class Actions {
     ) && object.repair < MAX_REPAIR;
   }
 
-  private canTeleport() {
-    const cellInFront = this.map.getLookingAt();
+  private canTeleport(cellInFront: Cell) {
     return cellInFront.content instanceof Statue
       && this.player.col != statues.heart.x
       && cellInFront.content.state === Statue.State.REPAIRED;
   }
 
-  private canSleep() {
-    const cellInFront = this.map.getLookingAt();
+  private canSleep(cellInFront: Cell) {
     return cellInFront.content == this.map.villages[0].houses[0];
+  }
+
+  private canAttack(cellInFront: Cell) {
+    return cellInFront.content instanceof Spirit
+      || cellInFront.content instanceof Farm;
   }
 }
