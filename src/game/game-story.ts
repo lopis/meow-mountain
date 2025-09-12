@@ -3,6 +3,7 @@ import { emit, on } from '@/core/event';
 import { DialogState, Story, StoryEngineEvent } from '@/core/story-engine';
 import { addTimeEvent } from '@/core/timer';
 import { GameEvent } from './event-manifest';
+import { MAX_MAGIC } from './constants';
 
 export interface SceneProps extends DialogState {
   goals?: string[],
@@ -14,6 +15,7 @@ const enum Scene {
   barrier,
   temple,
   noMagic,
+  magicRestored,
   villagers,
   end,
 }
@@ -74,6 +76,16 @@ script[Scene.villagers] = {
   ],
 };
 
+script[Scene.magicRestored] = {
+  dialogs: [
+    'I have restore my full magic power',
+    'Now I am able to restore the\nmagic barrier again.',
+  ],
+  goals: [
+    'restore the forest magic barrier',
+  ]
+};
+
 script[Scene.end] = {
   dialogs: [
     'The barrier is restored.\nTime for a well deserved nap...',
@@ -120,8 +132,12 @@ export class GameStory {
       }
     });
 
-    on(GameEvent.STATUE_RESTORED, () => {
-      emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.temple);
+    on(GameEvent.STATUE_RESTORED, (magicLevel: number) => {
+      if (magicLevel < MAX_MAGIC) {
+        emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.temple);
+      } else {
+        emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.magicRestored);
+      }
     });
 
     on(GameEvent.SCARED, () => {

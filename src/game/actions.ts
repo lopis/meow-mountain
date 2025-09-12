@@ -114,7 +114,7 @@ export class Actions {
         meow(object.repair);
         if (object.repair >= MAX_REPAIR) {
           addTimeEvent(() => {
-            emit(GameEvent.STATUE_RESTORED);
+            emit(GameEvent.STATUE_RESTORED, this.map.gameData.maxMagic);
           }, 4000);
         }
       } else if (object instanceof Obelisk) {
