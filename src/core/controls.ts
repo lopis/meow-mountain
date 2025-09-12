@@ -4,11 +4,8 @@ class Controls {
   isLeft = false;
   isRight = false;
   isConfirm = false;
-  isEscape = false;
+  // isEscape = false;
   isAction1 = false;
-  isAction2 = false;
-  isAction3 = false;
-  isAction4 = false;
   isMoving = false;
   inputDirection: DOMPoint;
 
@@ -17,11 +14,8 @@ class Controls {
     isUp: this.isUp,
     isDown: this.isDown,
     isConfirm: this.isConfirm,
-    isEscape: this.isEscape,
+    // isEscape: this.isEscape,
     isAction1: this.isAction1,
-    isAction2: this.isAction2,
-    isAction3: this.isAction3,
-    isAction4: this.isAction4,
   };
 
   constructor() {
@@ -34,11 +28,8 @@ class Controls {
     this.previousState.isUp = this.isUp;
     this.previousState.isDown = this.isDown;
     this.previousState.isConfirm = this.isConfirm;
-    this.previousState.isEscape = this.isEscape;
+    // this.previousState.isEscape = this.isEscape;
     this.previousState.isAction1 = this.isAction1;
-    this.previousState.isAction2 = this.isAction2;
-    this.previousState.isAction3 = this.isAction3;
-    this.previousState.isAction4 = this.isAction4;
     const gamepad = navigator.getGamepads()[0];
 
     const leftVal = (this.keyMap.get('KeyA') || this.keyMap.get('ArrowLeft')) ? -1 : 0;
@@ -60,9 +51,8 @@ class Controls {
     this.isRight = this.inputDirection.x > 0;
     this.isMoving = this.inputDirection.x !== 0 || this.inputDirection.y !== 0;
     this.isConfirm = Boolean(this.keyMap.get('Enter'));
-    this.isEscape = Boolean(this.keyMap.get('Escape'));
+    // this.isEscape = Boolean(this.keyMap.get('Escape'));
     this.isAction1 = Boolean(this.keyMap.get('Space'));
-    this.isAction2 = Boolean(this.keyMap.get('CtrlLeft') || this.keyMap.get('CtrlRight'));
   }
 
   private toggleKey(event: KeyboardEvent, isPressed: boolean) {
