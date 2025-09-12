@@ -54,6 +54,7 @@ export class GameState implements State {
     this.gameData = new GameData();
     this.map = new GameMap(160, 160, this.gameData);
     this.cat = new Player(60, 85, this.map, this.gameData);
+    // this.cat = new Player(117, 53, this.map, this.gameData);
     this.actions = new Actions(this.map, this.cat);
     this.hud = new HUD(this.map, this.cat, this.actions, this.gameData);
     this.story = new GameStory();

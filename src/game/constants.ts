@@ -17,7 +17,7 @@ export const paths: Path[] = [
   [[45, 49, 0.9], [71, 51, 0.9]],
 
   // Northwest village path
-  [[91, 52, 2], [129, 29, 2]],
+  [[119, 54, 1], [129, 29, 1]],
 ];
 
 export const clearings: Circle[] = [

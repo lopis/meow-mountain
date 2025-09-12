@@ -1,5 +1,5 @@
 import { emit, on } from '@/core/event';
-import { MAX_LIVES, MAX_MAGIC, NOTIFICATION_DURATION } from './constants';
+import { MAX_LIVES, NOTIFICATION_DURATION } from './constants';
 import { SceneProps } from './game-story';
 import { GameEvent } from './event-manifest';
 import { addTimeEvent } from '@/core/timer';
@@ -13,7 +13,7 @@ interface Goal {
 export class GameData {
   cutscene = false;
   lives = MAX_LIVES;
-  maxMagic = MAX_MAGIC;
+  maxMagic = 0;
   magic = 0;
   superstition = 0;
   goals: Goal[] = [];
