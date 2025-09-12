@@ -48,7 +48,7 @@ export class GameState implements State {
     });
 
     on(GameEvent.FADE_OUT, () => {
-      gameStateMachine.setState(menuState);
+      addTimeEvent(() => gameStateMachine.setState(menuState), 2000);
     });
 
     this.gameData = new GameData();

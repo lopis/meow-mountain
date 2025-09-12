@@ -149,7 +149,7 @@ export class HUD {
 
     let text = MAGIC.repeat(fullMagic);
     x -= text.length * charWidth;
-    drawEngine.drawText(text, x + size, y + size, colors.blue1, 0, 0, size, 1, drawEngine.ctx3);
+    drawEngine.drawText(text, x + size, y + size, colors.blue2, 0, 0, size, 1, drawEngine.ctx3);
 
     text = MAGIC.repeat(emptyMagic);
     x -= text.length * charWidth;

@@ -32,7 +32,7 @@ class Controls {
     this.previousState.isAction1 = this.isAction1;
     const gamepad = navigator.getGamepads()[0];
 
-    const leftVal = (this.keyMap.get('KeyA') || this.keyMap.get('ArrowLeft')) ? -1 : 0;
+    const leftVal = (this.keyMap.get('KeyA') || this.keyMap.get('KeyQ') || this.keyMap.get('ArrowLeft')) ? -1 : 0;
     const rightVal = (this.keyMap.get('KeyD') || this.keyMap.get('ArrowRight')) ? 1 : 0;
     const upVal = this.keyMap.get('KeyW') || (this.keyMap.get('KeyZ') || this.keyMap.get('ArrowUp')) ? -1 : 0;
     const downVal = (this.keyMap.get('KeyS') || this.keyMap.get('ArrowDown')) ? 1 : 0;
