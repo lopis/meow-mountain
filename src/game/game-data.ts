@@ -3,7 +3,7 @@ import { MAX_LIVES, NOTIFICATION_DURATION } from './constants';
 import { SceneProps } from './game-story';
 import { GameEvent } from './event-manifest';
 import { addTimeEvent } from '@/core/timer';
-import { heal } from '@/core/audio';
+import { heal, hissAndSpit } from '@/core/audio';
 
 interface Goal {
   label: string,
@@ -45,6 +45,7 @@ export class GameData {
       this.lives -= (level + 1) / 3;
       this.lives = Math.round(this.lives * 3) / 3;
       this.lives = Math.round(this.lives * 10) / 10;
+      hissAndSpit();
       if (this.lives <= 0) {
         this.lives = 0;
         emit(GameEvent.GAME_OVER);

@@ -2,9 +2,6 @@
 
 - Game test feedback
   - it's not clear that the cat temples increase magic for the purpose of fixing the obelisk
-- Audio
-  - Sound effects
-    - spirit attack
 - Features
   - Save game progress
 - Bugs

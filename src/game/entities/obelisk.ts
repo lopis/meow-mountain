@@ -6,7 +6,7 @@ import { colors } from '@/core/util/color';
 import { emit } from '@/core/event';
 import { GameEvent } from '../event-manifest';
 import { GameStaticObject } from '@/core/game-static-object';
-import { meow } from '@/core/audio';
+import { repair } from '@/core/audio';
 
 export class Obelisk extends GameStaticObject {
   map: GameMap;
@@ -38,9 +38,9 @@ export class Obelisk extends GameStaticObject {
     const maxRepair = MAX_REPAIR * maxProgress;
     if (this.repair < maxRepair) {
       this.repair ++;
-      meow(2 * this.repair - 10);
+      repair(2 * this.repair - 10);
     } else {
-      meow(-10);
+      repair(-10);
       emit(GameEvent.NOT_ENOUGH_MAGIC);
     }
 

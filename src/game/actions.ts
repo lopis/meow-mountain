@@ -9,7 +9,7 @@ import { Statue } from './entities/statue';
 import { Obelisk } from './entities/obelisk';
 import { addTimeEvent } from '@/core/timer';
 import { GameEvent } from './event-manifest';
-import { meow } from '@/core/audio';
+import { repair } from '@/core/audio';
 import { Cell } from './types';
 import { Spirit } from './entities/spirit';
 import { Farm } from './entities/farm';
@@ -111,7 +111,7 @@ export class Actions {
     if (object.repair < MAX_REPAIR) {
       if (object instanceof Statue) {
         object.repair++;
-        meow(object.repair);
+        repair(object.repair);
         if (object.repair >= MAX_REPAIR) {
           addTimeEvent(() => {
             emit(GameEvent.STATUE_RESTORED, this.map.gameData.maxMagic);
