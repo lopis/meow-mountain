@@ -13,6 +13,7 @@ import { on } from '@/core/event';
 import { GameEvent } from '@/game/event-manifest';
 import { gameStateMachine } from '@/game-state-machine';
 import { menuState } from './menu.state';
+import { MAX_LIVES } from '@/game/constants';
 
 export class GameState implements State {
   map!: GameMap;
@@ -64,7 +65,7 @@ export class GameState implements State {
   }
 
   onUpdate(timeElapsed: number) {
-    const zoom = 7 + (7 - this.gameData.lives);
+    const zoom = 5 + (MAX_LIVES - this.gameData.lives) / MAX_LIVES;
     drawEngine.setCamera(this.cat.x, this.cat.y, zoom);
     drawEngine.updateCamera();
 
