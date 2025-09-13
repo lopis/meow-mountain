@@ -26,6 +26,7 @@ export class GameState implements State {
 
   onLeave() {
     musicPlayer.stop();
+    drawEngine.ctx4.clearRect(0, 0, c4.width, c4.height);
   }
 
   onEnter() {
@@ -44,11 +45,11 @@ export class GameState implements State {
     });
 
     on(GameEvent.GAME_OVER, () => {
-      addTimeEvent(() => gameStateMachine.setState(menuState), 2000);
+      addTimeEvent(() => gameStateMachine.setState(menuState), 3000);
     });
 
     on(GameEvent.FADE_OUT, () => {
-      addTimeEvent(() => gameStateMachine.setState(menuState), 2000);
+      addTimeEvent(() => gameStateMachine.setState(menuState), 3000);
     });
 
     this.gameData = new GameData();

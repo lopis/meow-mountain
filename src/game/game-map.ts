@@ -59,7 +59,7 @@ export class GameMap {
       new Village('Oak Branch', { x: 42, y: 49 }, 4, 3, 4),
       new Village('Cat Foot', { x: 48, y: 140 }, 5, 4, 5),
       new Village('Black Tail', { x: 113, y: 107 }, 4, 5, 8),
-      new Village('Moon Town', { x: 129, y: 29 }, 8, 15, 35),
+      new Village('Moon Town', { x: 129, y: 29 }, 8, 12, 25),
     ];
 
     // Clear paths with jitter
