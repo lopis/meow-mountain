@@ -44,9 +44,8 @@ export const attack5 = () => playSound((i: number) => {
 export const attack = () => playSound((i: number) => {
   const n = 10e3;
   if (i > n) return 0;
-  const decay = Math.pow(0.998, i / 10);
   const phase = 5 * Math.sin(5 * Math.round(5 * i / n));
-  return decay * 0.2 * Math.sin(i/(40 - phase) + Math.random()) * (8000 - i%6000) / 5000;
+  return Math.pow(0.998, i / 10) * 0.2 * Math.sin(i/(40 - phase) + Math.random()) * (8000 - i%6000) / 5000;
 });
 
 export const repair = (pitch: number) => playSound((i: number) => {
@@ -57,10 +56,7 @@ export const hissAndSpit = () => playSound((i: number) => {
   const n = 10e3;
   if (i > n) return 0;
   const q = (n - i) / n;
-  // Sharp hiss with aggressive noise burst
-  const hiss = (Math.random() * 2 - 1) * Math.sin(i * 0.003);
-  const spit = Math.sin(i / (15 + Math.sin(i / 500) * 8)) * Math.exp(-i / 2000);
-  return (hiss * 0.6 + spit * 0.4) * q * q * 0.3;
+  return ((Math.random() * 2 - 1) * Math.sin(i * 0.003) * 0.6 + Math.sin(i / (15 + Math.sin(i / 500) * 8)) * Math.exp(-i / 2000) * 0.4) * q * q * 0.3;
 });
 
 export const heal = () => playSound((i: number) => {

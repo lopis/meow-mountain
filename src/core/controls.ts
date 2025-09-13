@@ -56,7 +56,6 @@ class Controls {
   }
 
   private toggleKey(event: KeyboardEvent, isPressed: boolean) {
-    console.log(event.code);
     this.keyMap.set(event.code, isPressed);
   }
 }

@@ -93,7 +93,7 @@ export class Player extends GameObject<CatStates> {
     }
 
     // DEBUG
-    coords.innerText = `${this.col},${this.row}`;
+    // coords.innerText = `${this.col},${this.row}`;
 
     if (this.gameData.cutscene) {
       return;
