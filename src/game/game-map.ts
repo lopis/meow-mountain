@@ -56,7 +56,7 @@ export class GameMap {
     this.villages = [
       new Village('Heart Peak', { x: 70, y: 90 }, 12, 1, 0),
       new Village('Pine Rest', { x: 99, y: 100 }, 6, 2, 3),
-      new Village('Oak Branch', { x: 42, y: 49 }, 4, 3, 4),
+      new Village('Oak Branch', { x: 42, y: 51 }, 4, 3, 4),
       new Village('Cat Foot', { x: 48, y: 140 }, 5, 4, 5),
       new Village('Black Tail', { x: 113, y: 107 }, 4, 5, 8),
       new Village('Moon Town', { x: 129, y: 29 }, 8, 12, 25),
@@ -219,7 +219,12 @@ export class GameMap {
           const clearY = Math.ceil(y + oy + jitterY);
           this.clearPlants(clearX, clearY);
           if (pathWidth < 1) {
-            this.clearPlants(clearX + 1, clearY);
+            if (this.rng.next() > 0.5) {
+              this.clearPlants(clearX + 1, clearY);
+            } else {
+              this.grid[clearY][clearX].content = new Farm(clearX, clearY);
+              this.grid[clearY][clearX + 1].content = new Farm(clearX, clearY);
+            }
           } else if (this.rng.next() > 0.1) {
             if (this.rng.next() > 0.05) {
               // Add probability for partial clearing to create natural edges

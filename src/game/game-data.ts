@@ -12,7 +12,7 @@ interface Goal {
 
 export class GameData {
   cutscene = false;
-  lives = MAX_LIVES - 8.9;
+  lives = MAX_LIVES;
   maxMagic = 0;
   magic = 0;
   superstition = 0;
