@@ -9,6 +9,7 @@ import { addTimeEvent } from '@/core/timer';
 import { emit } from '@/core/event';
 import { drawHpBar } from './hp-bar';
 import { GameEvent } from '../event-manifest';
+import { exorcise } from '@/core/audio';
 
 export type SpiritType = '☁️' | '👻' | '👹' | '🧿' | '🦀' | '🌵' | '🥨' | '🧚🏻‍♀️' | '💀';
 
@@ -236,8 +237,9 @@ export class Spirit extends Icon implements SmoothMovementState {
     }, 150);
     if (this.hp <= 0) {
       addTimeEvent(() => {
+        exorcise();
         this.dead = true;
-      }, 2000);
+      }, 1500);
     }
     return this.hp <= 0;
   }

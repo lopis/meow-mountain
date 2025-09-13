@@ -28,17 +28,9 @@ export const playSound = (f: (i: number) => number) => {
 //   return 0.1 * Math.sin(i/50 + Math.random()*50) * (8000 - i%8000) / 5000 * Math.exp(-i/8000);
 // });
 
-export const step = () => playSound((i: number) => {
-  // Soft noise burst, short, with gentle fade in/out
-  const n = 2000;
-  if (i > n) return 0;
-  // Fade in/out envelope
-  const env = Math.sin((Math.PI * i) / n);
-  // Simple lowpass: average with previous value
-  let prev = 0, out = 0;
-  out = ((Math.random() * 2 - 1) + prev) / 2;
-  prev = out;
-  return 0.15 * out * env;
+export const step = (length = 1) => playSound((i: number) => {
+  const n = 2e3 * length;
+  return i > n ? 0 : 0.15 * (Math.random() * 2 - 1) * Math.sin((Math.PI * i) / n);
 });
 
 export const attack5 = () => playSound((i: number) => {
@@ -77,3 +69,10 @@ export const heal = () => playSound((i: number) => {
   var q = (n - i) / n;
   return 0.5 * Math.sin(i*0.01*Math.sin(0.007*i+Math.sin(i/1200))+Math.sin(i/800))*q*q;
 });
+
+export const exorcise = () => {
+  const x = ~(Math.random() * 1000);
+  return playSound((i: number) => {
+    return Math.sin(i/(10 + i/8000 - i/12000) & x + Math.sin(i/2000)*5) * Math.exp(-i/4000) * (i/96000) * 9;
+  });
+};

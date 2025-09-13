@@ -268,7 +268,7 @@ export class Player extends GameObject<CatStates> {
       attack();
     } else if (cell.content && cell.content.type === 'field') {
       cell.content = null;
-      attack();
+      step(3);
     }
   }
 }
