@@ -25,8 +25,10 @@ export class Statue extends GameStaticObject {
   repair = 0;
   state: number = Statue.State.BROKEN;
   animationTime = 0;
-  repairaD = 1500;
+  repairD = 1500;
   repairAnimationTimer = 0;
+  spiritsExorcised = false;
+  lastClearTime = 0;
 
   /**
    * Animation duration
@@ -54,9 +56,11 @@ export class Statue extends GameStaticObject {
 
     if (this.state === Statue.State.BROKEN && this.repair >= MAX_REPAIR) {
       this.state = Statue.State.ANIMATING;
+      this.spiritsExorcised = false; // Reset flag when starting animation
+      this.lastClearTime = 0; // Reset clear timer
     } else if (this.state === Statue.State.ANIMATING) {
       this.repairAnimationTimer += timeElapsed;
-      if (this.repairAnimationTimer > this.repairaD) {
+      if (this.repairAnimationTimer > this.repairD) {
         this.state = Statue.State.REPAIRED;
       }
     }
@@ -127,7 +131,7 @@ export class Statue extends GameStaticObject {
   }
 
   drawAnimation() {
-    const animationProgress = (3 * this.repairAnimationTimer / this.repairaD) % 1;
+    const animationProgress = (3 * this.repairAnimationTimer / this.repairD) % 1;
     
     const maxWidth = c2.width / drawEngine.zoom;
     const maxHeight = c2.height / drawEngine.zoom;
@@ -144,8 +148,18 @@ export class Statue extends GameStaticObject {
       colors.white,
       8,
     );
-    this.map.clearCircleWithJitter(this.col, this.row, 20 * animationProgress, true, 0.01, 0.05);
-    this.spirits.forEach(spirit => spirit.takeDamage(spirit.hp));
+    
+    if (this.repairAnimationTimer - this.lastClearTime >= 50) {
+      const progress = this.repairAnimationTimer / this.repairD;
+      this.map.clearCircleWithJitter(this.col, this.row, 20 * progress, true, 0.05, 1);
+      this.lastClearTime = this.repairAnimationTimer;
+    }
+    
+    // Only exorcise spirits once at the beginning of the animation
+    if (!this.spiritsExorcised) {
+      this.spirits.forEach(spirit => spirit.takeDamage(spirit.hp));
+      this.spiritsExorcised = true;
+    }
   }
 
   private spawnSpirit() {
