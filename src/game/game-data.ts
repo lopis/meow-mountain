@@ -15,7 +15,7 @@ export class GameData {
   lives = MAX_LIVES;
   maxMagic = 0;
   magic = 0;
-  superstition = 0;
+  superstition = 1;
   goals: Goal[] = [];
   hasClearedIntro = false;
   win = false;

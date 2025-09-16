@@ -1,4 +1,4 @@
-import { imageToPalette } from "./image-to-palette.js";
+import { imageToPalette } from './image-to-palette.js';
 
 export function flatArrayToString(flatArray, paletteSize) {
   // nr of bytes to encode together
@@ -22,7 +22,7 @@ export function flatArrayToString(flatArray, paletteSize) {
         (flatArray[i] || 0) +
         ((flatArray[i+1] || 0) << 2) +
         ((flatArray[i+2] || 0) << 4)
-      )
+      );
     } else {
       str += String.fromCharCode(
         0b1000000 +
@@ -32,7 +32,7 @@ export function flatArrayToString(flatArray, paletteSize) {
         ((flatArray[i+3] || 0) << 3) +
         ((flatArray[i+4] || 0) << 4) +
         ((flatArray[i+5] || 0) << 5)
-      )
+      );
     }
   }
   return str;
