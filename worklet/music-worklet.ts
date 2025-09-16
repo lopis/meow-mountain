@@ -178,6 +178,7 @@ class MusicProcessor extends AudioWorkletProcessor {
     const end = (this.sampleCount / this.playbackRate);
     if (this.currentIndex > end) {
       this.currentIndex = 0;
+      this.port.postMessage('next step');
       if (this.playMelody) {
         music = [boleroMain, boleroBase];
         this.sampleCount = music[0].totalLength * NOTE_LENGTH;

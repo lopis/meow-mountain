@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Recorder</title>
+</head>
+<body>
+  <button onclick="recordAudio()">Record and Download Audio</button>
+  <script>
+    async function recordAudio() {
+      const audioContext = new AudioContext();
+      await audioContext.audioWorklet.addModule('../dist/music-worklet.js');
+      const workletNode = new AudioWorkletNode(audioContext, 'mp');
+      
+      // Create a destination node to capture audio
+      const destination = audioContext.createMediaStreamDestination();
+      
+      // Connect the worklet node to the destination node
+      workletNode.connect(destination);
+      // workletNode.connect(audioContext.destination);
+
+
+      // Start the audio context
+      audioContext.resume();
+
+      // Access the stream from the destination node
+      const stream = destination.stream;
+
+      // Create a MediaRecorder to capture the audio stream
+      const mediaRecorder = new MediaRecorder(stream);
+
+      // Array to store the recorded chunks of data
+      let recordedChunks = [];
+
+      mediaRecorder.onstart = () => {
+        console.log('MediaRecorder started');
+      };
+      
+      mediaRecorder.onstop = () => {
+        console.log('MediaRecorder stopped');
+      };
+      
+      mediaRecorder.onerror = (event) => {
+        console.error('MediaRecorder error:', event);
+      };
+
+      // Listen for the 'dataavailable' event to store audio data
+      mediaRecorder.ondataavailable = (event) => {
+        console.log('ondataavailable', event.data.size);
+        if (event.data.size > 0) {
+          recordedChunks.push(event.data);
+        }
+      };
+
+      let step = 0;
+      workletNode.port.onmessage = (event) => {
+        console.log(event);
+        if (step == 0) {
+          console.log('step', step);
+          workletNode.port.postMessage(0);
+        } else if (step == 3) {
+          console.log('step', step);
+          mediaRecorder.stop();
+        }
+        step++
+      };
+
+      // When the recording is stopped, create a Blob and download it
+      mediaRecorder.onstop = () => {
+        console.log('Creating file');
+        
+        // Create a Blob from the recorded chunks
+        const blob = new Blob(recordedChunks, { type: 'audio/ogg' });
+        
+        // Create a link to download the Blob as a file
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'recorded-audio.ogg';
+        
+        // Append link to the document, trigger the download, and remove the link
+        document.body.appendChild(a);
+        a.click();
+        URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      };
+
+      // Start recording
+      mediaRecorder.start();
+    }
+  </script>
+</body>
+</html>
