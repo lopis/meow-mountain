@@ -1,5 +1,7 @@
 # Meow Mountain - Postmortem of a 13KB Game
 
+[Published here](https://dev.to/lopis/meow-mountain-postmortem-of-a-13kb-game-5fb6)
+
 Another [JS13k Games](https://www.js13kgames.com) just ended and I was able to preserve my 8-year streak of participating in this game jam. In this essay, I'd like to share some of the "low-tech tech" I've used—many of these are low-level development techniques that help me create tiny games.
 
 ## Contents
@@ -26,7 +28,7 @@ Another [JS13k Games](https://www.js13kgames.com) just ended and I was able to p
 
 This year's "black cat" theme inspired me to create a grid-based adventure game. Over the years, I've explored different genres, learning new game development concepts in the process.
 
-"Meow Mountain" tells the story of a magical cat who is the protector of a mountain. After taking too long of a nap, the cat accidentally let the magic barrier protecting the mountain from evil spirits collapse. As a result, the villagers inhabiting the mountain stopped tending to the cat altars scattered around the mountain. These altars are essential to the cat's magical abilities, so our protagonist must repair all altars, restore the barrier, and bring peace back to the mountain.
+[Meow Mountain](https://js13kgames.com/2025/games/meow-mountain) tells the story of a magical cat who is the protector of a mountain. After taking too long of a nap, the cat accidentally let the magic barrier protecting the mountain from evil spirits collapse. As a result, the villagers inhabiting the mountain stopped tending to the cat altars scattered around the mountain. These altars are essential to the cat's magical abilities, so our protagonist must repair all altars, restore the barrier, and bring peace back to the mountain.
 
 ## Game concepts
 
@@ -301,8 +303,6 @@ Now that we've explored some general technical concepts that can be reused in ot
 
 This was my first time implementing any sort of autonomous NPCs in a game. The algorithms are very rudimentary and probably quite inefficient.
 
-(TODO: add screenshot of villagers)
-
 ##### The villager
 
 ![Screenshot: villagers](villagers.png)
@@ -365,4 +365,4 @@ To do this in a size-efficient way, I developed a map-rendering algorithm:
 
 In general, there's nothing revolutionary here. I was able to pack quite a bit of content into the game within the size limit. In retrospect, quite a few things could have been optimized if I had more time, especially things I implemented early on when I wasn't yet settled on all the game mechanics. The map generation is quite messy and overcomplicated at times. The NPCs could have been a bit smarter.
 
-If you're curious about my code, the source is available on my GitHub. <https://github.com/lopis/meow-mountain>
+If you're curious about my code, the source is available on my GitHub. <https://github.com/lopis/meow-mountain>. If you want to check the game out, [play it here](https://js13kgames.com/2025/games/meow-mountain). As of the publishing of this, the voting is still ongoing, so I'll be looking forward to play this year's games, and looking forward to your feedback!
