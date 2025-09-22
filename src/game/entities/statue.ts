@@ -22,7 +22,7 @@ export class Statue extends GameStaticObject {
   spawnInterval = 1000;
   spawnChance = 0.10;
   spawnRadius = 10;
-  repair = MAX_REPAIR - 1;
+  repair = 0;
   state: number = Statue.State.BROKEN;
   animationTime = 0;
   repairD = 1500;

@@ -49,7 +49,7 @@ export const attack = () => playSound((i: number) => {
 });
 
 export const repair = (pitch: number) => playSound((i: number) => {
-  return Math.sin(i/(20 - pitch) + Math.sin(i/2000)*5) * Math.exp(-i/4000) * (i/96000) * 9;
+  return Math.sin(i/(21 - pitch) + Math.sin(i/2000)*5) * Math.exp(-i/4000) * (i/96000) * 9;
 });
 
 export const hissAndSpit = () => playSound((i: number) => {
