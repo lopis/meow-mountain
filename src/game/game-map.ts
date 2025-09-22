@@ -153,6 +153,9 @@ export class GameMap {
   }
 
   get(col: number, row: number) {
+    if (row < 0 || row >= this.rowCount || col < 0 || col >= this.colCount) {
+      return null;
+    }
     return this.grid[row][col];
   }
 
