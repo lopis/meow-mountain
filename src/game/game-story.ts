@@ -132,7 +132,7 @@ export class GameStory {
       }
     });
 
-    on(GameEvent.STATUE_RESTORED, (magicLevel: number) => {
+    on(GameEvent.NEXT_STATUE_DIALOG, (magicLevel: number) => {
       if (magicLevel < MAX_MAGIC) {
         emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.temple);
       } else {

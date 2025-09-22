@@ -196,7 +196,7 @@ export class HUD {
       drawEngine.ctx3.fillStyle = colors.purple4;
       drawEngine.ctx3.fillRect(x, boxY, boxW, boxH);
       drawEngine.drawText(
-        'NEW GOAL',
+        'GOAL',
         x + size + padding,
         boxY + padding,
         colors.white,
@@ -210,7 +210,7 @@ export class HUD {
         label,
         x + size + padding + 20,
         35 + boxY + padding,
-        colors.black,
+        colors.purple0,
         0, // left
         0, // top
         size,

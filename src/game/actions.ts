@@ -13,6 +13,7 @@ import { repair } from '@/core/audio';
 import { Cell } from './types';
 import { Spirit } from './entities/spirit';
 import { Farm } from './entities/farm';
+import { House } from './entities/house';
 
 type ActionType = 'teleport' | 'scratch' | 'repair' | 'sleep';
 type Action = {
@@ -138,10 +139,13 @@ export class Actions {
       && cellInFront.content.state === Statue.State.REPAIRED;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private canSleep(cellInFront: Cell) {
-    return cellInFront.content == this.map.villages[0].houses[0];
+    return cellInFront.content instanceof House
+      && cellInFront.content.name === 'home';
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private canAttack(cellInFront: Cell) {
     return cellInFront.content instanceof Spirit
       || cellInFront.content instanceof Farm;

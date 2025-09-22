@@ -15,6 +15,7 @@ export const enum GameEvent {
   // Combat events
   ATTACK_PLAYER,
   STATUE_RESTORED,
+  NEXT_STATUE_DIALOG,
   NOT_ENOUGH_MAGIC,
   
   // Entity events

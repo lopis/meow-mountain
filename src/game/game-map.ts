@@ -13,6 +13,7 @@ import { GameData } from './game-data';
 import { GameEvent } from './event-manifest';
 import { Farm } from './entities/farm';
 import { forEachSurroundingCell } from './grid-utils';
+import { House } from './entities/house';
 
 export class GameMap {
   grid: Cell[][];
@@ -26,7 +27,6 @@ export class GameMap {
     public gameData: GameData,
   ) {
     this.rng = new SeededRandom();
-
 
     this.grid = Array.from({ length: rowCount }, (_a, y) =>
       Array.from({ length: colCount }, (_b, x) => {
@@ -54,13 +54,14 @@ export class GameMap {
     );
 
     this.villages = [
-      new Village('Heart Peak', { x: 70, y: 90 }, 12, 1, 0),
+      new Village('Heart Peak', { x: 70, y: 90 }, 12, 0, 0),
       new Village('Pine Rest', { x: 99, y: 100 }, 6, 2, 3),
       new Village('Oak Branch', { x: 42, y: 51 }, 4, 3, 4),
       new Village('Cat Foot', { x: 48, y: 140 }, 5, 4, 5),
       new Village('Black Tail', { x: 113, y: 107 }, 4, 5, 8),
       new Village('Moon Town', { x: 129, y: 29 }, 8, 12, 25),
     ];
+
 
     // Clear paths with jitter
     for (const path of paths) {
@@ -119,6 +120,9 @@ export class GameMap {
           }
         }
       }
+
+      // Generate starting home
+      this.set(61, 84, new House(61, 84, 'home'));
     }
 
     this.fillCenterWithGrass(1.0);
@@ -288,9 +292,9 @@ export class GameMap {
     }
   }
 
-  set(x: number, y: number, content: Drawable | null) {
-    if (this.grid[y] && this.grid[y][x]) {
-      this.grid[y][x].content = content;
+  set(col: number, row: number, content: Drawable | null) {
+    if (this.grid[row] && this.grid[row][col]) {
+      this.grid[row][col].content = content;
     }
   }
 

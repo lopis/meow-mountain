@@ -15,7 +15,7 @@ export class GameData {
   lives = MAX_LIVES;
   maxMagic = 0;
   magic = 0;
-  superstition = 1;
+  superstition = 0;
   goals: Goal[] = [];
   hasClearedIntro = false;
   win = false;
@@ -56,6 +56,8 @@ export class GameData {
       this.maxMagic++;
       this.magic = this.maxMagic;
       this.heal();
+
+      emit(GameEvent.NEXT_STATUE_DIALOG, this.maxMagic);
     });
 
     on(GameEvent.SLEEP, () => {
