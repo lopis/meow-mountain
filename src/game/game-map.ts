@@ -261,7 +261,7 @@ export class GameMap {
     centerY: number,
     radius: number,
     fieldsOnly = false,
-    borderRatio = 0,
+    border = 99,
     probability = 1,
   ) {
     for (let y = 0; y < this.rowCount; y++) {
@@ -275,7 +275,7 @@ export class GameMap {
         const adjustedRadius = radius + jitterRadius;
 
         // Calculate inner radius based on borderRatio
-        const innerRadius = adjustedRadius * borderRatio;
+        const innerRadius = adjustedRadius - border;
         
         if (distance >= innerRadius && distance <= adjustedRadius) {
           // Add probability for partial clearing near edges

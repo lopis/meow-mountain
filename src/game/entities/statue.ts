@@ -22,7 +22,7 @@ export class Statue extends GameStaticObject {
   spawnInterval = 1000;
   spawnChance = 0.10;
   spawnRadius = 10;
-  repair = 0;
+  repair = MAX_REPAIR - 1;
   state: number = Statue.State.BROKEN;
   animationTime = 0;
   repairD = 1500;
@@ -152,9 +152,9 @@ export class Statue extends GameStaticObject {
       8,
     );
     
-    if (this.repairAnimationTimer - this.lastClearTime >= 50) {
+    if (this.repairAnimationTimer - this.lastClearTime >= 20) {
       const progress = this.repairAnimationTimer / this.repairD;
-      this.map.clearCircleWithJitter(this.col, this.row, 20 * progress, true, 0.05, 1);
+      this.map.clearCircleWithJitter(this.col, this.row, 20 * progress, true, 2, 0.3);
       this.lastClearTime = this.repairAnimationTimer;
     }
     
