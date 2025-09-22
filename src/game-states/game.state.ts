@@ -71,13 +71,13 @@ export class GameState implements State {
     drawEngine.setCamera(this.cat.x, this.cat.y, zoom);
     drawEngine.updateCamera();
 
-    if (!(this.gameData.cutscene) && this.gameData.lives > 0) {
-      this.actions.update();
-      this.map.update(timeElapsed);
+    if (this.gameData.lives > 0) {
+      if (!this.gameData.cutscene) {
+        this.actions.update();
+      }
+      this.map.update(timeElapsed, this.gameData.cutscene);
       this.hud.update(timeElapsed);
       this.gameData.update(timeElapsed);
-    } else if (this.gameData.cutscene) {
-      this.cat.update(timeElapsed);
     }
     this.story.update(timeElapsed);
     updateTimeEvents(timeElapsed);

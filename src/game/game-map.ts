@@ -3,7 +3,8 @@ import { SeededRandom } from '@/core/util/rng';
 import { Village } from './entities/village';
 import { CELL_HEIGHT, CELL_WIDTH, clearings, paths, statues } from './constants';
 import { Statue } from './entities/statue';
-import { Cell, Drawable, Path } from './types';
+import { Cell, Path } from './types';
+import { Drawable } from './Drawable';
 import { on } from '@/core/event';
 import { Spirit } from './entities/spirit';
 import { Coords } from './path-findind';
@@ -298,17 +299,20 @@ export class GameMap {
     }
   }
 
-  update(timeElapsed: number) {
+  update(timeElapsed: number, isCutscene: boolean) {
     for (const row of this.grid) {
       for (const cell of row) {
         if (cell.content) {
-          cell.content.update?.(timeElapsed);
-          if (cell.x != cell.content.col || cell.y != cell.content.row) {
-            this.grid[cell.content.row][cell.content.col].content = cell.content;
-            cell.content = null;
-          }
-          if (cell.content && (cell?.content as Spirit)?.dead) {
-            this.set(cell.content.col, cell.content.row, null);
+          cell.content.updateAnimation?.(timeElapsed);
+          if (!isCutscene) {
+            cell.content.update?.(timeElapsed);
+            if (cell.x != cell.content.col || cell.y != cell.content.row) {
+              this.grid[cell.content.row][cell.content.col].content = cell.content;
+              cell.content = null;
+            }
+            if (cell.content && (cell?.content as Spirit)?.dead) {
+              this.set(cell.content.col, cell.content.row, null);
+            }
           }
         }
       }

@@ -1,5 +1,5 @@
 import { CELL_HEIGHT, CELL_WIDTH } from '@/game/constants';
-import { Drawable } from '@/game/types';
+import { Drawable } from '@/game/Drawable';
 import { drawEngine } from './draw-engine';
 
 export class GameStaticObject implements Drawable {

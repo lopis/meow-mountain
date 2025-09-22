@@ -1,14 +1,5 @@
+import { Drawable } from './Drawable';
 import { Village } from './entities/village';
-
-export interface Drawable {
-  col: number;
-  row: number;
-  draw: () => void;
-  postDraw?: () => void;
-  type: string;
-  name?: string;
-  update?: (timeElapsed: number) => void;
-}
 
 export interface Cell {
   x: number;

@@ -50,8 +50,11 @@ export class Statue extends GameStaticObject {
     );
   }
 
-  update(timeElapsed: number) {
+  updateAnimation(timeElapsed: number) {
     this.animationTime += timeElapsed;
+  }
+
+  update(timeElapsed: number) {
     this.spawnTimer += timeElapsed;
 
     if (this.state === Statue.State.BROKEN && this.repair >= MAX_REPAIR) {
