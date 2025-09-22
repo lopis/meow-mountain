@@ -20,7 +20,7 @@ export class Village {
     this.radius = radius;
   }
 
-  private generatePosition(rng: SeededRandom, existing: { x: number; y: number }[]): { x: number; y: number } {
+  private generatePosition(rng: SeededRandom, existing: { x: number; y: number }[], map: GameMap): { x: number; y: number } {
     let col: number;
     let row: number;
     do {
@@ -31,14 +31,15 @@ export class Village {
     } while (
       col < 0 ||
       row < 0 ||
+      map.get(col, row)?.content !== null ||
       existing.some(item => item.x === col && item.y === row)
     );
     return { x: col, y: row };
   }
 
-  generateHouses(rng: SeededRandom): House[] {
+  generateHouses(rng: SeededRandom, map: GameMap): House[] {
     for (let i = 0; i < this.houseCount; i++) {
-      const pos = this.generatePosition(rng, this.houses);
+      const pos = this.generatePosition(rng, this.houses, map);
       const houseCol = pos.x + pos.x % 2;
       const houseRow = pos.y + pos.y % 2;
       this.houses.push(new House(houseCol, houseRow));
@@ -46,10 +47,10 @@ export class Village {
     return this.houses;
   }
 
-  generateFarms(rng: SeededRandom): Farm[] {
+  generateFarms(rng: SeededRandom, map: GameMap): Farm[] {
     const farmCount = this.houseCount;
     for (let i = 0; i < farmCount; i++) {
-      const pos = this.generatePosition(rng, this.farms);
+      const pos = this.generatePosition(rng, this.farms, map);
       
       // Create a 2x2 farm block
       for (let dx = 0; dx < 2; dx++) {
@@ -63,7 +64,7 @@ export class Village {
 
   generateVillagers(rng: SeededRandom, map: GameMap): Villager[] {
     for (let i = 0; i < this.population; i++) {
-      const pos = this.generatePosition(rng, this.farms);
+      const pos = this.generatePosition(rng, this.farms, map);
       this.villagers.push(new Villager(pos.x, pos.y, map));
     }
     return this.villagers;

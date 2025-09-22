@@ -96,11 +96,11 @@ export class GameMap {
     }
 
     for (const village of this.villages) {
-      village.generateFarms(this.rng)
+      village.generateFarms(this.rng, this)
         .forEach(farm => {
           this.grid[farm.row][farm.col].content = farm;
         });
-      village.generateHouses(this.rng)
+      village.generateHouses(this.rng, this)
         .forEach(house => {
           this.grid[house.row][house.col].content = house;
         });
@@ -150,6 +150,10 @@ export class GameMap {
 
   getLookingAt() {
     return this.grid[this.playerLookingAt.row][this.playerLookingAt.col];
+  }
+
+  get(col: number, row: number) {
+    return this.grid[row][col];
   }
 
   clearPlants(col: number, row: number) {
