@@ -5,8 +5,6 @@
 - Features
   - Save game progress
 - Bugs
-  - Cat doesn't turn to the side when automatically selecting target
-  - Sound plays during cut scenes
 
 
 - Post comp learning

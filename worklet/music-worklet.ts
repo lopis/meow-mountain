@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 /// <reference lib="dom" />
 
-const SAMPLE_RATE = 40000;
+const SAMPLE_RATE = 30000;
 const NOTE_LENGTH = SAMPLE_RATE / 4;
 
 type PitchLength = [ number, number ] | undefined;
@@ -66,7 +66,7 @@ const boleroMain: Voice = {
   gen: BaseSound(
     0,
     0.4,
-    0.3,
+    0.6,
     (t,p) => (((t * p) / 2) & 202) / 120 - 0.75
   ),
   ...genNotes(
@@ -83,8 +83,14 @@ const boleroBase: Voice = {
   gen: BaseSound(
     4,
     0.1,
-    2,
-    (t,p) => Math.tan(Math.cbrt(Math.sin((t * p) / 30))),
+    0.7,
+    (t, p) => {
+      const env = Math.exp(-t * 0.00015); // Slower decay, more sustain
+      // Mix sine and sawtooth for string timbre
+      const sine = Math.sin(t * p * 0.1);
+      const saw = ((t * p * 0.1) % (2 * Math.PI)) / Math.PI - 1;
+      return (sine + saw * 0.6) * env;
+    }
   ),
   ...genNotes('a4,m4,a4,a4,m4,a2,a2,'.repeat(8).slice(0, -1)),
 }
