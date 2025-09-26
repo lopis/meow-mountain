@@ -224,38 +224,48 @@ export class Player extends GameObject<CatStates> {
 
     // Check 4 directions around player
     const directions = [
-      { col: this.col + 1, row: this.row }, // right
-      { col: this.col - 1, row: this.row }, // left
-      { col: this.col, row: this.row + 1 }, // down
-      { col: this.col, row: this.row - 1 }, // up
+      { col: this.col + 1, row: this.row, facing: 'right' },
+      { col: this.col - 1, row: this.row, facing: 'left' },
+      { col: this.col, row: this.row + 1, facing: 'down' },
+      { col: this.col, row: this.row - 1, facing: 'up' },
     ];
 
     let spiritTarget = null;
     let statueTarget = null;
+    let spiritFacing = null;
+    let statueFacing = null;
 
     for (const dir of directions) {
       const cell = this.map.grid[dir.row][dir.col];
       if (!cell.content) continue;
 
       const contentType = cell.content.type;
-      
+
       // Prioritize spirits first
       if (contentType === 'spirit') {
-        spiritTarget = dir;
+        spiritTarget = { col: dir.col, row: dir.row };
+        spiritFacing = dir.facing;
         break; // Spirit has highest priority, stop searching
       }
-      
+
       // Store statue/obelisk as backup
       if ((contentType === 'statue' || contentType === 'obelisk') && !statueTarget) {
-        statueTarget = dir;
+        statueTarget = { col: dir.col, row: dir.row };
+        statueFacing = dir.facing;
       }
     }
 
-    // Set target based on priority: spirit > statue/obelisk
+    // Set target and facing based on priority: spirit > statue/obelisk
     if (spiritTarget) {
       this.map.playerLookingAt = spiritTarget;
+      if (spiritFacing === 'left') this.mirrored = true;
+      else if (spiritFacing === 'right') this.mirrored = false;
+      // Optionally handle up/down facing if needed
     } else if (statueTarget) {
       this.map.playerLookingAt = statueTarget;
+      if (statueFacing === 'left') this.mirrored = true;
+      else if (statueFacing === 'right') this.mirrored = false;
+      // Optionally handle up/down facing if needed
     }
   }
 
