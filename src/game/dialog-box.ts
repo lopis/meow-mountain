@@ -19,12 +19,14 @@ export class DialogBox {
   draw () {
     if (this.dialog) {
       const boxHeight = 160; // same as minimap
-      const margin = 10; // same as minimap
+      const margin = 20; // same as minimap
       const boxWidth = c3.width - boxHeight - margin*3;
       const x = margin;
       const y = c3.height - boxHeight - margin;
+      drawEngine.ctx3.fillStyle = colors.purple4;
+      drawEngine.ctx3.fillRect(x+5, y+5, boxWidth, boxHeight);
       drawEngine.ctx3.fillStyle = colors.purple0;
-      drawEngine.ctx3.fillRect(x, y, boxWidth, boxHeight);
+      drawEngine.ctx3.fillRect(x, y, boxWidth-5, boxHeight-5);
 
       this.dialog.split('\n').forEach((dialog, i) => {
         drawEngine.drawText(
@@ -47,7 +49,7 @@ export class DialogBox {
           colors.purple4,
           2, // right
           2, // bottom
-          5,
+          3,
           1,
           drawEngine.ctx3
         );
