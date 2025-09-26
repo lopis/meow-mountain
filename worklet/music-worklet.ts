@@ -65,9 +65,16 @@ const genNotes = (str: string): {
 const boleroMain: Voice = {
   gen: BaseSound(
     0,
-    0.4,
-    0.6,
-    (t,p) => (((t * p) / 2) & 202) / 120 - 0.75
+    0.65, // longer sustain for air instrument
+    0.7, // slightly louder
+    (t, p) => {
+      // Soft, round flute for pixelart game: mostly sine, a little harmonic, subtle noise
+      const vibrato = Math.sin(t * 0.015) * 0.06;
+      let s = Math.sin(t * p * 0.01 + vibrato);
+      s += Math.sin(t * p * 0.02 + vibrato) * 0.08;
+      s += (Math.random() * 2 - 1) * 0.01;
+      return s;
+    }
   ),
   ...genNotes(
     'r6,q1,r1,t1,r1,q1,o1,r2,r1,o1,r6,q1,r1,o1,m1,j1,k1,m9,k1,j1,h1,j1,k1,m1,o1,m9,o1,q1,o1,m1,k1,j1,h1,j1,h1,f4,f1,h1,j1,~1,k1,~1,h4,mh,~3,t7,r1,q1,o1,q1,r1,t1,r1,q3,r1,q1,o1,r1,q1,o1,k3,k1,k1,k1,~1,o1,~1,r1,o1,q1,m1,k2,k1,k1,k1,~1,o1,~1,q1,m1,o1,k1,h2,h1,f1,h6,h1,h1,h1,~1,k1,~1,o1,k1,m1,j1,h2,h1,f1,h6,h1,f1,h2,j1,k1,m9,k1,j1,h1,f2,m1,m1,m1,~1,m1,m1,m1,~1,m1,~1,m1,~1,m1,m1,m1,~1,m1,m1,m1,m1,m1,m1,m1'
@@ -82,14 +89,13 @@ const boleroMain: Voice = {
 const boleroBase: Voice = {
   gen: BaseSound(
     4,
-    0.1,
+    0.2,
     0.7,
     (t, p) => {
-      const env = Math.exp(-t * 0.00015); // Slower decay, more sustain
-      // Mix sine and sawtooth for string timbre
-      const sine = Math.sin(t * p * 0.1);
-      const saw = ((t * p * 0.1) % (2 * Math.PI)) / Math.PI - 1;
-      return (sine + saw * 0.6) * env;
+      // Warm, textured bass: mostly sine, a touch of saw, subtle noise
+      const sine = Math.sin(t * p * 0.05);
+      const saw = ((t * p * 0.05) % (2 * Math.PI)) / Math.PI - 1;
+      return sine + saw * 0.5 + (Math.random() * 2 - 1) * 0.06;
     }
   ),
   ...genNotes('a4,m4,a4,a4,m4,a2,a2,'.repeat(8).slice(0, -1)),
@@ -100,6 +106,7 @@ const boleroShort: Voice = {
   ...genNotes('a4,m4,a4,a4,m4,a2,a2'),
 }
 
+// let music: Voice[] = [boleroMain, boleroBase];
 let music: Voice[] = [boleroShort];
 
 let queue: (() => number | undefined)[] = [];
