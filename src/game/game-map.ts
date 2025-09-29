@@ -327,26 +327,40 @@ export class GameMap {
   }
 
   draw(cx: number, cy: number) {
-    // Calculate rectangular render distance based on canvas size and current zoom
     const zoom = drawEngine.zoom;
-    const renderWidth = (drawEngine.canvasWidth / zoom) / 2 + 50; // Add buffer
-    const renderHeight = (drawEngine.canvasHeight / zoom) / 2 + 50; // Add buffer
-    
-    // Keep circular "seen" radius for minimap
+    const renderWidth = (drawEngine.canvasWidth / zoom) / 2 + 50;
+    const renderHeight = (drawEngine.canvasHeight / zoom) / 2 + 50;
     const seenRadius = 75;
     const seenRadiusSquared = seenRadius * seenRadius;
 
+    // Compute visible cell bounds
+    const minCol = Math.max(0, Math.floor((cx - renderWidth) / CELL_WIDTH));
+    const maxCol = Math.min(this.colCount - 1, Math.ceil((cx + renderWidth) / CELL_WIDTH));
+    const minRow = Math.max(0, Math.floor((cy - renderHeight) / CELL_HEIGHT));
+    const maxRow = Math.min(this.rowCount - 1, Math.ceil((cy + renderHeight) / CELL_HEIGHT));
+
+    // First pass: draw ground
+    for (let row = minRow; row <= maxRow; row++) {
+      for (let col = minCol; col <= maxCol; col++) {
+        const cell = this.grid[row][col];
+        const x = cell.x * CELL_WIDTH;
+        const y = cell.y * CELL_HEIGHT;
+        drawEngine.drawBackgroundImage(GameAssets.ground, x, y);
+      }
+    }
+
+    // Second pass: draw content, collect postDraw
     const postDrawDrawables: Drawable[] = [];
     let drawHighlight = false;
-
-    for (const row of this.grid) {
-      for (const cell of row) {
+    for (let row = minRow; row <= maxRow; row++) {
+      for (let col = minCol; col <= maxCol; col++) {
+        const cell = this.grid[row][col];
         const x = cell.x * CELL_WIDTH;
         const y = cell.y * CELL_HEIGHT;
         const dx = x - cx;
         const dy = y - cy;
 
-        // Use circular bounds for "seen" detection (minimap)
+        // Seen radius for minimap
         const distanceSquared = dx * dx + dy * dy;
         if (distanceSquared <= seenRadiusSquared) {
           cell.seen = true;
@@ -360,17 +374,17 @@ export class GameMap {
         ) {
           drawHighlight = true;
         }
-        
-        // Draw within a rectangular draw distance
-        if (Math.abs(dx) <= renderWidth && Math.abs(dy) <= renderHeight) {
-          drawEngine.drawBackgroundImage(GameAssets.ground, x, y);
-          cell?.content?.draw();
-          if (cell?.content?.postDraw) {
-            postDrawDrawables.push(cell?.content);
-          }
+
+        cell?.content?.draw();
+        if (cell?.content?.postDraw) {
+          postDrawDrawables.push(cell?.content);
         }
       }
     }
+
+    // Third pass: postDraw
+    // @ts-expect-error -- postDraw is definitely defined
+    postDrawDrawables.forEach(drawable => drawable.postDraw());
 
     if (drawHighlight) {
       drawEngine.drawBackgroundImage(
@@ -379,8 +393,5 @@ export class GameMap {
         this.playerLookingAt.row * CELL_HEIGHT - (16 - CELL_HEIGHT) / 2
       );
     }
-
-    // @ts-expect-error -- postDraw is definitely defined
-    postDrawDrawables.forEach(drawable => drawable.postDraw());
   }
 }
