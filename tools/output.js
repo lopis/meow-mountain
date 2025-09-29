@@ -1,5 +1,5 @@
 // Auto-generated icon data
-// Generated on 2025-09-06T13:24:44.228Z
+// Generated on 2025-09-29T09:26:32.874Z
 
 export const icons = {
   cat: {
@@ -107,31 +107,33 @@ export const icons = {
     size: 16,
     palette: [
       'transparent',
-      '#274e53',
+      '#396a50',
       '#679a6f',
-      '#eedbb0'
+      '#eedbb0',
+      '#4c8568'
     ],
-    data: '@@@@@@@UU@@@yF@@yoA@i~oZ@djjjAPjjjF@ijjZ@TjjZAPfiYF@eYYV@PYZV@@PUE@@@UU@@@PU@@@@@@@@'
+    data: '@@@@@@@@@@HIIA@@@@Q[[J@@@HZ[[SA@@QR[[RJ@@QRRRRJ@@aRRRRL@@QTRRbJ@@abbTTL@@aTTbbL@@IddddI@@HaddLA@@@HIIA@@@@HIIA@@@@@II@@@@@@@@@@@'
   },
   spruce: {
     size: 16,
     palette: [
       'transparent',
-      '#274e53',
+      '#2f6269',
       '#b4ecf3',
-      '#4f9ea8'
+      '#4e9ca6',
+      '#3e8791'
     ],
-    data: '@@T@@@@dF@@@djA@@tk_@@tG@P_@P}E@]]@Twu]APw}]G@u]]W@P]_W@@PUE@@@UU@@@PU@@@@@@@@'
+    data: '@@@HA@@@@@@QJ@@@@@HRRA@@@@YSZK@@@H[[[[A@@H[[[[A@@a\\[[cL@@acc\\\\L@@a\\\\ccL@@adc\\dL@@IddddI@@HaddLA@@@HIIA@@@@HIIA@@@@@II@@@@@@@@@@@'
   },
   grass: {
     size: 16,
     palette: [
       'transparent',
+      '#457a5f',
       '#6b9a71',
-      '#2f5753',
-      '#457a5f'
+      '#2f5753'
     ],
-    data: '@U@T@PyEUSqmu}uMn_wuW{w]_WK^}mwmh}m_gPwuwmB]_WWBwu}]Oxnww~c~m_]OX_{]mP}mow@Vvj\\B`bB`B@'
+    data: 'PPDDAP^feYTvVVYfweYZi]YfeiMgVvYv|Vvey`YZYvCfeiiCYZVfE\\wYZ[qWvefFle]fvPVfuY@g[dCpsCpC@'
   },
   house: {
     size: 16,

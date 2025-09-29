@@ -1,4 +1,5 @@
-import canvas from 'canvas';
+/* eslint-disable id-denylist */
+import Canvas from 'canvas';
 
 /**
  * Converts an image file to a flat array of palette indices and extracts the color palette
@@ -13,8 +14,8 @@ export async function imageToPalette(filePath) {
   
   try {
     // Try to import canvas package
-    createCanvas = canvas.createCanvas;
-    loadImage = canvas.loadImage;
+    createCanvas = Canvas.createCanvas;
+    loadImage = Canvas.loadImage;
   } catch (error) {
     throw new Error('Canvas package not found. Install it with: npm install canvas');
   }

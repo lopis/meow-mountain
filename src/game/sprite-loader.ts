@@ -1,5 +1,6 @@
 export const generateImageData = (icon: string, iconPalette: string[]): HTMLImageElement => {
-  const palette = ['#000000', ...iconPalette];
+  const transparent = '#FF00FF';
+  const palette = [transparent, ...iconPalette];
   
   const colorsPerByte = palette.length > 4 ? 2 : palette.length > 2 ? 3 : 6;
   const bytesPerColor = 6 / colorsPerByte;
@@ -18,7 +19,7 @@ export const generateImageData = (icon: string, iconPalette: string[]): HTMLImag
 
     for (let bit = 0; bit < colorsPerByte; bit++) {
       const paletteIndex = (z >> bit * bytesPerColor) & bitMask;
-      const hexColor = palette[paletteIndex] || '#000000';
+      const hexColor = palette[paletteIndex] || transparent;
       
       // Convert hex to RGB
       const hex = hexColor.replace('#', '');

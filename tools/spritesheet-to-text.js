@@ -1,7 +1,8 @@
-import path from "path";
-import fs from "fs/promises";
-import { flatArrayToString } from "./image-to-text.js";
-import { imageToPalette } from "./image-to-palette.js";
+/* eslint-disable id-denylist */
+import path from 'path';
+import fs from 'fs/promises';
+import { flatArrayToString } from './image-to-text.js';
+import { imageToPalette } from './image-to-palette.js';
 
 /**
  * Extracts a single frame from the sprite sheet
@@ -130,7 +131,7 @@ export const icons = ${JSON.stringify(processedIcons, null, 2)};
   const outputPath = path.resolve(path.dirname(import.meta.url.replace('file://', '')), 'output.js');
   await fs.writeFile(outputPath, outputContent);
   
-  console.log(`✓ Generated icon data written to output.js`);
+  console.log('✓ Generated icon data written to output.js');
   console.log(`  Total icons: ${Object.keys(processedIcons).length}`);
   
   return processedIcons;

@@ -14,7 +14,7 @@ export function flatArrayToString(flatArray, paletteSize) {
     // pallete size 8 -> 3 bits -> 2 pixels per char
     //              4 -> 2 bits -> 3 pixels per char
     //              2 -> 1 bit  -> 6 pixels per char
-    if (paletteSize === 8) {
+    if (paletteSize > 4) {
       str += String.fromCharCode(0b1000000 + (flatArray[i] || 0) + ((flatArray[i+1] || 0) << 3));
     } else if (paletteSize > 2) {
       str += String.fromCharCode(

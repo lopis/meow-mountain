@@ -103,8 +103,9 @@ export const oak = {
     colors.green3,
     colors.green1,
     colors.green0,
+    colors.green2,
   ],
-  data: '@@@@@@@UU@@@yF@@yoA@i~oZ@djjjAPjjjF@ijjZ@TjjZAPfiYF@eYYV@PYZV@@PUE@@@UU@@@PU@@@@@@@@'
+  data: '@@@@@@@@@@HIIA@@@@Q[[J@@@HZ[[SA@@QR[[RJ@@QRRRRJ@@aRRRRL@@QTRRbJ@@abbTTL@@aTTbbL@@IddddI@@HaddLA@@@HIIA@@@@HIIA@@@@@II@@@@@@@@@@@',
 };
 
 export const spruce = {
@@ -112,19 +113,20 @@ export const spruce = {
   palette: [
     colors.blue3,
     colors.blue0,
-    colors.blue2
+    colors.blue1,
+    colors.blue2,
   ],
-  data: '@@T@@@@dF@@@djA@@tk_@@tG@P_@P}E@]]@Twu]APw}]G@u]]W@P]_W@@PUE@@@UU@@@PU@@@@@@@@'
+  data: '@@@HA@@@@@@QJ@@@@@HRRA@@@@YSZK@@@H[[[[A@@H[[[[A@@a\\[[cL@@acc\\\\L@@a\\\\ccL@@adc\\dL@@IddddI@@HaddLA@@@HIIA@@@@HIIA@@@@@II@@@@@@@@@@@',
 };
 
 export const grass = {
   size: 16,
   palette: [
+    colors.green1,
     colors.green2,
     colors.green3,
-    colors.green1,
   ],
-  data: '@U@T@PyEUSqmu}uMn_wuW{w]_WK^}mwmh}m_gPwuwmB]_WWBwu}]Oxnww~c~m_]OX_{]mP}mow@Vvj\\B`bB`B@'
+  data: 'PPDDAP^feYTvVVYfweYZi]YfeiMgVvYv|Vvey`YZYvCfeiiCYZVfE\\wYZ[qWvefFle]fvPVfuY@g[dCpsCpC@'
 };
 
 export const house = {
