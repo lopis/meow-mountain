@@ -337,6 +337,7 @@ export class GameMap {
     const seenRadiusSquared = seenRadius * seenRadius;
 
     const postDrawDrawables: Drawable[] = [];
+    let drawHighlight = false;
 
     for (const row of this.grid) {
       for (const cell of row) {
@@ -357,11 +358,7 @@ export class GameMap {
           cell.content &&
           cell.content.type !== 'oak' && cell.content.type !== 'spruce'
         ) {
-          drawEngine.drawBackgroundImage(
-            GameAssets.cornerImage,
-            x - (16 - CELL_WIDTH) / 2,
-            y - (16 - CELL_HEIGHT) / 2
-          );
+          drawHighlight = true;
         }
         
         // Draw within a rectangular draw distance
@@ -372,6 +369,14 @@ export class GameMap {
           }
         }
       }
+    }
+
+    if (drawHighlight) {
+      drawEngine.drawBackgroundImage(
+        GameAssets.cornerImage,
+        this.playerLookingAt.col * CELL_WIDTH - (16 - CELL_WIDTH) / 2,
+        this.playerLookingAt.row * CELL_HEIGHT - (16 - CELL_HEIGHT) / 2
+      );
     }
 
     // @ts-expect-error -- postDraw is definitely defined

@@ -4,6 +4,7 @@
   - it's not clear that the cat temples increase magic for the purpose of fixing the obelisk
 - Features
   - Save game progress
+  - Spirits should fade out when de-spawning
 - Bugs
 
 
