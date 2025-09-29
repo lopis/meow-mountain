@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 /// <reference lib="dom" />
 
-const SAMPLE_RATE = 30000;
+const SAMPLE_RATE = 40000;
 const NOTE_LENGTH = SAMPLE_RATE / 4;
 
 type PitchLength = [ number, number ] | undefined;
@@ -65,16 +65,9 @@ const genNotes = (str: string): {
 const boleroMain: Voice = {
   gen: BaseSound(
     0,
-    0.65, // longer sustain for air instrument
-    0.7, // slightly louder
-    (t, p) => {
-      // Soft, round flute for pixelart game: mostly sine, a little harmonic, subtle noise
-      const vibrato = Math.sin(t * 0.015) * 0.06;
-      let s = Math.sin(t * p * 0.01 + vibrato);
-      s += Math.sin(t * p * 0.02 + vibrato) * 0.08;
-      s += (Math.random() * 2 - 1) * 0.01;
-      return s;
-    }
+    0.65,
+    0.7,
+    (t,p) => (((t * p) / 2) & 202) / 120 - 0.75,
   ),
   ...genNotes(
     'r6,q1,r1,t1,r1,q1,o1,r2,r1,o1,r6,q1,r1,o1,m1,j1,k1,m9,k1,j1,h1,j1,k1,m1,o1,m9,o1,q1,o1,m1,k1,j1,h1,j1,h1,f4,f1,h1,j1,~1,k1,~1,h4,mh,~3,t7,r1,q1,o1,q1,r1,t1,r1,q3,r1,q1,o1,r1,q1,o1,k3,k1,k1,k1,~1,o1,~1,r1,o1,q1,m1,k2,k1,k1,k1,~1,o1,~1,q1,m1,o1,k1,h2,h1,f1,h6,h1,h1,h1,~1,k1,~1,o1,k1,m1,j1,h2,h1,f1,h6,h1,f1,h2,j1,k1,m9,k1,j1,h1,f2,m1,m1,m1,~1,m1,m1,m1,~1,m1,~1,m1,~1,m1,m1,m1,~1,m1,m1,m1,m1,m1,m1,m1'
