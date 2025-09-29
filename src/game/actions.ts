@@ -38,7 +38,7 @@ const actions: Action[] = [
   },
   {
     type: 'repair',
-    color: colors.green1,
+    color: colors.green3,
     enabled: true,
     symbol: MAGIC,
   },

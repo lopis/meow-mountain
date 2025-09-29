@@ -1,5 +1,5 @@
 // Auto-generated icon data
-// Generated on 2025-09-29T09:26:32.874Z
+// Generated on 2025-09-29T10:37:40.353Z
 
 export const icons = {
   cat: {
@@ -144,5 +144,14 @@ export const icons = {
       '#366c73'
     ],
     data: 'PU@@@PjVUU@YyGdjWU]PkAm^UUGt_PWUUuA}GTUUUUpjjjjC[_ZUNlk}ypvgVgCkjZ_N|}}@'
+  },
+  ground: {
+    size: 16,
+    palette: [
+      'transparent',
+      '#6b9a71',
+      '#457a5f'
+    ],
+    data: '@@@@@@D@@A@D@DA@DY@@PjEDA@@@@@A@@@@@@@@QQ@AdF@Pi'
   }
 };

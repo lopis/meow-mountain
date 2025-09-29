@@ -2,7 +2,7 @@ import { emojiToPixelArt } from '@/core/emoji';
 import { NewTileset as NewTileset } from '@/core/tileset';
 import { createCornerImage } from '@/core/util/image-generator';
 import { generateImageData } from './sprite-loader';
-import { cat, grass, house, oak, obelisk, spruce, statue, villager } from './sprites';
+import { cat, grass, ground, house, oak, obelisk, spruce, statue, villager } from './sprites';
 
 export const enum CatStates {
   idle,
@@ -29,6 +29,7 @@ export class GameAssets {
   static spruce: HTMLImageElement;
   static house: HTMLImageElement;
   static grass: HTMLImageElement;
+  static ground: HTMLImageElement;
   static statue: HTMLImageElement;
   static obelisk: HTMLImageElement;
 
@@ -40,6 +41,7 @@ export class GameAssets {
     GameAssets.spruce = generateImageData(spruce.data, spruce.palette);
     GameAssets.house = generateImageData(house.data, house.palette);
     GameAssets.grass = generateImageData(grass.data, grass.palette);
+    GameAssets.ground = generateImageData(ground.data, ground.palette);
     GameAssets.statue = generateImageData(statue.data, statue.palette);
     GameAssets.obelisk = generateImageData(obelisk.data, obelisk.palette);
   }

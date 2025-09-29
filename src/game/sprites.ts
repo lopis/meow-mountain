@@ -100,10 +100,10 @@ export const obelisk = {
 export const oak = {
   size: 16,
   palette: [
+    colors.green6,
     colors.green3,
-    colors.green1,
     colors.green0,
-    colors.green2,
+    colors.green5,
   ],
   data: '@@@@@@@@@@HIIA@@@@Q[[J@@@HZ[[SA@@QR[[RJ@@QRRRRJ@@aRRRRL@@QTRRbJ@@abbTTL@@aTTbbL@@IddddI@@HaddLA@@@HIIA@@@@HIIA@@@@@II@@@@@@@@@@@',
 };
@@ -122,9 +122,9 @@ export const spruce = {
 export const grass = {
   size: 16,
   palette: [
-    colors.green1,
-    colors.green2,
-    colors.green3,
+    colors.green4,
+    colors.green5,
+    colors.green6,
   ],
   data: 'PPDDAP^feYTvVVYfweYZi]YfeiMgVvYv|Vvey`YZYvCfeiiCYZVfE\\wYZ[qWvefFle]fvPVfuY@g[dCpsCpC@'
 };
@@ -137,4 +137,13 @@ export const house = {
     colors.blue3
   ],
   data: 'PU@@@PjVUU@YyGdjWU]PkAm^UUGt_PWUUuA}GTUUUUpjjjjC[_ZUNlk}ypvgVgCkjZ_N|}}@'
+};
+
+export const ground = {
+  size: 12,
+  palette: [
+    colors.green4,
+    colors.green5,
+  ],
+  data: '@@@@@@D@@A@D@DA@DY@@PjEDA@@@@@A@@@@@@@@QQ@AdF@Pi',
 };

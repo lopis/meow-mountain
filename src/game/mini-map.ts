@@ -5,7 +5,7 @@ import { drawEngine } from '@/core/draw-engine';
 
 /* eslint-disable quote-props */
 const pixelColors: Record<string, string> = {
-  'oak': colors.green1,
+  'oak': colors.green3,
   'spruce': colors.blue2,
   'house': colors.blue4,
   'field': colors.yellow1,

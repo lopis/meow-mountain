@@ -15,6 +15,9 @@ export type Color =
 'green1' | 
 'green2' | 
 'green3' | 
+'green4' | 
+'green5' | 
+'green6' | 
 'blue0' | 
 'blue1' | 
 'blue2' | 
@@ -65,9 +68,12 @@ export type Color =
 
 export const colors: Record<Color, string> = {
   green0: '#b3d7ad',
-  green1: '#7daf84',
-  green2: '#4c8568',
-  green3: '#396a50',
+  green1: '#9dc4a0',
+  green2: '#89b290',
+  green3: '#75a080',
+  green4: '#618e70',
+  green5: '#4d7c60',
+  green6: '#396a50',
   blue0: '#b4ecf3',
   blue1: '#4e9ca6',
   blue2: '#3e8791',

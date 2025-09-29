@@ -57,6 +57,11 @@ export const icons = [
     name: 'house',
     size: 16,
   },
+  {
+    file: '../sprites/ground.png',
+    name: 'ground',
+    size: 16,
+  },
 ];
 
 // If run directly, process all icons

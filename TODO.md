@@ -5,6 +5,7 @@
 - Features
   - Save game progress
   - Spirits should fade out when de-spawning
+  - Show "game over, try again" when dying.
 - Bugs
 
 

@@ -187,7 +187,7 @@ class DrawEngine {
   clear() {
     this.resetCamera();
     this.ctx1.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    this.ctx1.fillStyle = colors.green2;
+    this.ctx1.fillStyle = colors.green3;
     this.ctx1.fillRect(0, 0, this.canvasWidth, this.canvasHeight);
     this.ctx2.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
     this.ctx3.clearRect(0, 0, this.canvasWidth, this.canvasHeight);

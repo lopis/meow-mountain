@@ -363,6 +363,7 @@ export class GameMap {
         
         // Draw within a rectangular draw distance
         if (Math.abs(dx) <= renderWidth && Math.abs(dy) <= renderHeight) {
+          drawEngine.drawBackgroundImage(GameAssets.ground, x, y);
           cell?.content?.draw();
           if (cell?.content?.postDraw) {
             postDrawDrawables.push(cell?.content);
