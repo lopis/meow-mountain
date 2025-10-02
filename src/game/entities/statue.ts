@@ -8,6 +8,8 @@ import { drawHpBar } from './hp-bar';
 import { colors } from '@/core/util/color';
 import { drawEngine } from '@/core/draw-engine';
 import { GameStaticObject } from '@/core/game-static-object';
+import { MagicCircleAnimation } from './magic-animation';
+import { addTimeEvent } from '@/core/timer';
 
 export class Statue extends GameStaticObject {
   static readonly State = {
@@ -25,10 +27,10 @@ export class Statue extends GameStaticObject {
   repair = 0;
   state: number = Statue.State.BROKEN;
   animationTime = 0;
-  repairD = 1500;
-  repairAnimationTimer = 0;
   spiritsExorcised = false;
   lastClearTime = 0;
+
+  magicCircleAnimation: MagicCircleAnimation | null = null;
 
   /**
    * Animation duration
@@ -61,10 +63,12 @@ export class Statue extends GameStaticObject {
       this.state = Statue.State.ANIMATING;
       this.spiritsExorcised = false; // Reset flag when starting animation
       this.lastClearTime = 0; // Reset clear timer
-    } else if (this.state === Statue.State.ANIMATING) {
-      this.repairAnimationTimer += timeElapsed;
-      if (this.repairAnimationTimer > this.repairD) {
+      this.magicCircleAnimation = new MagicCircleAnimation(this.x, this.y);
+    } else if (this.magicCircleAnimation) {
+      this.magicCircleAnimation.update(timeElapsed);
+      if (this.magicCircleAnimation.isDone) {
         this.state = Statue.State.REPAIRED;
+        this.magicCircleAnimation = null;
       }
     }
     
@@ -102,8 +106,24 @@ export class Statue extends GameStaticObject {
   }
 
   postDraw() {
-    if (this.state === Statue.State.ANIMATING) {
-      this.drawAnimation();
+    if (this.magicCircleAnimation) {
+      this.magicCircleAnimation.drawAnimation();
+    
+      if (this.magicCircleAnimation.animationTimer - this.lastClearTime >= 20) {
+        const progress = this.magicCircleAnimation.progress;
+        this.map.clearCircleWithJitter(this.col, this.row, 20 * progress, true, 2, 0.3);
+        this.lastClearTime = this.magicCircleAnimation.animationTimer;
+      }
+      
+      // Only exorcise spirits once at the beginning of the animation
+      if (!this.spiritsExorcised) {
+        this.spirits.forEach((spirit, i) => {
+          addTimeEvent(() => {
+            spirit.takeDamage(spirit.hp);
+          }, i * 100);
+        });
+        this.spiritsExorcised = true;
+      }
     }
   }
 
@@ -130,38 +150,6 @@ export class Statue extends GameStaticObject {
       const py = Math.round(this.y + CELL_HEIGHT / 3 + offsetY + y);
 
       drawEngine.ctx1.fillRect(px, py, 1, 1);
-    }
-  }
-
-  drawAnimation() {
-    const animationProgress = (3 * this.repairAnimationTimer / this.repairD) % 1;
-    
-    const maxWidth = c2.width / drawEngine.zoom;
-    const maxHeight = c2.height / drawEngine.zoom;
-    const cx = this.x + CELL_WIDTH / 2;
-    const cy = this.y + CELL_HEIGHT / 2;
-    const rx = maxWidth * animationProgress;
-    const ry = maxHeight * animationProgress;
-    drawEngine.drawCircumference(
-      drawEngine.ctx1,
-      cx,
-      cy,
-      rx,
-      ry,
-      colors.white,
-      8,
-    );
-    
-    if (this.repairAnimationTimer - this.lastClearTime >= 20) {
-      const progress = this.repairAnimationTimer / this.repairD;
-      this.map.clearCircleWithJitter(this.col, this.row, 20 * progress, true, 2, 0.3);
-      this.lastClearTime = this.repairAnimationTimer;
-    }
-    
-    // Only exorcise spirits once at the beginning of the animation
-    if (!this.spiritsExorcised) {
-      this.spirits.forEach(spirit => spirit.takeDamage(spirit.hp));
-      this.spiritsExorcised = true;
     }
   }
 
