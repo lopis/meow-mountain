@@ -22,11 +22,13 @@ const STEP_SOUND_TIME = 200;
 export class Player extends GameObject<CatStates> {
   type = 'cat';
   sleeping = true;
+  sitting = false;
   attacking = false;
   scared = false;
   inVillage = false;
   pentagramAttack: PentagramAnimation | null = null;
   stepSoundTimer = 0;
+  sittingTimer = 0;
 
   constructor(col: number, row: number, public map: GameMap, public gameData: GameData) {
     super(
@@ -38,8 +40,6 @@ export class Player extends GameObject<CatStates> {
       80,
     );
 
-    this.aD = ANIMATION_SLOW;
-    
     // Initialize looking direction to the right
     this.map.playerLookingAt = { col: col + 1, row };
 
@@ -49,14 +49,16 @@ export class Player extends GameObject<CatStates> {
 
     on(GameEvent.WAKE_UP, () => {
       this.sleeping = false;
-      this.aD = ANIMATION_NORMAL;
+      this.sitting = true;
+    });
+
+    on(GameEvent.ENABLE_SCRATCH, () => {
+      this.sitting = false;
     });
 
     on(GameEvent.ATTACK_PLAYER, () => {
       this.scared = true;
-      this.aD = ANIMATION_FAST;
       addTimeEvent(() => {
-        this.aD = ANIMATION_NORMAL;
         this.scared = false;
       }, 600);
     });
@@ -64,17 +66,31 @@ export class Player extends GameObject<CatStates> {
     on(GameEvent.GAME_OVER, () => {
       this.animation = CatStates.die;
       this.animationTime = 0;
-      this.aD = ANIMATION_SLOW;
       this.animationLoop = false;
     });
   }
 
-  update(timeElapsed: number) {
+  updateAnimation(timeElapsed: number) {
     super.update(timeElapsed);
 
+    switch(this.animation) {
+      case CatStates.sleep:
+      case CatStates.sit:
+        this.aD = ANIMATION_SLOW;
+        break;
+      case CatStates.scared:
+        this.aD = ANIMATION_FAST;
+        break;
+      default:
+        this.aD = ANIMATION_NORMAL;
+        break;
+    }
+  }
+
+  update(timeElapsed: number) {
     if (this.animation === CatStates.die) return;
 
-    if (this.animation == CatStates.run) {
+    if (this.animation === CatStates.run) {
       this.stepSoundTimer -= timeElapsed;
       if (this.stepSoundTimer <= 0) {
         step();
@@ -103,6 +119,8 @@ export class Player extends GameObject<CatStates> {
       this.animation = CatStates.scared;
     } else if (this.sleeping) {
       this.animation = CatStates.sleep;
+    } else if (this.sitting) {
+      this.animation = CatStates.sit;
     } else if (this.attacking) {
       this.animation = CatStates.scratch;
     } else {
@@ -144,6 +162,12 @@ export class Player extends GameObject<CatStates> {
 
       if (!this.moving.x && !this.moving.y) {
         this.animation = CatStates.idle;
+        this.sittingTimer += timeElapsed;
+        if (this.sittingTimer > 2000) {
+          this.animation = CatStates.sit;
+        }
+      } else {
+        this.sittingTimer = 0;
       }
 
       // When not attacking, check if playerLookingAt is empty;

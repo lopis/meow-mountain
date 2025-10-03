@@ -11,7 +11,9 @@ export const enum CatStates {
   die,
   scratch,
   scared,
-  sleep
+  sleep,
+  attack,
+  sit,
 }
 export const enum VillagerStates {
   walk,

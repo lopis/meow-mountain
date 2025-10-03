@@ -14,6 +14,8 @@ export const icons = [
       'scratch',
       'scared',
       'sleep',
+      'attack',
+      'sit',
     ]
   },
   {

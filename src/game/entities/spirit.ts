@@ -79,7 +79,7 @@ export class Spirit extends Icon implements SmoothMovementState {
     });
   }
 
-  update(timeElapsed: number) {
+  updateAnimation(timeElapsed: number) {
     if (this.hp <= 0) {
       this.opacity -= timeElapsed / this.aD;
     };
@@ -91,7 +91,9 @@ export class Spirit extends Icon implements SmoothMovementState {
     if (this.animationTime >= this.aD) {
       this.animationTime -= this.aD;
     }
+  }
 
+  update(timeElapsed: number) {
     switch (this.state) {
       case SpiritState.DYING:
         break;

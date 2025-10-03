@@ -1,5 +1,5 @@
 // Auto-generated icon data
-// Generated on 2025-09-29T10:37:40.353Z
+// Generated on 2025-10-03T17:35:34.665Z
 
 export const icons = {
   cat: {
@@ -51,6 +51,18 @@ export const icons = {
         '@@@@@@@`Bx~_~E@@@',
         '@@@@@@@`Bx}o~A@@@',
         '@@@@@@@@@h|~C@@@'
+      ],
+      attack: [
+        '@@PA\\@GxFV~IL@A@@',
+        '@@PA\\@gxHv|AL@A@@',
+        '@@PA\\HGyRVxIL@A@@',
+        '@@h@N`CxXwxAL@A@@'
+      ],
+      sit: [
+        '@@@@@@J`SxBG{@O@@',
+        '@@@@@@j`KxLG|AO@@',
+        '@@@@@@J`CxGGz@O@@',
+        '@@@@@@J`OxDGz@O@@'
       ]
     }
   },

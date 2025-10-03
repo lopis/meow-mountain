@@ -52,6 +52,18 @@ export const cat = {
       '@@@@@@@`Bx~_~E@@@',
       '@@@@@@@`Bx}o~A@@@',
       '@@@@@@@@@h|~C@@@'
+    ],
+    [CatStates.attack]: [
+      '@@PA\\@GxFV~IL@A@@',
+      '@@PA\\@gxHv|AL@A@@',
+      '@@PA\\HGyRVxIL@A@@',
+      '@@h@N`CxXwxAL@A@@'
+    ],
+    [CatStates.sit]: [
+      '@@@@@@J`SxBG{@O@@',
+      '@@@@@@j`KxLG|AO@@',
+      '@@@@@@J`CxGGz@O@@',
+      '@@@@@@J`OxDGz@O@@'
     ]
   }
 };
