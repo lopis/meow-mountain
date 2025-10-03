@@ -122,7 +122,7 @@ export class Player extends GameObject<CatStates> {
     } else if (this.sitting) {
       this.animation = CatStates.sit;
     } else if (this.attacking) {
-      this.animation = CatStates.scratch;
+      this.animation = this.pentagramAttack ? CatStates.attack : CatStates.scratch;
     } else {
       super.updatePositionSmoothly(timeElapsed);
 
@@ -181,16 +181,14 @@ export class Player extends GameObject<CatStates> {
       if (!this.attacking && controls.isAction1 && !controls.previousState.isAction1) {
         this.attacking = true;
         this.animationTime = 0;
+        this.sittingTimer = 0;
 
         if (!this.pentagramAttack && this.isSurrounded()) {
-          console.log('pentagram start');
-          
           this.pentagramAttack = new PentagramAnimation(
             drawEngine.ctx1,
             this.x,
             this.y,
             () => {
-              console.log('pentagram end');
               this.pentagramAttack = null;
               this.attackAllEnemiesAround();
               this.attacking = false;
