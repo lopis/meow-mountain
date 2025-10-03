@@ -6,7 +6,7 @@ import { GameMap } from '../game-map';
 import { updatePositionSmoothly, SmoothMovementState, setTargetPosition } from '@/utils/smooth-movement';
 import { Coords, findShortestPath } from '../path-findind';
 import { addTimeEvent } from '@/core/timer';
-import { emit } from '@/core/event';
+import { emit, on } from '@/core/event';
 import { drawHpBar } from './hp-bar';
 import { GameEvent } from '../event-manifest';
 import { exorcise } from '@/core/audio';
@@ -27,6 +27,7 @@ export const spirits = ([
 }, {} as Record<SpiritType, SpiritSpecies>);
 
 const enum SpiritState {
+  DYING,
   IDLE,
   MOVING,
   WINDING,
@@ -72,10 +73,16 @@ export class Spirit extends Icon implements SmoothMovementState {
     this.targetPos = { x: this.x, y: this.y };
     this.maxHp = Math.round(Math.pow(1.5, this.species.level + 1));
     this.hp = this.maxHp;
+
+    on(GameEvent.END_SEQUECE_START, () => {
+      this.state = SpiritState.DYING;
+    });
   }
 
   update(timeElapsed: number) {
-    if (this.hp <= 0) return;
+    if (this.hp <= 0) {
+      this.opacity -= timeElapsed / this.aD;
+    };
 
     this.animationTime += timeElapsed * Math.pow(this.species.level + 0.5, 2);
     if (this.opacity < 1) {
@@ -86,6 +93,8 @@ export class Spirit extends Icon implements SmoothMovementState {
     }
 
     switch (this.state) {
+      case SpiritState.DYING:
+        break;
       case SpiritState.IDLE:
       case SpiritState.MOVING:
         updatePositionSmoothly(this, timeElapsed);

@@ -107,7 +107,7 @@ export class Statue extends GameStaticObject {
 
   postDraw() {
     if (this.magicCircleAnimation) {
-      this.magicCircleAnimation.drawAnimation();
+      this.magicCircleAnimation.draw();
     
       if (this.magicCircleAnimation.animationTimer - this.lastClearTime >= 20) {
         const progress = this.magicCircleAnimation.progress;

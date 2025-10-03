@@ -132,9 +132,6 @@ export class GameMap {
       const { x, y, name } = statueProps;
       const fullName = `cat ${name} altar`;
       const statue = new Statue(x, y, this, this.gameData, fullName);
-      if (x === statues.heart.x) {
-        statue.maxSpirits = 0;
-      }
       // Place farms in the 8 squares around the statue
       forEachSurroundingCell(x, y, (farmCol, farmRow) => {
         const cell = this.grid[farmRow][farmCol];

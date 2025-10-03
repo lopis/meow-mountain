@@ -25,6 +25,7 @@ export const enum GameEvent {
   
   // Game state events
   GAME_OVER,
+  END_SEQUECE_START,
   GAME_END,
   FADE_OUT,
   PAUSE,

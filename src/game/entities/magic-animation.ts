@@ -27,7 +27,7 @@ export class MagicCircleAnimation {
     }
   }
 
-  drawAnimation() {
+  draw() {
     if (this.isDone) return;
 
     const animationProgress = (3 * this.progress) % 1;
