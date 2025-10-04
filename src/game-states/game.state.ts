@@ -9,7 +9,7 @@ import { GameStory } from '@/game/game-story';
 import { addTimeEvent, updateTimeEvents } from '@/core/timer';
 import { Obelisk } from '@/game/entities/obelisk';
 import musicPlayer from '@/core/music-player';
-import { on } from '@/core/event';
+import { clearEvents, on } from '@/core/event';
 import { GameEvent } from '@/game/event-manifest';
 import { gameStateMachine } from '@/game-state-machine';
 import { menuState } from './menu.state';
@@ -27,6 +27,7 @@ export class GameState implements State {
   onLeave() {
     musicPlayer.stop();
     drawEngine.ctx4.clearRect(0, 0, c4.width, c4.height);
+    clearEvents();
   }
 
   onEnter() {
