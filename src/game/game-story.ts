@@ -102,7 +102,7 @@ export class GameStory {
   story: Story<typeof script>;
 
   constructor() {
-    this.story = new Story(script);
+    this.story = new Story({...script});
 
     on(StoryEngineEvent.STORY_STATE_EXIT, (label: Scene) => {
       emit(GameEvent.CUTSCENE_END, script[label]);
@@ -149,11 +149,13 @@ export class GameStory {
     on(GameEvent.GAME_END, () => {
       emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.end);
     });
+    
 
-    addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
-    // setTimeout(() => {
-    //   postIntro();
-    // }, 10);
+    // addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
+    setTimeout(() => {
+      postIntro();
+      emit(GameEvent.ENABLE_SCRATCH);
+    }, 10);
   }
 
   update (timeElapsed: number) {

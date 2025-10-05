@@ -15,12 +15,15 @@ import { GameEvent } from './event-manifest';
 import { Farm } from './entities/farm';
 import { forEachSurroundingCell } from './grid-utils';
 import { House } from './entities/house';
+import { Obelisk } from './entities/obelisk';
 
 export class GameMap {
   grid: Cell[][];
   villages: Village[] = [];
   private rng: SeededRandom;
   playerLookingAt: Coords = { col: 0, row: 0 };
+  statues: Statue[] = [];
+  obelisk: Obelisk;
 
   constructor(
     public readonly colCount: number,
@@ -128,6 +131,8 @@ export class GameMap {
 
     this.fillCenterWithGrass(1.0);
 
+    this.obelisk = new Obelisk(this);
+
     for (const statueProps of Object.values(statues)) {
       const { x, y, name } = statueProps;
       const fullName = `cat ${name} altar`;
@@ -138,12 +143,13 @@ export class GameMap {
         cell.content = new Farm(farmCol, farmRow);
       });
       this.grid[y][x].content = statue;
+      this.statues.push(statue);
     }
 
     on(GameEvent.SPAWN_FIRST_SPIRIT, () => {
-      this.set(64, 89, new Spirit(64, 89, '☁️', this));
-      this.set(65, 89, new Spirit(65, 89, '☁️', this));
-      this.set(66, 89, new Spirit(66, 89, '☁️', this));
+      this.set(64, 89, new Spirit(64, 89, '💀', this));
+      // this.set(65, 89, new Spirit(65, 89, '☁️', this));
+      // this.set(66, 89, new Spirit(66, 89, '☁️', this));
     });
   }
 

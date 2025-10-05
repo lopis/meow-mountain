@@ -52,6 +52,19 @@ export const repair = (pitch: number) => playSound((i: number) => {
   return Math.sin(i/(21 - pitch) + Math.sin(i/2000)*5) * Math.exp(-i/4000) * (i/96000) * 9;
 });
 
+export const highRepair = (pitch: number) => playSound((i: number) => {
+  // Musical scale: each pitch step multiplies frequency by 12th root of 2
+  // Lower pitch number = higher frequency (smaller period)
+  const freq = 80 * Math.pow(2, -pitch / 12); // Base frequency decreases with pitch
+  const phase = i * 2 * Math.PI / freq + Math.sin(i/1800) * 4;
+  // Church organ sound with harmonics (fundamental + octave + perfect fifth)
+  const fundamental = Math.sin(phase);
+  const octave = Math.sin(phase * 2) * 0.5;      // One octave up (2x frequency)
+  const fifth = Math.sin(phase * 3) * 0.3;       // Perfect fifth (3x frequency) 
+  const octave2 = Math.sin(phase * 4) * 0.2;     // Two octaves up (4x frequency)
+  return (fundamental + octave + fifth + octave2) * Math.exp(-i/6000) * (i/96000) * 6;
+});
+
 export const hissAndSpit = () => playSound((i: number) => {
   const n = 10e3;
   if (i > n) return 0;

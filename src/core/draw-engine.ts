@@ -162,22 +162,31 @@ class DrawEngine {
     this.targetZoom = zoom;
     const cx = this.canvasWidth / 2 - 32;
     const cy = this.canvasHeight / 2 - 64;
-    this.ctx1.setTransform(
-      this.zoom, 0, 0, this.zoom,
-      cx - this.cameraX * this.zoom,
-      cy - this.cameraY * this.zoom,
-    );
     if (immediate) {
       this.cameraX = x;
       this.cameraY = y;
       this.zoom = zoom;
     }
+    this.ctx1.setTransform(
+      this.zoom, 0, 0, this.zoom,
+      cx - this.cameraX * this.zoom,
+      cy - this.cameraY * this.zoom,
+    );
   }
 
   updateCamera() {
     this.cameraX += (this.targetCameraX - this.cameraX) * this.cameraLerpSpeed;
+    if (Math.abs(this.targetCameraX - this.cameraX) < 0.01) {
+      this.cameraX = this.targetCameraX;
+    }
     this.cameraY += (this.targetCameraY - this.cameraY) * this.cameraLerpSpeed;
+    if (Math.abs(this.targetCameraY - this.cameraY) < 0.01) {
+      this.cameraY = this.targetCameraY;
+    }
     this.zoom += (this.targetZoom - this.zoom) * this.cameraLerpSpeed;
+    if (Math.abs(this.targetZoom - this.zoom) < 0.02) {
+      this.zoom = this.targetZoom;
+    }
   }
 
   resetCamera() {

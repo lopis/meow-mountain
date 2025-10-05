@@ -1,5 +1,5 @@
 import { GameAssets } from '../game-assets';
-import { CELL_HEIGHT, CELL_WIDTH, MAX_MAGIC, MAX_REPAIR } from '../constants';
+import { CELL_HEIGHT, CELL_WIDTH, MAX_REPAIR } from '../constants';
 import { GameMap } from '../game-map';
 import { drawHpBar } from './hp-bar';
 import { colors } from '@/core/util/color';
@@ -32,6 +32,10 @@ export class Obelisk extends GameStaticObject {
     this.magicCircleAnimation?.update(timeElapsed);
   }
 
+  startAnimation () {
+    this.magicCircleAnimation = new MagicCircleAnimation(this.x, this.y);
+  }
+
   draw() {
     super.draw();
     if (this.repair > 0) {
@@ -44,7 +48,7 @@ export class Obelisk extends GameStaticObject {
   }
 
   attemptRepair() {
-    const maxProgress = this.map.gameData.magic / MAX_MAGIC;
+    const maxProgress = 1; //this.map.gameData.magic / MAX_MAGIC;
     const maxRepair = MAX_REPAIR * maxProgress;
     if (this.repair < maxRepair) {
       this.repair ++;
@@ -56,7 +60,6 @@ export class Obelisk extends GameStaticObject {
 
     if (this.repair === MAX_REPAIR) {
       emit(GameEvent.END_SEQUECE_START);
-      this.magicCircleAnimation = new MagicCircleAnimation(this.x, this.y);
     }
   }
 }
