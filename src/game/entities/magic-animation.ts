@@ -4,7 +4,7 @@ import { colors } from '@/core/util/color';
 
 export class MagicCircleAnimation {
   animationTimer = 0;
-  animationDuration = 1500;
+  static animationDuration = 1500;
   progress = 0;
   cx: number;
   cy: number;
@@ -20,7 +20,7 @@ export class MagicCircleAnimation {
 
   update(timeElapsed: number) {
     this.animationTimer += timeElapsed;
-    this.progress = this.animationTimer / this.animationDuration;
+    this.progress = this.animationTimer / MagicCircleAnimation.animationDuration;
 
     if (this.progress >= 1) {
       this.isDone = true;

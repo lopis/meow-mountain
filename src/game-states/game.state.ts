@@ -8,13 +8,14 @@ import { GameData } from '@/game/game-data';
 import { GameStory } from '@/game/game-story';
 import { addTimeEvent, updateTimeEvents } from '@/core/timer';
 import musicPlayer from '@/core/music-player';
-import { clearEvents, on } from '@/core/event';
+import { clearEvents, emit, on } from '@/core/event';
 import { GameEvent } from '@/game/event-manifest';
 import { gameStateMachine } from '@/game-state-machine';
 import { menuState } from './menu.state';
 import { MAX_LIVES } from '@/game/constants';
 import { GameAssets } from '@/game/game-assets';
 import { highRepair } from '@/core/audio';
+import { MagicCircleAnimation } from '@/game/entities/magic-animation';
 
 export class GameState implements State {
   map!: GameMap;
@@ -54,7 +55,7 @@ export class GameState implements State {
     });
 
     on(GameEvent.FADE_OUT, () => {
-      addTimeEvent(() => gameStateMachine.setState(menuState), 3000);
+      addTimeEvent(() => gameStateMachine.setState(menuState), 6000);
     });
 
     on(GameEvent.END_SEQUECE_START, () => {
@@ -71,7 +72,7 @@ export class GameState implements State {
           drawEngine.setCamera(this.cameraPos.x, this.cameraPos.y, 5, true);
           addTimeEvent(() => {
             statue.img = GameAssets.statueGold;
-            statue.maxSpirits = 0;
+            statue.maxSpirits = -99;
             statue.spirits.forEach(spirit => spirit.takeDamage(spirit.hp));
             highRepair(i);
           }, interval * 0.5);
@@ -84,19 +85,26 @@ export class GameState implements State {
         const obelisk = this.map.obelisk;
         this.cameraPos = { x: obelisk.x, y: obelisk.y};
         drawEngine.setCamera(this.cameraPos.x, this.cameraPos.y, 5, true);
+
+        let time = interval * 1.5;
         addTimeEvent(() => {
           obelisk.img = GameAssets.obeliskGold;
           let repeat = 0;
           addTimeEvent(() => {
             highRepair(this.map.statues.length + (repeat++));
           }, 250, 4);
-        }, interval * 1.5);
+        }, time);
+        time += 250 * 4;
         addTimeEvent(() => {
           obelisk.startAnimation();
-        }, interval * 2.0);
+        }, time);
+        time += MagicCircleAnimation.animationDuration * 2;
         addTimeEvent(() => {
           musicPlayer.start();
-        }, interval * 2.0 + 500);
+        }, time);
+        addTimeEvent(() => {
+          emit(GameEvent.GAME_END);
+        }, time);
       }, delay + interval * this.map.statues.length);
     });
 

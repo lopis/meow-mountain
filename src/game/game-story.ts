@@ -88,7 +88,10 @@ script[Scene.magicRestored] = {
 
 script[Scene.end] = {
   dialogs: [
-    'The barrier is restored.\nTime for a well deserved nap...',
+    'The barrier is restored.',
+    'The altars are back online.',
+    'The spirits are resting in peace.',
+    'Time for a well deserved nap...',
   ],
 };
 
@@ -116,7 +119,7 @@ export class GameStory {
         emit(GameEvent.ENABLE_SCRATCH);
       }
       if (label === Scene.end) {
-        emit(GameEvent.FADE_OUT);
+        addTimeEvent(() => emit(GameEvent.FADE_OUT), 3000);
       }
     });
 
