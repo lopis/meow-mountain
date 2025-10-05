@@ -154,11 +154,11 @@ export class GameStory {
     });
     
 
-    // addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
-    setTimeout(() => {
-      postIntro();
-      emit(GameEvent.ENABLE_SCRATCH);
-    }, 10);
+    addTimeEvent(() => this.story.enterState(Scene.intro), 1000);
+    // setTimeout(() => {
+    //   postIntro();
+    //   emit(GameEvent.ENABLE_SCRATCH);
+    // }, 10);
   }
 
   update (timeElapsed: number) {
