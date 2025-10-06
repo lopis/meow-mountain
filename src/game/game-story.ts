@@ -28,7 +28,7 @@ script[Scene.intro] = {
   dialogs: [
     'Zzzzz...',
     'Yawwwn...',
-    'How long was i sleeping?...',
+    'How long was I sleeping?...',
   ],
 };
 
@@ -83,7 +83,7 @@ script[Scene.altar2] = {
 
 script[Scene.villagers] = {
   dialogs: [
-    'Villagers are very supersticious.',
+    'Villagers are very superstitious.',
     'I should not let them see me,\nthat will empower the evil spirits.',
   ],
 };

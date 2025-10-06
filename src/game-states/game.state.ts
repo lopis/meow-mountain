@@ -73,8 +73,8 @@ export class GameState implements State {
 
     on(GameEvent.END_SEQUECE_START, () => {
       // Final statue camera pan
-      const interval = 1000;
-      const delay = 1000;
+      const interval = 2000;
+      const delay = 2000;
       musicPlayer.pause();
 
       // Turn each statue golden and exorcise all spirits
