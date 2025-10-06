@@ -17,6 +17,7 @@ import { GameAssets } from '@/game/game-assets';
 import { highRepair } from '@/core/audio';
 import { MagicCircleAnimation } from '@/game/entities/magic-animation';
 import { colors } from '@/core/util/color';
+import { controls } from '@/core/controls';
 
 export class GameState implements State {
   map!: GameMap;
@@ -31,6 +32,7 @@ export class GameState implements State {
   cameraPos: {x: number, y:number} = {x:0, y:0};
   fadeTimer = 0;
   isFading = false;
+  showGameOver = false;
 
   onLeave() {
     musicPlayer.stop();
@@ -54,7 +56,9 @@ export class GameState implements State {
     });
 
     on(GameEvent.GAME_OVER, () => {
-      addTimeEvent(() => gameStateMachine.setState(menuState), 3000);
+      musicPlayer.stop();
+      drawEngine.ctx4.clearRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
+      addTimeEvent(() => this.showGameOver = true, 1000);
     });
 
     on(GameEvent.FADE_OUT, () => {
@@ -118,9 +122,9 @@ export class GameState implements State {
     });
 
     // DEBUG: force statue final camera pan
-    addTimeEvent(() => {
-      emit(GameEvent.END_SEQUECE_START);
-    }, 5000);
+    // addTimeEvent(() => {
+    //   emit(GameEvent.END_SEQUECE_START);
+    // }, 5000);
 
     this.gameData = new GameData();
     this.map = new GameMap(160, 160, this.gameData);
@@ -165,16 +169,44 @@ export class GameState implements State {
       if (this.gameData.lives > 0) {
         this.hud.draw();
       }
-      this.cat.update(timeElapsed);
+      this.cat.updateAnimation(timeElapsed);
       this.cat.draw();
+      if (this.showGameOver) {
+        drawEngine.drawText(
+          'You ran out of lives',
+          drawEngine.canvasWidth / 2,
+          drawEngine.canvasHeight * 3 / 4,
+          colors.black,
+          1,
+          0,
+          5,
+          1,
+          drawEngine.ctx3,
+        );
+        drawEngine.drawText(
+          '> Press space',
+          drawEngine.canvasWidth / 2,
+          drawEngine.canvasHeight * 3 / 4 + 40,
+          colors.green5,
+          1,
+          0,
+          5,
+          1,
+          drawEngine.ctx3,
+        );
+        if (controls.isAction1 && controls.previousState.isAction1) {
+          this.showGameOver = false;
+          addTimeEvent(() => gameStateMachine.setState(menuState), 1000);
+        }
+      }
     }
 
     if (this.isFading) {
       this.fadeTimer += timeElapsed;
       const alpha = Math.min(255, Math.floor(((this.fadeTimer / 4000)) * 255));
       const alphaHex = alpha.toString(16).padStart(2, '0');
-      drawEngine.ctx2.fillStyle = colors.green3 + alphaHex;
-      drawEngine.ctx2.fillRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
+      drawEngine.ctx3.fillStyle = colors.green3 + alphaHex;
+      drawEngine.ctx3.fillRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
     }
 
     drawEngine.resetCamera();

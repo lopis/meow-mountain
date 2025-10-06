@@ -66,7 +66,9 @@ export class Player extends GameObject<CatStates> {
     on(GameEvent.GAME_OVER, () => {
       this.animation = CatStates.die;
       this.animationTime = 0;
+      this.animationFrame = 0;
       this.animationLoop = false;
+      this.aD = ANIMATION_SLOW;
     });
   }
 

@@ -147,6 +147,7 @@ export class GameMap {
     }
 
     on(GameEvent.SPAWN_FIRST_SPIRIT, () => {
+      // Spawn a single cloud spirit
       this.set(64, 89, new Spirit(64, 89, '☁️', this));
     });
   }
