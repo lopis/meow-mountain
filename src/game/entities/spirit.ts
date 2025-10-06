@@ -209,6 +209,11 @@ export class Spirit extends Icon implements SmoothMovementState {
 
   draw() {
     const phase = Math.sin((this.animationTime / this.aD) * 2 * Math.PI);
+
+    if (this.hp < this.maxHp) {
+      drawHpBar(this.hp, this.maxHp, this.x, this.y);
+    }
+
     drawEngine.ctx1.save();
     drawEngine.ctx1.globalAlpha = this.opacity;
 
@@ -221,10 +226,6 @@ export class Spirit extends Icon implements SmoothMovementState {
       this.icon.width - 6,
       CELL_HEIGHT / 4 + 1,
     );
-
-    if (this.hp < this.maxHp) {
-      drawHpBar(this.hp, this.maxHp, this.x, this.y);
-    }
 
     // Icon
     drawEngine.ctx1.save();
@@ -252,6 +253,9 @@ export class Spirit extends Icon implements SmoothMovementState {
     }, 150);
     if (this.hp <= 0) {
       exorcise();
+      addTimeEvent(() => {
+        this.opacity -= 0.33;
+      }, 500, 3);
       addTimeEvent(() => {
         this.dead = true;
       }, 1500);

@@ -73,7 +73,7 @@ script[Scene.altar] = {
 script[Scene.altar2] = {
   dialogs: [
     'I feel myself getting stronger.',
-    'But I must continue until\nuntil all alters are repair.',
+    'But I must continue until\nall altars are repaired.',
   ],
   goals: [
     'repair all 5 altars',

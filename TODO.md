@@ -4,10 +4,18 @@
   - it's not clear that the cat temples increase magic for the purpose of fixing the obelisk
 - Features
   - Save game progress
-  - Spirits should fade out when de-spawning
-  - Show "game over, try again" when dying.
+  - Add more features to the map
+    - river
+    - lake
+  - Do something with the magic.
+    - Magic attacks
+    - Need magic to teleport
+  - Add side quests
+  - Allow entering homes
+  - Final boss
+  - Animation the cat in 4 directions
+
 - Bugs
-  - Monsters are now attacking after dead
 
 
 - Post comp learning
