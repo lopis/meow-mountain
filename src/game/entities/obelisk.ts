@@ -1,5 +1,5 @@
 import { GameAssets } from '../game-assets';
-import { CELL_HEIGHT, CELL_WIDTH, MAX_REPAIR } from '../constants';
+import { CELL_HEIGHT, CELL_WIDTH, MAX_MAGIC, MAX_REPAIR } from '../constants';
 import { GameMap } from '../game-map';
 import { drawHpBar } from './hp-bar';
 import { colors } from '@/core/util/color';
@@ -48,7 +48,7 @@ export class Obelisk extends GameStaticObject {
   }
 
   attemptRepair() {
-    const maxProgress = 1; //this.map.gameData.magic / MAX_MAGIC;
+    const maxProgress = this.map.gameData.magic / MAX_MAGIC;
     const maxRepair = MAX_REPAIR * maxProgress;
     if (this.repair < maxRepair) {
       this.repair ++;
