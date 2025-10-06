@@ -119,6 +119,8 @@ export class Spirit extends Icon implements SmoothMovementState {
   }
 
   private updateAttack(timeElapsed: number) {
+    if (this.hp <= 0) return;
+
     this.attackTimer += timeElapsed;
     const progress = this.attackTimer / this.attackDuration;
     
@@ -241,14 +243,16 @@ export class Spirit extends Icon implements SmoothMovementState {
   }
 
   takeDamage(damage: number = 1): boolean {
+    if (this.hp < 0) true;
+
     this.hp -= damage;
     this.recoil = true;
     addTimeEvent(() => {
       this.recoil = false;
     }, 150);
     if (this.hp <= 0) {
+      exorcise();
       addTimeEvent(() => {
-        exorcise();
         this.dead = true;
       }, 1500);
     }

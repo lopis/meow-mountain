@@ -263,27 +263,44 @@ export class HUD {
   }
 
   // eslint-disable-next-line class-methods-use-this
-  drawInfo(text: string, y: number) {
+  drawInfo(text: string, yPos: number) {
     const boxWidth = 350;
     const boxHeight = 35;
-    drawEngine.ctx3.fillStyle = colors.purple5;
+
+    const x = c3.width / 2 - boxWidth / 2;
+    const y = yPos - 6 * 3;
+    
+    drawEngine.ctx3.fillStyle = colors.purple4;
     drawEngine.ctx3.fillRect(
-      c3.width / 2 - boxWidth / 2 + 4,
-      y - 6 * 3 - 4,
-      boxWidth - 8,
-      boxHeight + 8,
-    );
-    drawEngine.ctx3.fillStyle = colors.yellow2;
-    drawEngine.ctx3.fillRect(
-      c3.width / 2 - boxWidth / 2,
-      y - 6 * 3,
+      x,
+      y+3,
       boxWidth,
       boxHeight,
     );
+    drawEngine.ctx3.fillRect(
+      x - 15,
+      y + 15,
+      boxHeight,
+      boxHeight,
+    );
+    drawEngine.ctx3.fillRect(
+      x + boxWidth - 15,
+      y + 15,
+      boxHeight,
+      boxHeight,
+    );
+    drawEngine.ctx3.fillStyle = colors.yellow2;
+    drawEngine.ctx3.fillRect(
+      x,
+      y,
+      boxWidth,
+      boxHeight,
+    );
+
     drawEngine.drawText(
       text,
       c3.width / 2,
-      y,
+      yPos,
       colors.purple4,
       1, // center
       1, // middle
