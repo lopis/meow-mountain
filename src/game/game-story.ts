@@ -13,7 +13,8 @@ const enum Scene {
   intro = 1,
   spirit,
   barrier,
-  temple,
+  altar,
+  altar2,
   noMagic,
   magicRestored,
   villagers,
@@ -58,13 +59,24 @@ script[Scene.noMagic] = {
   ],
 };
 
-script[Scene.temple] = {
+script[Scene.altar] = {
   dialogs: [
     'My magic has increased a little.',
     'But the other altars...\nthey must be damaged too.',
   ],
   goals: [
-    'repair all 5 temples',
+    'repair all 5 altars',
+    'restore the forest magic barrier',
+  ],
+};
+
+script[Scene.altar2] = {
+  dialogs: [
+    'I feel myself getting stronger.',
+    'But I must continue until\nuntil all alters are repair.',
+  ],
+  goals: [
+    'repair all 5 altars',
     'restore the forest magic barrier',
   ],
 };
@@ -78,7 +90,7 @@ script[Scene.villagers] = {
 
 script[Scene.magicRestored] = {
   dialogs: [
-    'I have restore my full magic power',
+    'I have restored my full magic power',
     'Now I am able to restore the\nmagic barrier again.',
   ],
   goals: [
@@ -137,7 +149,11 @@ export class GameStory {
 
     on(GameEvent.NEXT_STATUE_DIALOG, (magicLevel: number) => {
       if (magicLevel < MAX_MAGIC) {
-        emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.temple);
+        if (!script[Scene.altar].isDone) {
+          emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.altar);
+        } else {
+          emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.altar2);
+        }
       } else {
         emit(StoryEngineEvent.STORY_STATE_ENTER, Scene.magicRestored);
       }

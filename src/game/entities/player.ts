@@ -233,6 +233,17 @@ export class Player extends GameObject<CatStates> {
   }
 
   draw() {
+    // Draw shadow glow under cat
+    // drawEngine.drawCircumference(
+    //   drawEngine.ctx1,
+    //   this.x + CELL_WIDTH / 2 + (this.mirrored ? -1 : 1),
+    //   this.y + CELL_HEIGHT * 3 / 4,
+    //   CELL_WIDTH / 2,
+    //   CELL_HEIGHT / 4,
+    //   colors.purple0 + 55,
+    //   CELL_WIDTH,
+    // );
+  
     super.draw();
     this.pentagramAttack?.draw();
   }

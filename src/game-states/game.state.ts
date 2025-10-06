@@ -16,6 +16,7 @@ import { MAX_LIVES } from '@/game/constants';
 import { GameAssets } from '@/game/game-assets';
 import { highRepair } from '@/core/audio';
 import { MagicCircleAnimation } from '@/game/entities/magic-animation';
+import { colors } from '@/core/util/color';
 
 export class GameState implements State {
   map!: GameMap;
@@ -28,6 +29,8 @@ export class GameState implements State {
   zoomOffset = 0;
   cameraFollowsCat = true;
   cameraPos: {x: number, y:number} = {x:0, y:0};
+  fadeTimer = 0;
+  isFading = false;
 
   onLeave() {
     musicPlayer.stop();
@@ -55,12 +58,18 @@ export class GameState implements State {
     });
 
     on(GameEvent.FADE_OUT, () => {
-      addTimeEvent(() => gameStateMachine.setState(menuState), 6000);
+      this.cameraFollowsCat = false;
+      this.cameraPos = { x: this.cameraPos.x, y: this.cameraPos.y - 200 };
+      drawEngine.moveCameraLinearly = true;
+      this.cat.sleeping = true;
+      this.fadeTimer = 0;
+      this.isFading = true;
+      addTimeEvent(() => gameStateMachine.setState(menuState), 10000);
     });
 
     on(GameEvent.END_SEQUECE_START, () => {
       // Final statue camera pan
-      const interval = 3000;
+      const interval = 1000;
       const delay = 1000;
       musicPlayer.pause();
 
@@ -100,7 +109,7 @@ export class GameState implements State {
         }, time);
         time += MagicCircleAnimation.animationDuration * 2;
         addTimeEvent(() => {
-          musicPlayer.start();
+          musicPlayer.unpause();
         }, time);
         addTimeEvent(() => {
           emit(GameEvent.GAME_END);
@@ -109,9 +118,9 @@ export class GameState implements State {
     });
 
     // DEBUG: force statue final camera pan
-    // addTimeEvent(() => {
-    //   emit(GameEvent.END_SEQUECE_START);
-    // }, 5000);
+    addTimeEvent(() => {
+      emit(GameEvent.END_SEQUECE_START);
+    }, 5000);
 
     this.gameData = new GameData();
     this.map = new GameMap(160, 160, this.gameData);
@@ -150,7 +159,7 @@ export class GameState implements State {
     updateTimeEvents(timeElapsed);
 
     if (this.gameData.lives > 0 && !this.gameData.win) {
-      this.map.draw(this.cameraPos.x, this.cameraPos.y);
+      this.map.draw(drawEngine.cameraX, drawEngine.cameraY);
       this.hud.draw();
     } else {
       if (this.gameData.lives > 0) {
@@ -159,6 +168,15 @@ export class GameState implements State {
       this.cat.update(timeElapsed);
       this.cat.draw();
     }
+
+    if (this.isFading) {
+      this.fadeTimer += timeElapsed;
+      const alpha = Math.min(255, Math.floor(((this.fadeTimer / 4000)) * 255));
+      const alphaHex = alpha.toString(16).padStart(2, '0');
+      drawEngine.ctx2.fillStyle = colors.green3 + alphaHex;
+      drawEngine.ctx2.fillRect(0, 0, drawEngine.canvasWidth, drawEngine.canvasHeight);
+    }
+
     drawEngine.resetCamera();
   }
 }

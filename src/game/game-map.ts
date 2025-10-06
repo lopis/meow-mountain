@@ -329,7 +329,7 @@ export class GameMap {
     }
   }
 
-  draw(cx: number, cy: number) {
+  draw(cameraX: number, cameraY: number) {
     const zoom = drawEngine.zoom;
     const renderWidth = (drawEngine.canvasWidth / zoom) / 2 + 50;
     const renderHeight = (drawEngine.canvasHeight / zoom) / 2 + 50;
@@ -337,10 +337,10 @@ export class GameMap {
     const seenRadiusSquared = seenRadius * seenRadius;
 
     // Compute visible cell bounds
-    const minCol = Math.max(0, Math.floor((cx - renderWidth) / CELL_WIDTH));
-    const maxCol = Math.min(this.colCount - 1, Math.ceil((cx + renderWidth) / CELL_WIDTH));
-    const minRow = Math.max(0, Math.floor((cy - renderHeight) / CELL_HEIGHT));
-    const maxRow = Math.min(this.rowCount - 1, Math.ceil((cy + renderHeight) / CELL_HEIGHT));
+    const minCol = Math.max(0, Math.floor((cameraX - renderWidth) / CELL_WIDTH));
+    const maxCol = Math.min(this.colCount - 1, Math.ceil((cameraX + renderWidth) / CELL_WIDTH));
+    const minRow = Math.max(0, Math.floor((cameraY - renderHeight) / CELL_HEIGHT));
+    const maxRow = Math.min(this.rowCount - 1, Math.ceil((cameraY + renderHeight) / CELL_HEIGHT));
 
     // First pass: draw ground
     for (let row = minRow; row <= maxRow; row++) {
@@ -360,8 +360,8 @@ export class GameMap {
         const cell = this.grid[row][col];
         const x = cell.x * CELL_WIDTH;
         const y = cell.y * CELL_HEIGHT;
-        const dx = x - cx;
-        const dy = y - cy;
+        const dx = x - cameraX;
+        const dy = y - cameraY;
 
         // Seen radius for minimap
         const distanceSquared = dx * dx + dy * dy;

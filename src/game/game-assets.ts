@@ -37,9 +37,12 @@ export class GameAssets {
   static statueGold: HTMLImageElement;
   static obelisk: HTMLImageElement;
   static obeliskGold: HTMLImageElement;
+  static superCat: NewTileset<CatStates>;
 
   public static initialize() {
     GameAssets.cat = new NewTileset<CatStates>(cat);
+    GameAssets.superCat = new NewTileset<CatStates>({...cat, palette: [colors.purple3, colors.purple2]});
+
     GameAssets.villager = new NewTileset<VillagerStates>(villager);
     GameAssets.cornerImage = createCornerImage();
     GameAssets.oak = generateImageData(oak.data, oak.palette);

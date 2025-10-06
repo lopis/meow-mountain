@@ -48,6 +48,7 @@ class DrawEngine {
   targetCameraY = 0;
   targetZoom = 1;
   cameraLerpSpeed = 0.08; // Adjust for faster/slower camera
+  moveCameraLinearly = false;
 
   constructor() {
     this.ctx1 = getCtx(c1);
@@ -175,17 +176,44 @@ class DrawEngine {
   }
 
   updateCamera() {
-    this.cameraX += (this.targetCameraX - this.cameraX) * this.cameraLerpSpeed;
-    if (Math.abs(this.targetCameraX - this.cameraX) < 0.01) {
-      this.cameraX = this.targetCameraX;
-    }
-    this.cameraY += (this.targetCameraY - this.cameraY) * this.cameraLerpSpeed;
-    if (Math.abs(this.targetCameraY - this.cameraY) < 0.01) {
-      this.cameraY = this.targetCameraY;
-    }
-    this.zoom += (this.targetZoom - this.zoom) * this.cameraLerpSpeed;
-    if (Math.abs(this.targetZoom - this.zoom) < 0.02) {
-      this.zoom = this.targetZoom;
+    if (this.moveCameraLinearly) {
+      // Linear movement
+      const deltaX = this.targetCameraX - this.cameraX;
+      const deltaY = this.targetCameraY - this.cameraY;
+      const deltaZoom = this.targetZoom - this.zoom;
+      const step = this.cameraLerpSpeed * 10; // Scale up for linear speed
+      
+      if (Math.abs(deltaX) < 0.01) {
+        this.cameraX = this.targetCameraX;
+      } else {
+        this.cameraX += Math.sign(deltaX) * Math.min(Math.abs(deltaX), step);
+      }
+      
+      if (Math.abs(deltaY) < 0.01) {
+        this.cameraY = this.targetCameraY;
+      } else {
+        this.cameraY += Math.sign(deltaY) * Math.min(Math.abs(deltaY), step);
+      }
+      
+      if (Math.abs(deltaZoom) < 0.02) {
+        this.zoom = this.targetZoom;
+      } else {
+        this.zoom += Math.sign(deltaZoom) * Math.min(Math.abs(deltaZoom), step * 0.1);
+      }
+    } else {
+      // Eased movement
+      this.cameraX += (this.targetCameraX - this.cameraX) * this.cameraLerpSpeed;
+      if (Math.abs(this.targetCameraX - this.cameraX) < 0.01) {
+        this.cameraX = this.targetCameraX;
+      }
+      this.cameraY += (this.targetCameraY - this.cameraY) * this.cameraLerpSpeed;
+      if (Math.abs(this.targetCameraY - this.cameraY) < 0.01) {
+        this.cameraY = this.targetCameraY;
+      }
+      this.zoom += (this.targetZoom - this.zoom) * this.cameraLerpSpeed;
+      if (Math.abs(this.targetZoom - this.zoom) < 0.02) {
+        this.zoom = this.targetZoom;
+      }
     }
   }
 
